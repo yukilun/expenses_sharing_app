@@ -6,14 +6,14 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 /** Make API Request */
 
 /** To get username from Token */
-export async function getUsername() {
-    const token = localStorage.getItem('token');
-    if(!token) {
-        return Promise.reject("Cannot find token");
-    }
-    let decode = jwt_decode(token);
-    return Promise.resolve(decode);
-}
+// export async function getUsername() {
+//     const token = localStorage.getItem('token');
+//     if(!token) {
+//         return Promise.reject("Cannot find token");
+//     }
+//     let decode = jwt_decode(token);
+//     return Promise.resolve(decode);
+// }
 
 /** authenticate function */
 export async function authenticate(username) {
@@ -25,7 +25,7 @@ export async function authenticate(username) {
     }
 }
 
-/** get User basic info */
+/** get User basic info - for generateOTP */
 export async function getUser({ username }) {
     try {
         // res.data

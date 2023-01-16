@@ -180,7 +180,7 @@ export async function getUserDetail(req, res) {
         const { userId } = req.user;
 
         if(userId) {  
-            UserModel.findOne({username}, (error, user)=> {
+            UserModel.findOne({_id: userId}, (error, user)=> {
                 if(error) return res.status(501).send({error: error.message});
                 if(!user) return res.status(501).send({error: "Cannot Find the user"});
     

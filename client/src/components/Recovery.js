@@ -12,15 +12,38 @@ export default function Recovery() {
     const navigate = useNavigate();
     const { username } = useAuthStore(state => state.auth);
     const [OTP, setOTP] = useState();
+    const [remainSecond, setRemainSecond] = useState(0); // allow to resend only after 60 sec
+    const [resetDisabled, setResetDisabled] = useState(false); //prevent resend multiple time at once
 
     useEffect(() => {
+        setResetDisabled(true);
         let sendPromise = generateOTP(username);
         toast.promise(sendPromise, {
             loading: "Sending email...",
             success: <b>OTP has been send to your email!</b>,
             error: <b>Some issue happened when sending OTP to your email. Please try again later.</b>
+        });
+        sendPromise.then(()=> {
+            setRemainSecond(60);
         })
+        .finally(() => {
+            setResetDisabled(false);
+        });
+
     }, [username]);
+
+    useEffect(()=> {
+        let countdown = setInterval(()=> {
+            if(remainSecond > 0) {
+                setRemainSecond((prevSecond) => prevSecond - 1);
+            } 
+            else {
+                clearInterval(countdown);
+            }
+        }, 1000);
+        return () => clearInterval(countdown);
+    }, [remainSecond]);
+    
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -37,12 +60,19 @@ export default function Recovery() {
     }
 
     const resendOTP = async () => {
+        setResetDisabled(true);
         let sendPromise = generateOTP(username);
         toast.promise(sendPromise, {
             loading: "Sending email...",
             success: <b>OTP has been send to your email!</b>,
             error: <b>Some issue happened when sending OTP to your email. Please try again later.</b>
+        });
+        sendPromise.then(()=> {
+            setRemainSecond(60);
         })
+        .finally(() => {
+            setResetDisabled(false);
+        });
     };
 
     return (
@@ -73,7 +103,12 @@ export default function Recovery() {
                             </div>
 
                             <div className="text-center py-4">
-                                <span className='text-m text-gray-500 lg:text-xl'>Didn't receieve OTP? <button className='heading font-bold' onClick={resendOTP} type="button">Resend OTP</button></span>
+                                <span className='text-m text-gray-500 lg:text-xl'>
+                                    Didn't receieve OTP? &nbsp;
+                                    {remainSecond > 0 ? 
+                                        <span className="text-gray-400">Resend OTP in {remainSecond}s</span> 
+                                        : <button className={resetDisabled ? 'text-gray-400' : 'user-link'} onClick={resendOTP} disabled={resetDisabled} type="button">Resend OTP</button>}
+                                    </span>
                             </div>
                         </form>
 

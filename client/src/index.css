@@ -22,3 +22,34 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.user-link {
+    background: -webkit-linear-gradient(135.27deg, #569EC2CC 5.8%, #9F6D90CC 99.72%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    position: relative;
+}
+
+.user-link:hover {
+    background: -webkit-linear-gradient(135.27deg, #569EC2 5.8%, #9F6D90 99.72%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.user-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: -webkit-linear-gradient(135.27deg, #569EC2 5.8%, #9F6D90 99.72%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease-out;
+}
+
+.user-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom center;
+}

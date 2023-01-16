@@ -9,15 +9,43 @@ import Profile from './components/Profile';
 import Recovery from './components/Recovery';
 import Reset from './components/Reset';
 import PageNotFound from './components/PageNotFound';
+import Home from './components/Home';
+import Expenses from './components/Expenses';
 
 /** auth middleware */
-import { AuthorizeUser, ProtectRoute } from './middleware/auth';
+import { AuthorizeUser, ProtectRoute, RedirectLoginUser } from './middleware/auth';
 
 /** root routes */
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Username></Username>
+        element: <RedirectLoginUser><Username /></RedirectLoginUser>
+    },
+    {
+        path: '/home',
+        element: <Home/>,
+        children: [
+            {
+                path: '',
+                element: <Username />
+            },
+            {
+                path: 'add-expense',
+                element: <Register />
+            },
+            {
+                path: 'expenses',
+                element: <Expenses />
+            },
+            {
+                path: 'members',
+                element: <Register />
+            },
+            {
+                path: 'profile',
+                element: <Profile />  
+            }
+        ]
     },
     {
         path: '/register',
@@ -33,11 +61,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/recovery',
-        element: <Recovery></Recovery>
+        element: <ProtectRoute><Recovery /></ProtectRoute>
     },
     {
         path: '/reset',
-        element: <Reset></Reset>
+        element: <ProtectRoute><Reset /></ProtectRoute>
     },
     {
         path: '*',

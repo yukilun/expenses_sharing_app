@@ -18,3 +18,11 @@ export const ProtectRoute = ({children}) => {
     }
     return children;
 }
+
+export const RedirectLoginUser = ({children}) => {
+    const token = localStorage.getItem('token');
+    if(token) {
+        return <Navigate to={'/home'} replace={true}/>
+    }
+    return children;
+}

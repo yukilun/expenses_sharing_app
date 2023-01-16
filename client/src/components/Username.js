@@ -56,7 +56,7 @@ export default function Username() {
                             </div>
 
                             <div className="text-center py-4">
-                                <span className='text-m text-gray-500 lg:text-xl'>Don't have an account? &nbsp;<Link className='heading font-bold' to='/register'>Register Now</Link></span>
+                                <span className='text-m text-gray-500 lg:text-xl'>Don't have an account? &nbsp;<Link className='user-link' to='/register'>Register Now</Link></span>
                             </div>
                         </form>
                     </div>

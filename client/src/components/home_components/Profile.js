@@ -99,7 +99,7 @@ export default function Profile() {
                         </div>
 
                         <div className="text-center py-4">
-                            <span className='text-m text-gray-500 lg:text-xl'>Come back later? &nbsp;<button onClick={userLogout} className='heading font-bold' to='/'>Logout</button></span>
+                            <span className='text-m text-gray-500 lg:text-xl'>Come back later? &nbsp;<button onClick={userLogout} className='user-link' to='/'>Logout</button></span>
                         </div>
                     </form>
 

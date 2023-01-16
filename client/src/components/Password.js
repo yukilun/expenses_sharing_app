@@ -34,7 +34,7 @@ export default function Password() {
             loginPromise.then((res) => {
                 const { token } = res.data;
                 localStorage.setItem('token', token);
-                navigate('/profile');
+                navigate('/');
             });
         }
     })
@@ -42,10 +42,15 @@ export default function Password() {
     if (isLoading) return (
         <div className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className={styles.glass}>
-                    <h1 className='text-xl font-bold text-gray-500 text-center py-10'>Loading...</h1>
-                    <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
+            <div className="flex justify-center items-center min-h-screen max-w-screen">
+                <div className='w-full flex flex-row lg:mx-5'>
+                    <div className='w-1/2 hidden justify-center items-center lg:flex'>
+                        <img src={loginSvg} alt='Login illustration' className='w-[80%]' />
+                    </div>
+                    <div className={styles.glass}>
+                        <h1 className='text-xl font-bold text-gray-500 text-center py-10'>Loading...</h1>
+                        <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,10 +59,15 @@ export default function Password() {
     if (serverError) return (
         <div className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className={styles.glass}>
-                    <h1 className='text-xl text-red-500 text-center py-10'>{serverError.message}</h1>
-                    <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
+            <div className="flex justify-center items-center min-h-screen max-w-screen">
+                <div className='w-full flex flex-row lg:mx-5'>
+                    <div className='w-1/2 hidden justify-center items-center lg:flex'>
+                        <img src={loginSvg} alt='Login illustration' className='w-[80%]' />
+                    </div>
+                    <div className={styles.glass}>
+                        <h1 className='text-xl text-red-500 text-center py-10'>{serverError.message}</h1>
+                        <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,7 +100,7 @@ export default function Password() {
                             </div>
 
                             <div className="text-center py-4">
-                                <span className='text-m text-gray-500 lg:text-xl'><Link className='heading font-bold' to='/recovery'>Fogot Password?</Link></span>
+                                <span className='text-m text-gray-500 lg:text-xl'><Link className='user-link' to='/recovery'>Fogot Password?</Link></span>
                             </div>
                         </form>
 
