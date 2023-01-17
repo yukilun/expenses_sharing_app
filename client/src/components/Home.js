@@ -1,27 +1,114 @@
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
+import Animation from '../middleware/Animation';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import icon from '../assets/group.png';
+import { FaBars, FaPlus, FaDollarSign, FaListUl } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
+import { BiLogOut } from "react-icons/bi";
+import useFetch from '../hooks/fetch.hook';
 
-import styles from '../styles/Username.module.css';
-import { Outlet } from 'react-router-dom';
-
+import styles from '../styles/Home.module.css';
 export default function Home() {
 
-    return (
-        <div className="container mx-auto">
-            <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen max-w-screen">
-                <div className='w-full flex flex-row lg:mx-5'>
-                    <div className={styles.glass}>
-                        <div className="title flex flex-col items-center">
-                            <h4 className='heading text-2xl font-bold text-center lg:text-4xl'>Account Details</h4>
-                            <span className='py-4 text-m w-2/3 text-center text-gray-500 lg:text-xl'>
-                                You can update the account detail
-                            </span>
-                            <Outlet/>
-                        </div>
-                    </div>
-                </div>
+    const navigate = useNavigate();
+    const [{ isLoading, apiData, serverError }] = useFetch();
+    const [isOpenNav, setOpenNav] = useState(false);
+
+    const navLinks = [
+        {
+            title: 'Summary',
+            path: '',
+            icon: <FaDollarSign />
+        },
+        {
+            title: 'Add Expense',
+            path: 'add-expense',
+            icon: <FaPlus />
+        },
+        {
+            title: 'Expense Records',
+            path: 'expenses',
+            icon: <FaListUl />
+        },
+        {
+            title: 'Members',
+            path: 'members',
+            icon: <HiUserGroup />
+        }
+    ];
+
+    if (isLoading) {
+        return (
+            <div>
+                Loading...
             </div>
-        </div>
+        );
+    }
+
+    if (serverError) {
+        return (
+            <div>
+                Error
+            </div>
+        )
+    }
+
+
+
+    return (
+        <Animation className="container mx-auto">
+            <Toaster position='top-center' reverseOrder='false'></Toaster>
+            <div className={styles.container}>
+                <div className={styles.nav}>
+                    <div className='topbar relative'>
+                        <div className='w-full '>
+                            <h4 className='logo heading text-xl font-bold text-center'>
+                                <span className='logo text-3xl'>%</span>
+                                <span>&nbsp; </span>
+                                <nobr>Expenses Sharing</nobr>
+                            </h4>
+                        </div>
+                        <div className='icon absolute top-1/2 right-0 translate-y-[-50%] lg:translate-y-0 lg:relative lg:flex lg:flex-col lg:justify-center lg:items-center lg:my-5'>
+                            <img src={apiData?.icon || icon} alt="icon" className='border-gray-100 object-cover rounded-full shadow-lg 
+                                                    cursor-pointer w-[40px] h-[40px] lg:w-[100px] lg:h-[100px] lg:border-4 hover:border-gray-200'
+                                onClick={() => navigate('./profile')} />
+                            <h6 className='hidden text-lg text-theme-blue py-2 font-bold lg:inline'>{apiData?.groupname || apiData?.username || ''}</h6>
+                        </div>
+                        <FaBars onClick={() => setOpenNav(true)}
+                            className='text-2xl text-theme-blue absolute top-1/2 left-0 translate-y-[-50%] transition-transform cursor-pointer hover:rotate-180 lg:hidden' />
+                    </div>
+                    <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 ' + (isOpenNav ? 'visible' : 'invisible')}>
+                        <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500 ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%]')}>
+                            <li className='text-4xl text-theme-blue p-4 my-2'>
+                                <a className='flex justify-end'>
+                                    <IoClose onClick={() => setOpenNav(false)}
+                                        className='transition-transform hover:rotate-180' />
+                                </a>
+                            </li>
+                            {navLinks.map((link, index) =>
+                                <li key={index} className="even:text-theme-plum odd:text-theme-blue">
+                                    <NavLink to={link.path} end
+                                        className={({ isActive }) => 'flex gap-5 items-center p-4 my-5 mx-2 ' + (isActive ? 'border-r-8 border-r-slate-400' : 'opacity-60')}>
+                                        {link.icon} <span>{link.title}</span>
+                                    </NavLink>
+                                </li>
+                            )}
+                            <li className="text-gray-500">
+                                <a  onClick={()=> {
+                                        localStorage.removeItem('token');
+                                        navigate('/');
+                                     }}
+                                    className= 'flex gap-5 items-center p-4 my-10 mx-2'>
+                                    <BiLogOut/> <span>Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <Outlet />
+            </div>
+        </Animation>
     )
 }

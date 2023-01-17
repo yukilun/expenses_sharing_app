@@ -5,12 +5,16 @@ import {createBrowserRouter, RouterProvider,} from 'react-router-dom';
 import Username from './components/Username';
 import Password from './components/Password';
 import Register from './components/Register';
-import Profile from './components/Profile';
 import Recovery from './components/Recovery';
 import Reset from './components/Reset';
 import PageNotFound from './components/PageNotFound';
 import Home from './components/Home';
-import Expenses from './components/Expenses';
+
+import Summary from './components/home_components/Summary';
+import AddExpense from './components/home_components/AddExpense';
+import Expenses from './components//home_components/Expenses';
+import Members from './components/home_components/Members';
+import Profile from './components/home_components/Profile';
 
 /** auth middleware */
 import { AuthorizeUser, ProtectRoute, RedirectLoginUser } from './middleware/auth';
@@ -23,15 +27,15 @@ const router = createBrowserRouter([
     },
     {
         path: '/home',
-        element: <Home/>,
+        element: <Home />,
         children: [
             {
                 path: '',
-                element: <Username />
+                element: <Summary />
             },
             {
                 path: 'add-expense',
-                element: <Register />
+                element: <AddExpense />
             },
             {
                 path: 'expenses',
@@ -39,7 +43,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'members',
-                element: <Register />
+                element: <Members />
             },
             {
                 path: 'profile',
