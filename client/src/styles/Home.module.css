@@ -6,7 +6,7 @@
 }
 
 .nav {
-    @apply w-[90%] m-5 mx-auto lg:w-[15%] lg:min-w-[190px] lg:mx-5 lg:shrink-0;
+    @apply w-[90%] m-5 mx-auto lg:w-[15%] lg:min-w-[250px] lg:mx-5 lg:shrink-0;
 }
 
 .glass {
@@ -15,7 +15,7 @@
     box-shadow: 0 4px 30px #4747470b;
     backdrop-filter: blur(7.1px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    @apply border-4 border-gray-50 w-[90%] min-h-[100%] rounded-2xl mx-auto p-5 lg:rounded-none lg:rounded-l-[40px];
+    @apply border-4 border-gray-50 w-[90%] min-h-[100%] rounded-2xl mx-auto p-5 lg:rounded-none lg:border-0;
 }
 
 .navitem {
@@ -24,4 +24,9 @@
 
 .navitem.active {
     @apply opacity-100 border-r-2 border-r-pink-500;
+}
+
+.cat_container {
+    grid-template-columns: repeat( auto-fit, minmax(80px, 1fr) );
+    @apply grid gap-2 justify-items-start;
 }
