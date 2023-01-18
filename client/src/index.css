@@ -53,3 +53,7 @@ body {
     transform: scaleX(1);
     transform-origin: bottom center;
 }
+
+.grid-template-col-200 {
+    grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
+}

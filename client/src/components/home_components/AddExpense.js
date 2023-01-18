@@ -89,7 +89,7 @@ export default function AddExpense() {
 
   return (
     <div className={styles.glass}>
-      <div className='w-[90%] max-w-[1000px] min-h-full mx-auto overflow-hidden'>
+      <div className='w-[90%] max-w-[1000px] min-h-full mx-auto overflow-hidden lg:flex lg:flex-col lg:justify-center lg:item-center'>
 
         <div className="title flex flex-col items-start lg:items-center">
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Add Expense</h4>
@@ -107,7 +107,7 @@ export default function AddExpense() {
               spaceBetween={20}
               grabCursor={true}
               touchEventsTarget='container'
-              slidesOffsetBefore={30}
+              slidesOffsetBefore={10}
               slidesOffsetAfter={40}
               breakpoints={{
                 320: { slidesPerView: 4 },
@@ -126,7 +126,7 @@ export default function AddExpense() {
                         onChange={(e) => setCategory(e.target.value)}
                       />
                       <label htmlFor={cat.name} className='flex flex-col gap-1 text-gray-600 items-center opacity-50 cursor-pointer hover:opacity-100 peer-checked:opacity-100'>
-                        {cat.icon} <span className='text-xs lg:text-sm'>{cat.name}</span>
+                        {cat.icon} <span className='text-[10px] lg:text-sm'>{cat.name}</span>
                       </label>
                     </SwiperSlide>
                   );
