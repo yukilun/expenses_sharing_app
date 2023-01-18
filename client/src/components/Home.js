@@ -85,8 +85,8 @@ export default function Home() {
                     </div>
 
                     <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 ' 
-                                    + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-5 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
-                                        
+                                    + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
+
                         <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' + 
                                         ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
                             
@@ -99,8 +99,8 @@ export default function Home() {
 
                             {navLinks.map((link, index) =>
                                 <li key={index} className="even:text-theme-plum odd:text-theme-blue">
-                                    <NavLink to={link.path} end
-                                        className={({ isActive }) => 'flex gap-5 items-center p-4 my-5 mx-2 lg:bg-white lg:rounded-lg ' + (isActive ? 'border-r-8 border-r-slate-400 lg:border-0 lg:shadow-md' : 'opacity-60')}>
+                                    <NavLink to={link.path} end onClick={()=> setOpenNav(false)}
+                                        className={({ isActive }) => 'flex gap-5 items-center p-3 my-3 mx-2 lg:bg-white lg:rounded-lg ' + (isActive ? 'border-r-8 border-r-slate-400 lg:border-0 lg:shadow-md' : 'opacity-60')}>
                                         {link.icon} <span>{link.title}</span>
                                     </NavLink>
                                 </li>
@@ -111,7 +111,7 @@ export default function Home() {
                                         localStorage.removeItem('token');
                                         navigate('/');
                                      }}
-                                    className= 'flex gap-5 items-center p-4 my-10 mx-2'>
+                                    className= 'flex gap-5 items-center p-4 my-5 mx-2'>
                                     <BiLogOut/> <span>Logout</span>
                                 </a>
                             </li>
@@ -120,7 +120,7 @@ export default function Home() {
                     </nav>
 
                 </div>
-                <Outlet />
+                <Outlet context={[apiData]}/>
             </div>
         </Animation>
     )

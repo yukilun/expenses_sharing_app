@@ -1,13 +1,13 @@
-import bcrypt from "bcrypt";
-const hash = '$2b$10$eI3k7cC19p6P1dYPOo5eou6fJj0qvq7Mq1GxTUG2PKn9/DmPt4H82';
-const password = "abc1234";
+import UserModel from "./model/User.model.js";
+import connect from "./database/connect.js";
+import mongoose from "mongoose";
 
-bcrypt.compare(password, hash)
-  .then(res => {
-    console.log(`res`);
-    console.log(res);
-  })
-  .catch(err => {
-    console.log(`err`);
-    console.error(err.message);
-  });
+
+connect();
+
+const castUserId = (userId) => mongoose.Types.ObjectId(userId);
+
+UserModel.aggregate([
+  { $match: { _id: castUserId("63c25711c394a98148dd9673") } }
+]).then(doc => console.log(doc));
+
