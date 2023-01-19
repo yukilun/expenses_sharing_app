@@ -66,10 +66,10 @@ export default function Home() {
                     <div className='topbar relative'>
 
                         <div className='w-full '>
-                            <h4 className='logo heading text-xl font-bold text-center'>
-                                <span className='logo text-3xl'>%</span>
+                            <h4 className='logo heading text-lg font-bold text-center lg:text-xl'>
+                                <span className='logo text-2xl lg:text-3xl'>%</span>
                                 <span>&nbsp; </span>
-                                <nobr>Expenses Sharing</nobr>
+                                <nobr className="logo">Expenses Sharing</nobr>
                             </h4>
                         </div>
 

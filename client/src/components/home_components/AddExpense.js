@@ -91,7 +91,7 @@ export default function AddExpense() {
     <div className={styles.glass}>
       <div className='w-[90%] max-w-[1000px] min-h-full mx-auto overflow-hidden lg:flex lg:flex-col lg:justify-center lg:item-center'>
 
-        <div className="title flex flex-col items-start lg:items-center">
+        <div className="title">
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Add Expense</h4>
         </div>
 
@@ -136,7 +136,7 @@ export default function AddExpense() {
             </Swiper>
           </div>
 
-          <div className='flex flex-col gap-5 lg:grid lg:grid-cols-2'>
+          <div className='flex flex-col gap-5 md:grid md:grid-cols-2'>
 
             {/*amount*/}
             <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>

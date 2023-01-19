@@ -7,6 +7,7 @@ export function addExpenseValidate(values) {
     return errors;
 }
 
+
 function amountVerify(error={}, values) {
     if(!values.amount) {
         error.amount = toast.error("Amount Required!");

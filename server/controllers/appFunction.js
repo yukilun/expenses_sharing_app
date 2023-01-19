@@ -234,3 +234,69 @@ export async function getUserDetail(req, res) {
         return res.status(404).send({ error: "Cannot Find User Data" });
     }
 }
+
+export async function getExpenses(req, res) {
+    try {
+        const { userId } = req.user;
+
+        if(userId) {
+
+            // Must cast userId from String to ObjectId for aggregate function
+            const castedUserId = mongoose.Types.ObjectId(userId);
+            const {sort, sort_ascending, show_shared, from_date, to_date, per_page, page } =  req.query;
+            
+            let pipeLine = [
+                {$match : {_id: castedUserId}},
+                {$unwind : "$expenses"},
+                {$project: {_id: "$expenses._id", category : "$expenses.category", amount: "$expenses.amount", date: "$expenses.date", description: "$expenses.description", member: "$expenses.member", isShared: "$expenses.isShared"}},
+            ];
+
+            //Sorting : ascending 1, decending -1 (decending by default)
+            const sortOrder = sort_ascending ? 1 : -1;
+            pipeLine = (sort==='expenditure_date') ? [...pipeLine, {$sort: {date: sortOrder}}] : [...pipeLine, {$sort: {_id: sortOrder}}];
+
+            //Show unshared only if !show_shared
+            if(!show_shared) pipeLine = [...pipeLine, {$match: {isShared: false}}];
+
+            //From date
+            if(from_date) pipeLine = [...pipeLine, {$match: {date: {$gte: new Date(from_date)} } }];
+            // pipeLine = from_date && [...pipeLine, {$match: {date: {$gte: new Date(from_date)} } }];
+
+            //To date
+            if(to_date) pipeLine = [...pipeLine, {$match: {date: {$lte: new Date(to_date)} } }];
+            // pipeLine = to_date && [...pipeLine, {$match: {date: {$lte: new Date(to_date)}}}];
+
+            const doc = await UserModel.aggregate([...pipeLine, {$count: 'count'}]);
+
+            // if have expense(s)
+            if(doc.length > 0) {
+                const {count} = doc[0];
+
+                // calculate max number of page with per_page
+                const max_page = Math.ceil(count / per_page);
+                if(page > max_page) return res.status(404).send({ error: "invalid page number!" });
+                
+                const skip = per_page * (page - 1);
+                
+                const expenses = await UserModel.aggregate([...pipeLine, 
+                    {$skip: skip},
+                    {$limit: parseInt(per_page)}
+                ]);
+                
+                res.set('x-total', count);
+                res.set('x-totalpage', max_page);
+                return res.status(201).send(expenses);
+            }
+
+            //no expense
+            res.set('x-total', 0);
+            res.set('x-totalpage', 0);
+            return res.status(201).send([]);
+
+        }
+
+    }
+    catch(error) {
+        return res.status(404).send({ error: error.message});
+    }
+}

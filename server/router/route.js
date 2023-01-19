@@ -20,6 +20,7 @@ router.route('/generateOTP').get(controller.verifyUser, localVariable, controlle
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); // verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession); // reset all the variables
 router.route('/getuser').get(auth, mainFunction.getUserDetail); 
+router.route('/getExpenses').get(auth, mainFunction.getExpenses); 
 
 /** PUT Methods */
 router.route('/updateuser').put(auth, controller.updateUser); // is use to update the user profile
