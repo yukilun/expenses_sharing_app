@@ -15,6 +15,10 @@ import AddExpense from './components/home_components/AddExpense';
 import Expenses from './components//home_components/Expenses';
 import Members from './components/home_components/Members';
 import Profile from './components/home_components/Profile';
+import UpdateExpense from './components/home_components/UpdateExpense';
+
+import ShareExpenses from './components/home_components/summary_components/ShareExpenses';
+import ExpensesAnalysis from './components/home_components/summary_components/ExpensesAnalysis';
 
 /** auth middleware */
 import { AuthorizeUser, ProtectRoute, RedirectLoginUser } from './middleware/auth';
@@ -31,7 +35,17 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <Summary />
+                element: <Summary />,
+                children: [
+                    {
+                        path: '',
+                        element: <ShareExpenses />
+                    },
+                    {
+                        path: 'expenses-analysis',
+                        element: <ExpensesAnalysis />
+                    }
+                ]
             },
             {
                 path: 'add-expense',
@@ -48,6 +62,10 @@ const router = createBrowserRouter([
             {
                 path: 'profile',
                 element: <Profile />  
+            },
+            {
+                path: 'update-expense',
+                element: <UpdateExpense />
             }
         ]
     },

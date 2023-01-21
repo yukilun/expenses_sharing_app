@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { usernameValidate } from '../helper/validate';
-import { useAuthStore } from '../store/store';
+import { useAuthStore } from '../store/authStore';
 import paymentsvg from '../assets/payment.svg';
 
 import styles from '../styles/Username.module.css';

@@ -20,20 +20,14 @@ const castUserId = (userId) => mongoose.Types.ObjectId(userId);
 
 // console.log(doc);
 
+let key = "FOOD";
+
 let doc = await UserModel.aggregate([
   { $match: { _id: castUserId("63c25711c394a98148dd9673") } },
   {$unwind: "$expenses"},
   {$project: {_id: "$expenses._id", category : "$expenses.category", amount: "$expenses.amount", date: "$expenses.date", description: "$expenses.description", member: "$expenses.member", isShared: "$expenses.isShared"}},
-  {$sort: {"date": 1}},
-  { $match: { date: {$gte: new Date('2023-01-01')} } },
-  {$count: "count"}
+  {$sort: {date: -1}},
+  {$match: {category: new RegExp(key, 'i')}}
 ])
 
 console.log(doc);
-
-if(doc.length > 0) {
-  const {count} = doc[0];
-  console.log(count);
-}
-
-console.log(Math.ceil(1/11));

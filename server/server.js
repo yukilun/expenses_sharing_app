@@ -8,7 +8,7 @@ const app = express();
 
 /** middleware */
 app.use(express.json({ limit: '10mb' }));
-app.use(cors());
+app.use(cors({exposedHeaders: ['x-total', 'x-totalpage']}));
 app.use(morgan('tiny'));
 app.disable('x-powered-by'); // avolid hackers
 

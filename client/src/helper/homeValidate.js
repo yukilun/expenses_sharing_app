@@ -4,9 +4,9 @@ import toast from 'react-hot-toast';
 export function addExpenseValidate(values) {
     const errors = amountVerify({}, values);
     dateVerify(errors, values);
+    descriptionVerify(errors, values);
     return errors;
 }
-
 
 function amountVerify(error={}, values) {
     if(!values.amount) {
@@ -21,6 +21,13 @@ function amountVerify(error={}, values) {
 function dateVerify(error={}, values) {
     if(!values.date) {
         error.date = toast.error("Date Required!");
+    }
+    return error;
+}
+
+function descriptionVerify(error={}, values) {
+    if(!values.description) {
+        error.description = toast.error("Description Required!");
     }
     return error;
 }

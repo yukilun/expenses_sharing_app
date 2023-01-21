@@ -43,11 +43,56 @@ export async function updateMember(values) {
 export async function deleteMember(values) {
     try {
         const token = localStorage.getItem('token');
-        if(!token) return Promise.reject({error: "You must first login to add member!"});
+        if(!token) return Promise.reject({error: "You must first login to delete member!"});
         const {data} = await axios.put('api/deleteMember',values, {headers: {"Authorization": `Bearer ${token}`}});
         return Promise.resolve(data);
     }
     catch(error) {
-        return Promise.reject({error: "Unable to add member! Try again!"});
+        return Promise.reject({error: "Unable to delete member! Try again!"});
     }
 }
+
+/** delete expense function */
+export async function deleteExpense(values) {
+    try {
+        const token = localStorage.getItem('token');
+        if(!token) return Promise.reject({error: "You must first login to delete expense!"});
+        const {data} = await axios.put('api/deleteExpense',values, {headers: {"Authorization": `Bearer ${token}`}});
+        return Promise.resolve(data);
+    }
+    catch(error) {
+        return Promise.reject({error: "Unable to delete expense! Try again!"});
+    }
+}
+
+/** delete expense function */
+export async function updateExpense(values) {
+    try {
+        const token = localStorage.getItem('token');
+        if(!token) return Promise.reject({error: "You must first login to udpate expense!"});
+        const {data} = await axios.put('api/editExpense',values, {headers: {"Authorization": `Bearer ${token}`}});
+        return Promise.resolve(data);
+    }
+    catch(error) {
+        return Promise.reject({error: "Unable to udpate expense! Try again!"});
+    }
+}
+
+
+
+/** convert iso date string to DD-MMM-YYYY */
+export function dateStringFormat(dateStr) {
+    const dateArr = dateStr.split('T')[0].split('-');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = dateArr[0];
+    const month = months[dateArr[1]-1];
+    const day = dateArr[2];
+
+    return `${day}-${month}-${year}`;
+}
+
+/** coverter for currency */
+export const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});

@@ -37,7 +37,7 @@ export async function deleteMember(req, res) {
             const { memberid } = req.body;
 
             UserModel.updateOne({ _id: userId },
-                { $pull: { members: { _id: memberid } } },
+                { $pull: { members: { _id: memberid }, expenses: { member: memberid } } },
                 { runValidators: true },
                 (error, data) => {
                     if (error) return res.status(401).send({ error: error.message });
@@ -194,9 +194,14 @@ export async function getUserDetail(req, res) {
 
             UserModel.aggregate([
                 { $match: { _id: castedUserId } },
-                { $unwind: "$members" },
+                {
+                    $unwind: {
+                        "path": "$members",
+                        "preserveNullAndEmptyArrays": true
+                    }
+                },
                 { $sort: { "members.membername": 1 } },
-                { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' }, expenses: { $first: '$expenses' }}}
+                { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' }, expenses: { $first: '$expenses' } } }
             ])
                 .then(doc => {
                     if (doc.length < 1) {
@@ -212,7 +217,7 @@ export async function getUserDetail(req, res) {
                 .catch(error => {
                     res.status(501).send({ error: error.message });
                 });
-            
+
             // Simple version
             // UserModel.findOne({ _id: userId }, (error, user) => {
             //     if (error) return res.status(501).send({ error: error.message });
@@ -239,50 +244,52 @@ export async function getExpenses(req, res) {
     try {
         const { userId } = req.user;
 
-        if(userId) {
+        if (userId) {
 
             // Must cast userId from String to ObjectId for aggregate function
             const castedUserId = mongoose.Types.ObjectId(userId);
-            const {sort, sort_ascending, show_shared, from_date, to_date, per_page, page } =  req.query;
-            
+            const { keyword, sort, sort_ascending, show_shared, from_date, to_date, per_page, page } = req.query;
+
             let pipeLine = [
-                {$match : {_id: castedUserId}},
-                {$unwind : "$expenses"},
-                {$project: {_id: "$expenses._id", category : "$expenses.category", amount: "$expenses.amount", date: "$expenses.date", description: "$expenses.description", member: "$expenses.member", isShared: "$expenses.isShared"}},
+                { $match: { _id: castedUserId } },
+                { $unwind: "$expenses" },
+                { $project: { _id: "$expenses._id", category: "$expenses.category", amount: "$expenses.amount", date: "$expenses.date", description: "$expenses.description", member: "$expenses.member", isShared: "$expenses.isShared" } },
             ];
 
-            //Sorting : ascending 1, decending -1 (decending by default)
-            const sortOrder = sort_ascending ? 1 : -1;
-            pipeLine = (sort==='expenditure_date') ? [...pipeLine, {$sort: {date: sortOrder}}] : [...pipeLine, {$sort: {_id: sortOrder}}];
-
-            //Show unshared only if !show_shared
-            if(!show_shared) pipeLine = [...pipeLine, {$match: {isShared: false}}];
+            if (keyword) {
+                let regex = new RegExp(keyword, 'i')
+                pipeLine = [...pipeLine, { $match: { $or: [{ category: regex }, { description: regex }] } }];
+            }
+            //Show unshared only if show_shared = false
+            if (!show_shared | show_shared == 'false') pipeLine = [...pipeLine, { $match: { isShared: false } }];
 
             //From date
-            if(from_date) pipeLine = [...pipeLine, {$match: {date: {$gte: new Date(from_date)} } }];
-            // pipeLine = from_date && [...pipeLine, {$match: {date: {$gte: new Date(from_date)} } }];
+            if (from_date) pipeLine = [...pipeLine, { $match: { date: { $gte: new Date(from_date) } } }];
 
             //To date
-            if(to_date) pipeLine = [...pipeLine, {$match: {date: {$lte: new Date(to_date)} } }];
-            // pipeLine = to_date && [...pipeLine, {$match: {date: {$lte: new Date(to_date)}}}];
+            if (to_date) pipeLine = [...pipeLine, { $match: { date: { $lte: new Date(to_date) } } }];
 
-            const doc = await UserModel.aggregate([...pipeLine, {$count: 'count'}]);
+            //Sorting : ascending 1, decending -1 (decending by default)
+            const sortOrder = sort_ascending == 'true' ? 1 : -1;
+            pipeLine = (sort === 'added_date') ? [...pipeLine, { $sort: { _id: sortOrder } }] : [...pipeLine, { $sort: { date: sortOrder } }];
+
+            const doc = await UserModel.aggregate([...pipeLine, { $count: 'count' }]);
 
             // if have expense(s)
-            if(doc.length > 0) {
-                const {count} = doc[0];
+            if (doc.length > 0) {
+                const { count } = doc[0];
 
                 // calculate max number of page with per_page
                 const max_page = Math.ceil(count / per_page);
-                if(page > max_page) return res.status(404).send({ error: "invalid page number!" });
-                
+                if (page > max_page) return res.status(404).send({ error: "invalid page number!" });
+
                 const skip = per_page * (page - 1);
-                
-                const expenses = await UserModel.aggregate([...pipeLine, 
-                    {$skip: skip},
-                    {$limit: parseInt(per_page)}
+
+                const expenses = await UserModel.aggregate([...pipeLine,
+                { $skip: skip },
+                { $limit: parseInt(per_page) }
                 ]);
-                
+
                 res.set('x-total', count);
                 res.set('x-totalpage', max_page);
                 return res.status(201).send(expenses);
@@ -296,7 +303,65 @@ export async function getExpenses(req, res) {
         }
 
     }
-    catch(error) {
-        return res.status(404).send({ error: error.message});
+    catch (error) {
+        return res.status(404).send({ error: error.message });
+    }
+}
+
+export async function getShareExpenseInfo(req, res) {
+    try {
+        const { userId } = req.user;
+
+        if (userId) {
+            // To return a user with sorted array of member, we can use aggregate here
+            // Expenses need to be retrieved from another function
+            const castedUserId = mongoose.Types.ObjectId(userId);
+
+            const memberTotalPaid = UserModel.aggregate([
+                { $match: { username: 'abc123' } },
+                { $unwind: "$expenses" },
+                { $group: { _id: '$expenses.member', totalPaid: { $sum: '$expenses.amount' } } },
+            ]);
+
+            UserModel.aggregate([
+                { $match: { _id: castedUserId } },
+                { $unwind: "$members" },
+                { $sort: { "members.membername": 1 } },
+                { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' }, expenses: { $first: '$expenses' } } }
+            ])
+                .then(doc => {
+                    if (doc.length < 1) {
+                        res.status(501).send({ error: "Cannot Find the user" });
+                    }
+                    else {
+                        // only 1 object would be returned in the array i.e. doc[0]
+                        // remove password from user
+                        const { password, ...rest } = doc[0];
+                        res.status(201).send(rest);
+                    }
+                })
+                .catch(error => {
+                    res.status(501).send({ error: error.message });
+                });
+
+            // Simple version
+            // UserModel.findOne({ _id: userId }, (error, user) => {
+            //     if (error) return res.status(501).send({ error: error.message });
+            //     if (!user) return res.status(501).send({ error: "Cannot Find the user" });
+
+            //     // remove password from user
+            //     // mongoose return unnessary data with object so we need convert it into json
+            //     const { password, ...rest } = Object.assign({}, user.toJSON());
+
+            //     return res.status(201).send(rest);
+            // });
+
+        }
+        else {
+            return res.status(401).send({ error: 'User not found!' });
+        }
+    }
+    catch (error) {
+        return res.status(404).send({ error: "Cannot Find User Data" });
     }
 }

@@ -21,6 +21,10 @@ export default function Members() {
     const [isOpenPopup, setOpenPopup] = useState(false);
     const [isDelete, setDelete] = useState(false);
 
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+    const [swipedExpenseIndex, setSwipedExpenseIndex] = useState(-1);
+
     useEffect(() => {
         if (apiData) {
             setMembers(apiData.members);
@@ -62,14 +66,37 @@ export default function Members() {
         setOpenPopup(true);
     }
 
+    function handleTouchStart(e) {
+        console.log("onTouchStart" + e.targetTouches[0].clientX);
+        setTouchStart(e.targetTouches[0].clientX);
+    }
+
+    function handleTouchMove(e) {
+        console.log("onTouchMove" + e.targetTouches[0].clientX);
+        setTouchEnd(e.targetTouches[0].clientX);
+    }
+
+    function handleTouchEnd(e, index) {
+
+        console.log("onTouchEnd" + (touchStart - touchEnd));
+
+        if (touchStart - touchEnd > 150) {
+            setSwipedExpenseIndex(index);
+        }
+
+        if (touchStart - touchEnd < -150) {
+            setSwipedExpenseIndex(-1);
+        }
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if(membername === '') return toast.error('Member Name required!');
+        if (membername === '') return toast.error('Member Name required!');
 
-        if(isDelete) {
+        if (isDelete) {
             //delete member
-            const values = {memberid};
+            const values = { memberid };
             let deletePromise = deleteMember(values);
             toast.promise(deletePromise, {
                 loading: 'Deleting Member...',
@@ -80,9 +107,9 @@ export default function Members() {
             return;
         }
 
-        if(memberid) {
+        if (memberid) {
             //update member
-            const values = {memberid, membername, membericon};
+            const values = { memberid, membername, membericon };
             let updatePromise = updateMember(values);
             toast.promise(updatePromise, {
                 loading: 'Updating Member...',
@@ -94,7 +121,7 @@ export default function Members() {
         }
 
         //add member
-        const values = {membername, membericon};
+        const values = { membername, membericon };
         let addPromise = addMember(values);
         toast.promise(addPromise, {
             loading: 'Adding Member...',
@@ -107,24 +134,24 @@ export default function Members() {
 
     return (
         <div className={styles.glass}>
-            <div className='w-[90%] max-w-[1000px] mx-auto'>
+            <div className='w-[95%] max-w-[1000px] mx-auto'>
 
                 <div className="title">
                     <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Members</h4>
                 </div>
 
-                <div className='container py-2'>
+                <div className='py-2'>
 
-                    {/* Popup Window for Add or Update or Delete */ }
+                    {/* Popup Window for Add or Update or Delete */}
                     <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
                         <div className={'add-edit-member-popup bg-white min-h-[270px] min-w-[270px] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
                             + 'lg:min-w-[500px] absolute top-1/2 left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)] transition-all duration-500 '
                             + (isOpenPopup ? 'translate-y-[-50%] opacity-100' : 'translate-y-[-100%] opacity-0')}
                         >
-                            <IoClose className='text-2xl text-theme-blue self-end' onClick={()=>setOpenPopup(false)}/>
-                            <h6 className='heading font-bold text-lg'>{isDelete ? "Delete Member" : memberid ? 'Update Member': 'Add Member'}</h6>
-                            <p className='text-sm text-gray-600 w-3/4 text-center ' >
-                                { isDelete ? 'Are you sure you want to delete the following user?' : memberid ? 'Edit the following member information:': 'Fill in the following member information:'}
+                            <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
+                            <h6 className='heading font-bold text-lg'>{isDelete ? "Delete Member" : memberid ? 'Update Member' : 'Add Member'}</h6>
+                            <p className='text-sm text-gray-600 w-3/4 text-center lg:w-full' >
+                                {isDelete ? 'Are you sure you want to delete the following user?' : memberid ? 'Edit the following member information:' : 'Fill in the following member information:'}
                             </p>
                             <form onSubmit={handleSubmit}>
                                 <div className="profile flex justify-center py-4">
@@ -135,41 +162,55 @@ export default function Members() {
                                 </div>
 
                                 <div className="textbox flex flex-col items-center gap-6">
-                                    <input  className={styles.textbox} type="text" placeholder='Member name' name="membername" value={membername} disabled={isDelete} onChange={(e)=>setMembername(e.target.value)}/>
+                                    <input className={styles.textbox} type="text" placeholder='Member name' name="membername" value={membername} disabled={isDelete} onChange={(e) => setMembername(e.target.value)} />
+                                    {isDelete && <p className='text-sm  text-theme-plum w-3/4 text-center lg:w-full'>The expense records for this user will also be deleted!</p>}
                                     <button className="bg-theme-light-blue text-white text-base text-center w-full max-w-[300px] 
-                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">{isDelete ? "Delete" : memberid ? 'Update': 'Add'}</button>
+                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">{isDelete ? "Delete" : memberid ? 'Update' : 'Add'}</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
 
-                    {/* Seach Bar and Add Button */ }
+                    {/* Seach Bar and Add Button */}
                     <div className='w-fit mx-auto flex justify-center items-center gap-3'>
-                        <div className="search-bar flex-grow flex flex-row gap-2 border-0 px-3 py-3 rounded-xl mx-auto my-5 max-w-[250px] shadow-md text-gray-600 bg-white lg:text-lg lg:max-w-[500px]">
+                        <div className="search-bar flex-grow flex flex-row gap-2 p-3 rounded-xl mx-auto my-5 max-w-[250px] shadow-md text-gray-600 bg-white lg:text-lg lg:max-w-[500px]">
                             <MdSearch className='text-gray-500 text-2xl' />
                             <input type='text' placeholder='Search' className='focus:outline-none w-full' onChange={handleSearch} />
                         </div>
                         <div>
-                            <button className="text-white p-[16px] rounded-lg shadow-md bg-theme-light-blue hover:bg-theme-blue" onClick={()=>handleAdd()}>
+                            <button className="text-white p-[16px] rounded-lg shadow-md bg-theme-light-blue hover:bg-theme-blue" onClick={() => handleAdd()}>
                                 <FaPlus />
                             </button>
                         </div>
                     </div>
 
-                    {/* Member List */ }
-                    <div className='member-list grid grid-template-col-250 gap-2 rounded-xl my-5'>
-                        {members.map((member, index) => (
-                            <div key={member._id} className="w-full flex justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm">
-                                <div className='flex items-center gap-5 text-gray-600'>
-                                    <img src={member.membericon || icon} className="w-[50px] h-[50px] rounded-full border-2 border-white shadow-md " />
-                                    {member.membername}
-                                </div>
-                                <div className='flex items-center gap-3 text-2xl'>
+                    {/* Member List */}
+                    <div className='member-list grid grid-template-col-250 gap-2 my-5 overflow-hidden'>
+                        {
+                            members.length === 0 ? <div className='text-lg text-gray-400 text-center'>No member in this account!</div> :
+                                members.map((member, index) => (
+                                    <div
+                                        key={member._id} className="w-full flex justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm relative"
+                                        onTouchStart={handleTouchStart}
+                                        onTouchMove={handleTouchMove}
+                                        onTouchEnd={(e) => handleTouchEnd(e, index)}
+                                    >
+                                        <div className='w-full flex items-center gap-5 text-gray-600'>
+                                            <img src={member.membericon || icon} className="w-[50px] h-[50px] rounded-full border-2 border-white shadow-md " />
+                                            {member.membername}
+                                        </div>
+                                        {/* <div className='flex items-center gap-3 text-2xl'>
                                     <MdEdit className='text-theme-light-blue cursor-pointer hover:text-theme-blue' onClick={()=>handleEdit(index)} />
                                     <MdDelete className='text-theme-light-plum cursor-pointer hover:text-theme-plum' onClick={()=>handleDelete(index)} />
-                                </div>
-                            </div>
-                        ))}
+                                </div> */}
+                                        <div className={'flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
+                                            + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index == swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
+                                            <MdEdit className='w-1/2 h-full p-4 text-theme-light-blue cursor-pointer md:h-[50px] md:p-1 hover:text-theme-blue' onClick={() => handleEdit(index)} />
+                                            <MdDelete className='w-1/2 h-full p-4 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[50px] md:p-1 hover:text-theme-plum' onClick={() => handleDelete(index)} />
+                                        </div>
+                                    </div>
+                                ))}
                     </div>
 
                 </div>

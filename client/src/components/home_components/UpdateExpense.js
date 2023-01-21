@@ -2,26 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { useFormik } from 'formik';
 import { FaShoppingBasket, FaHamburger, FaHome, FaFaucet, FaIcons, FaBus, FaShieldAlt, FaQuestion } from 'react-icons/fa';
-import { MdKeyboardArrowDown } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdNavigateBefore } from 'react-icons/md';
 import SlideController from './SlideController';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext , useNavigate} from 'react-router-dom';
 import icon from '../../assets/personal.png';
 import { addExpenseValidate } from '../../helper/homeValidate';
-import { addExpense } from '../../helper/homeHelper';
-import { IoClose } from 'react-icons/io5';
+import { updateExpense } from '../../helper/homeHelper';
+import { useExpenseUpdateStore } from '../../store/expenseUpdateStore';
 
 import 'swiper/css';
 import styles from '../../styles/Home.module.css';
 import { toast } from 'react-hot-toast';
 
 
-export default function AddExpense() {
+export default function UpdateExpense() {
 
   const navigate = useNavigate();
   const [apiData] = useOutletContext();
-  const [category, setCategory] = useState('');
-  const [memberIndex, setMemberIndex] = useState(-1);
+  const expense = useExpenseUpdateStore(state => state.expense);
+  const [category, setCategory] = useState(expense?.category||'');
+  const [memberIndex, setMemberIndex] = useState('');
   const [showMemberDropdown, setShowMemberDropdown] = useState(false);
+
+  useEffect(()=> {
+    if(apiData && expense) {
+      setMemberIndex(apiData.members.findIndex(member=> member._id == expense?.member));
+    }
+  }, [apiData, expense]);
+
 
   const categoryCommonClass = 'text-[60px] p-4 rounded-lg text-white text-opacity-90 shadow-md lg:text-[80px] lg:p-6 ';
 
@@ -62,58 +70,46 @@ export default function AddExpense() {
 
   const formik = useFormik({
     initialValues: {
-      amount: '',
-      date: new Date().toISOString().split('T')[0],
-      description: ''
+      amount: expense?.amount || '',
+      date: expense?.date.split('T')[0] || '',
+      description: expense?.description || ''
     },
+    enableReinitialize: true,
     validate: async values => {
       const errors = addExpenseValidate(values);
-      if (memberIndex < 0) errors.member = toast.error('Member required!');
-      if (category === '') errors.category = toast.error('Category required!');
+      if(memberIndex < 0) errors.member = toast.error('Member required!');
+      if(category === '') errors.category = toast.error('Category required!');
       return errors;
     },
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async values => {
-      values = Object.assign(values, { category, member: apiData?.members[memberIndex]._id });
+      values = Object.assign(values, { category, member: apiData.members[memberIndex]._id, expenseid: expense._id});
       console.log(values);
-      let addPromise = addExpense(values);
-      toast.promise(addPromise, {
-        loading: 'Adding Expense...',
-        success: <b>Added Expense Successfully!</b>,
-        error: <b>Unable to add expense! Please try again later.</b>
+      let updatePromise = updateExpense(values);
+      toast.promise(updatePromise, {
+          loading: 'Updating Expense...',
+          success: <b>Updated Expense Successfully!</b>,
+          error: <b>Unable to update expense! Please try again later.</b>
       });
-      addPromise.then(() => navigate('/'));
+      updatePromise.then(() => navigate('../expenses'));
     }
   })
+
+  if(expense.category === '') {
+    return navigate('../expenses');
+  }
 
   return (
     <div className={styles.glass}>
       <div className='w-[95%] max-w-[1000px] min-h-full mx-auto overflow-hidden lg:flex lg:flex-col'>
 
-        <div className="title">
-          <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Add Expense</h4>
+        <div className="title relative lg:mt-5">
+          <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl'>Edit Expense</h4>
+          <button onClick={()=> navigate(-1)} className='flex items-center text-theme-plum absolute p-1 top-1/2 translate-y-[-50%] transition-transform hover:scale-125'>
+            <MdNavigateBefore className='text-3xl'/>
+          </button>
         </div>
-
-        {/* Popup Window for Add or Update or Delete */}
-        {apiData?.members.length === 0 &&
-          <div className='add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
-            <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center py-10 gap-10 '
-              + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
-            >
-              <h6 className='heading font-bold text-lg'>Warning!</h6>
-              <p className='text-base text-gray-600 max-w-[200px] text-center ' >
-                You must add group members before adding expense.
-              </p>
-              <button 
-                className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue"
-                onClick={()=> navigate('../members')}
-              >
-                Navigate to Members Page
-              </button>
-            </div>
-          </div>
-        }
 
         <form onSubmit={formik.handleSubmit}>
 
@@ -142,7 +138,7 @@ export default function AddExpense() {
                 categories.map((cat, index) => {
                   return (
                     <SwiperSlide key={index}>
-                      <input type="radio" name="category" id={cat.name} value={cat.name} className='hidden peer'
+                      <input type="radio" name="category" id={cat.name} value={cat.name} className='hidden peer' checked={cat.name === category}
                         onChange={(e) => setCategory(e.target.value)}
                       />
                       <label htmlFor={cat.name} className='flex flex-col gap-1 text-gray-600 items-center opacity-50 cursor-pointer hover:opacity-100 peer-checked:opacity-100'>
@@ -173,9 +169,9 @@ export default function AddExpense() {
                 onClick={() => setShowMemberDropdown(prev => !prev)}
               >
                 <div className='flex gap-5 items-center'>
-                  <img src={memberIndex > -1 ? apiData?.members[memberIndex].membericon || icon : icon} className="h-[50px] w-[50px] rounded-full" />
-                  {memberIndex >= 0 && apiData?.members[memberIndex].membername || ''}
-
+                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} className="h-[50px] w-[50px] rounded-full" />
+                  {memberIndex >= 0 && apiData?.members[memberIndex]?.membername || ''}
+                   
 
                 </div>
                 <MdKeyboardArrowDown className='absolute z-20 top-1/2 translate-y-[-50%] right-[12px] text-[30px]' />
@@ -194,27 +190,26 @@ export default function AddExpense() {
 
               </div>
             </div>
-
+            
             {/*amount*/}
             <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
               <label htmlFor='amount' className='text-gray-600 text-base lg:text-lg'>Amount: </label>
-              <div className={styles.inputbox + ' flex gap-2'}>
-                $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none' />
-              </div>
+                <div className={styles.inputbox + ' flex gap-2'}>
+                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none'  />
+                </div>
             </div>
-
 
             {/*Date*/}
             <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
               <label htmlFor='date' className='text-gray-600 text-base lg:text-lg'>Date: </label>
-              <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox} />
+              <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox}  />
             </div>
 
           </div>
 
           <div className='w-full text-center relative z-0'>
             <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
-                                 border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10'>Add</button>
+                                 border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10'>Edit</button>
           </div>
 
         </form>

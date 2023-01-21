@@ -48,13 +48,11 @@ export default function Home() {
     }
 
     if (serverError) {
-        return (
-            <div>
-                Error
-            </div>
-        )
+        localStorage.removeItem('token');
+        console.log(serverError);
+        toast.error("Please login your account again!");
+        navigate('/');
     }
-
 
 
     return (
@@ -109,6 +107,7 @@ export default function Home() {
                             <li className="text-gray-500">
                                 <a  onClick={()=> {
                                         localStorage.removeItem('token');
+                                        toast.success("Logged out successfully!");
                                         navigate('/');
                                      }}
                                     className= 'flex gap-5 items-center p-4 my-5 mx-2'>
