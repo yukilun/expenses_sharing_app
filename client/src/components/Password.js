@@ -8,6 +8,9 @@ import useFetch from '../hooks/fetch.hook';
 import { useAuthStore } from '../store/authStore';
 import { verifyPassword } from '../helper/helper';
 import loginSvg from '../assets/login.svg';
+import loadingSvg from '../assets/loading.svg';
+import serverErrorSvg from '../assets/server_error.svg';
+import Animation from '../middleware/Animation';
 
 import styles from '../styles/Username.module.css';
 
@@ -42,16 +45,8 @@ export default function Password() {
     if (isLoading) return (
         <div className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen max-w-screen">
-                <div className='w-full flex flex-row lg:mx-5'>
-                    <div className='w-1/2 hidden justify-center items-center lg:flex'>
-                        <img src={loginSvg} alt='Login illustration' className='w-[80%]' />
-                    </div>
-                    <div className={styles.glass}>
-                        <h1 className='text-xl font-bold text-gray-500 text-center py-10'>Loading...</h1>
-                        <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
-                    </div>
-                </div>
+            <div className='h-[100vh] flex justify-center items-center'>
+              <img src={loadingSvg} alt='loading' className='h-[100px] lg:h-[150px]' />
             </div>
         </div>
     );
@@ -59,32 +54,27 @@ export default function Password() {
     if (serverError) return (
         <div className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen max-w-screen">
-                <div className='w-full flex flex-row lg:mx-5'>
-                    <div className='w-1/2 hidden justify-center items-center lg:flex'>
-                        <img src={loginSvg} alt='Login illustration' className='w-[80%]' />
-                    </div>
-                    <div className={styles.glass}>
-                        <h1 className='text-xl text-red-500 text-center py-10'>{serverError.message}</h1>
-                        <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
-                    </div>
-                </div>
+            <div className='h-[100vh] flex flex-col justify-center items-center gap-8 text-center text-xl text-theme-plum'>
+              <img src={serverErrorSvg} alt='server error' className='w-[250px]'/>
+              <h6 className='font-bold'>Internal Server Error</h6>
+              <p>Sorry! Something went wrong.</p>
+              <Link className='w-full' to='/'><button className={styles.btn} >Home</button></Link>
             </div>
         </div>
     );
 
     return (
-        <div className="container mx-auto">
+        <Animation className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
             <div className="flex justify-center items-center min-h-screen max-w-screen">
                 <div className='w-full flex flex-row lg:mx-5'>
                     <div className='w-1/2 hidden justify-center items-center lg:flex'>
-                        <img src={loginSvg} alt='Login illustration' className='w-[80%]' />
+                        <img src={loginSvg} alt='Login illustration' className='w-[80%] max-h-[500px]' />
                     </div>
                     <div className={styles.glass}>
                         <div className="title flex flex-col items-center">
-                            <h4 className='heading text-2xl font-bold text-center lg:text-4xl'><nobr>{apiData?.groupname || apiData?.username},</nobr> Welcome Back! </h4>
-                            <span className='py-4 text-m w-2/3 text-center text-gray-500 lg:text-xl'>
+                            <h4 className='heading text-2xl font-bold text-center lg:text-3xl'><nobr>{apiData?.groupname || apiData?.username},</nobr> Welcome Back! </h4>
+                            <span className='py-4 text-base w-2/3 text-center text-gray-500 lg:text-lg'>
                                 Record and Share expenses easily.
                             </span>
                         </div>
@@ -94,19 +84,19 @@ export default function Password() {
                                 <img className={styles.icon_img} src={apiData?.icon || icon} alt="icon" />
                             </div>
 
-                            <div className="textbox flex flex-col items-center gap-6">
+                            <div className="textbox flex flex-col items-center gap-4">
                                 <input {...formik.getFieldProps('password')} className={styles.textbox} type="password" placeholder='Password' />
                                 <button className={styles.btn} type="submit">Login</button>
                             </div>
 
                             <div className="text-center py-4">
-                                <span className='text-m text-gray-500 lg:text-xl'><Link className='user-link' to='/recovery'>Fogot Password?</Link></span>
+                                <span className='text-base text-gray-500 lg:text-lg'><Link className='user-link' to='/recovery'>Fogot Password?</Link></span>
                             </div>
                         </form>
 
                     </div>
                 </div>
             </div>
-        </div>
+        </Animation>
     )
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import ExpensesChart from './ExpensesChart'
 import axios from 'axios';
 import { monthStringFormat } from '../../../helper/homeHelper';
+import loadingsvg from '../../../assets/loading.svg';
+import serverErrorSvg from '../../../assets/server_error.svg';
 
 export default function ExpensesAnalysis() {
 
@@ -13,7 +15,6 @@ export default function ExpensesAnalysis() {
     const [serverError, setServerError] = useState('');
 
     useEffect(() => {
-        console.log(chartLastMonth);
         let month = chartLastMonth.month === 11 ? { month: 0, year: chartLastMonth.year + 1 } : { month: chartLastMonth.month + 1, year: chartLastMonth.year };
         let boundaries = [];
         for (let i = 1; i <= 4; i++) {
@@ -65,6 +66,24 @@ export default function ExpensesAnalysis() {
     function nextDisable() {
         return chartLastMonth.year === thisMonth.year && chartLastMonth.month >= thisMonth.month;
     }
+
+    if (isLoading) {
+        return (
+          <div className='w-full max-w-[1000px] h-[calc(100vh_-_96px)] mx-auto overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-full flex justify-center items-center'>
+            <img src={loadingsvg} alt='loading' className='w-[200px]' />
+          </div>
+        )
+      };
+    
+      if (serverError) {
+        return (
+          <div className='w-full max-w-[1000px] h-[calc(100vh_-_96px)] mx-auto overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-full flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
+            <img src={serverErrorSvg} alt='server error' className='w-[250px]' />
+            <h6 className='font-bold'>Internal Server Error</h6>
+            <p>Sorry! Something went wrong.</p>
+          </div>
+        )
+      }
 
     return (
         <div className='w-full max-w-[1000px] h-[calc(100vh_-_96px)] mx-auto overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-full text-sm'>

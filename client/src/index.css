@@ -35,7 +35,7 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.user-link:enabled {
+.user-link {
     background: -webkit-linear-gradient(135.27deg, #569EC2CC 5.8%, #9F6D90CC 99.72%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -43,13 +43,13 @@ body {
     position: relative;
 }
 
-.user-link:enabled:hover {
+.user-link:hover {
     background: -webkit-linear-gradient(135.27deg, #569EC2 5.8%, #9F6D90 99.72%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.user-link:enabled::after {
+.user-link::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -61,13 +61,9 @@ body {
     transition: transform 0.3s ease-out;
 }
 
-.user-link:enabled:hover::after {
+.user-link:hover::after {
     transform: scaleX(1);
     transform-origin: bottom center;
-}
-
-.user-link:disabled {
-    color: rgb(156 163 175);
 }
 
 .grid-template-col-250 {

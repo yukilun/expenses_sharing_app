@@ -217,7 +217,7 @@ export default function AddExpense() {
 
           <div className='w-full text-center relative z-0'>
             <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
-                                 border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10'>Add</button>
+                                 border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10' type='submit'>Add</button>
           </div>
 
         </form>

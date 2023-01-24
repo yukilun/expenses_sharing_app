@@ -3,6 +3,7 @@ import { BiChevronDown, BiChevronRight } from 'react-icons/bi'
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import useFetch from '../../../hooks/fetch.hook';
 import loadingsvg from '../../../assets/loading.svg';
+import serverErrorSvg from '../../../assets/server_error.svg';
 import icon from '../../../assets/personal.png';
 import { currencyFormatter } from '../../../helper/homeHelper';
 import { HiArrowNarrowRight } from 'react-icons/hi';
@@ -25,8 +26,6 @@ export default function ShareExpenses() {
     if (apiData && shareExpensesInfo && apiData.members.length > 0) {
       const perPerson = shareExpensesInfo.totalExpenses / apiData.members.length;
       const netAmounts = apiData.members.map((member) => (shareExpensesInfo?.memberTotalPaid.find((doc) => doc._id === member._id)?.totalPaid || 0) - perPerson);
-      console.log(perPerson);
-      console.log(netAmounts);
       let settleDebts = Array.from(Array(netAmounts.length), () => Array(netAmounts.length));
 
       for (let i = 0; i < netAmounts.length; i++) {
@@ -46,7 +45,6 @@ export default function ShareExpenses() {
           }
         }
       }
-      console.log(settleDebts);
       setExpensePerPerson(perPerson);
       setSettleDebtsArr(settleDebts);
     }
@@ -64,16 +62,18 @@ export default function ShareExpenses() {
 
   if (isLoading) {
     return (
-      <div className='flex justify-center'>
-        <img src={loadingsvg} alt='loading' className='h-[100px] lg:h-[150px]' />
+      <div className='w-full max-w-[1000px] h-[calc(100vh_-_96px)] mx-auto overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-full flex justify-center items-center'>
+            <img src={loadingsvg} alt='loading' className='w-[200px]' />
       </div>
     )
   };
 
   if (serverError) {
     return (
-      <div>
-        server error
+      <div className='w-full max-w-[1000px] h-[calc(100vh_-_96px)] mx-auto overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-full flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
+        <img src={serverErrorSvg} alt='server error' className='w-[250px]' />
+        <h6 className='font-bold'>Internal Server Error</h6>
+        <p>Sorry! Something went wrong.</p>
       </div>
     )
   }

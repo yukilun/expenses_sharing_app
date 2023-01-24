@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import icon from '../../assets/group.png';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -8,13 +8,13 @@ import convertToBase64 from '../../helper/convert';
 import useFetch from '../../hooks/fetch.hook';
 import { updateUser } from '../../helper/helper';
 
-import styles from '../../styles/Username.module.css';
+import styles from '../../styles/Home.module.css';
 
 export default function Profile() {
 
     const navigate = useNavigate();
     const [file, setFile] = useState();
-    const [{ isLoading, apiData, serverError }] = useFetch('getuser');
+    const [apiData] = useOutletContext();
 
     const formik = useFormik({
         initialValues: {
@@ -48,42 +48,15 @@ export default function Profile() {
         navigate('/');
     }
 
-    if (isLoading) return (
-        <div className="container mx-auto">
-            <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className={styles.glass}>
-                    <h1 className='text-xl font-bold text-gray-500 text-center py-10'>Loading...</h1>
-                    <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
-                </div>
-            </div>
-        </div>
-    );
-
-    if (serverError) return (
-        <div className="container mx-auto">
-            <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className={styles.glass}>
-                    <h1 className='text-xl text-red-500 text-center py-10'>{serverError.message}</h1>
-                    <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
-        <div className="container mx-auto">
-            <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className={styles.glass}>
-                    <div className="title flex flex-col items-center">
-                        <h4 className='heading text-2xl font-bold text-center lg:text-4xl'>Account Details</h4>
-                        <span className='py-4 text-m w-2/3 text-center text-gray-500 lg:text-xl'>
-                            You can update the account detail
-                        </span>
-                    </div>
+        <div className={styles.glass}>
+            <div className='w-[95%] max-w-[1000px] mx-auto'>
 
+                <div className="title">
+                    <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Account Details</h4>
+                </div>
+
+                <div className='py-2'>
                     <form className='py-1' onSubmit={formik.handleSubmit}>
                         <div className="profile flex justify-center py-4">
                             <label htmlFor="icon">
@@ -92,17 +65,26 @@ export default function Profile() {
                             <input onChange={onUpload} type="file" id="icon" name="icon" />
                         </div>
 
-                        <div className="textbox flex flex-col items-center gap-6">
-                            <input {...formik.getFieldProps('groupname')} className={styles.textbox} type="text" placeholder='Group Name' />
-                            <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email *' />
-                            <button className={styles.btn} type="submit">Update</button>
+                        <div className="textbox mx-auto w-max flex flex-col gap-6">
+                            <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
+                                <label htmlFor='groupname' className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Group Name: </label>
+                                <input {...formik.getFieldProps('groupname')} className={styles.textbox} type="text" placeholder='Group Name' id='groupname' />
+                            </div>
+                            <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
+                                <label htmlFor='email' className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Email*: </label>
+                                <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email *' id='email' />
+                            </div>
+                            {/* <input {...formik.getFieldProps('groupname')} className={styles.textbox} type="text" placeholder='Group Name' id='groupname' /> */}
+                            {/* <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email *' id='email' /> */}
+                            <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
+                                 border py-3 rounded-lg shadow-md mt-5 mb-5 mx-auto lg:text-lg hover:bg-theme-blue' type="submit">Update</button>
                         </div>
 
-                        <div className="text-center py-4">
-                            <span className='text-m text-gray-500 lg:text-xl'>Come back later? &nbsp;<button onClick={userLogout} className='user-link' to='/'>Logout</button></span>
-                        </div>
+
+
+
+
                     </form>
-
                 </div>
             </div>
         </div>

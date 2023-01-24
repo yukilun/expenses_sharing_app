@@ -6,26 +6,21 @@
     box-shadow: 0 4px 30px #4747470b;
     backdrop-filter: blur(7.1px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    @apply border-4 border-gray-50 shrink-0 w-[90%] max-w-[700px] rounded-3xl py-12 px-7 my-5 mx-auto lg:py-20 lg:my-10 lg:w-1/2
+    @apply border-4 border-gray-50 shrink-0 w-[90%] max-w-[700px] rounded-3xl py-12 px-7 my-5 mx-auto lg:my-8 lg:w-1/2
 }
 
 .icon_img {
-    @apply border-4 border-gray-100 w-[150px] h-[150px] object-cover rounded-full shadow-lg cursor-pointer lg:w-[200px] lg:h-[200px];
-    @apply hover:border-gray-200;
-}
-
-.icon_img_edit{
-    @apply border-4 border-gray-100 w-[150px] h-[150px] object-cover rounded-full shadow-lg cursor-pointer lg:w-[150px] lg:h-[150px];
+    @apply border-4 border-gray-100 w-[125px] h-[125px] object-cover rounded-full shadow-lg cursor-pointer;
     @apply hover:border-gray-200;
 }
 
 .textbox {
-    @apply border-0 px-3 py-3 rounded-xl w-3/4 max-w-[300px] shadow-md text-sm lg:text-lg lg:px-5 lg:py-4 text-gray-600;
+    @apply relative border-0 p-3 rounded-xl w-full max-w-[300px] shadow-md text-sm text-gray-600 bg-white lg:text-base lg:px-4 lg:py-3;
     @apply focus:outline-none;
 }
 
 .btn {
-    @apply bg-theme-light-blue text-white border py-2.5 rounded-lg w-3/4 max-w-[300px] shadow-md text-lg text-center lg:text-lg lg:py-4;
+    @apply bg-theme-light-blue text-white border py-2.5 rounded-lg w-3/4 max-w-[300px] shadow-md text-lg text-center lg:text-lg lg:py-3;
 }
 
 .btn:hover {

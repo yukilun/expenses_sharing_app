@@ -11,6 +11,7 @@ import loadingsvg from '../../assets/loading.svg';
 import { BiChevronRight, BiChevronDown } from 'react-icons/bi';
 import { TbSortAscending, TbSortDescending } from 'react-icons/tb';
 import { useExpenseUpdateStore } from '../../store/expenseUpdateStore';
+import serverErrorSvg from '../../assets/server_error.svg';
 
 import styles from '../../styles/Home.module.css';
 import useFetch from '../../hooks/fetch.hook';
@@ -25,7 +26,7 @@ export default function Expenses() {
   const [serverError, setServerError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLastPage, setIsLastPage] = useState(false);
-  const [query, setQuery] = useState({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: false, from_date: '', to_date: '', per_page: 5, page: 1 });
+  const [query, setQuery] = useState({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: true, from_date: '', to_date: '', per_page: 5, page: 1 });
   const searchInput = useRef();
   const [isOpenOptions, setOpenOptions] = useState(false);
 
@@ -136,7 +137,7 @@ export default function Expenses() {
 
   function clearFilters() {
     searchInput.current.value = '';
-    setQuery({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: false, from_date: '', to_date: '', per_page: 5, page: 1 });
+    setQuery({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: true, from_date: '', to_date: '', per_page: 5, page: 1 });
     setCurrentPage(1);
   }
 
@@ -199,11 +200,6 @@ export default function Expenses() {
     );
   }
 
-  if (serverError) {
-    toast.error('Unable to retrieve expenses records!');
-    navigate('/');
-  }
-
   return (
     <div className={styles.glass}>
       <div className='w-[95%] max-w-[1000px] mx-auto'>
@@ -258,7 +254,7 @@ export default function Expenses() {
 
                       {/* expense info */}
                       <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                      <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
+                        <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
                         <p className='text-xs text-gray-400'>{expenseToDelete && dateStringFormat(expenseToDelete.date)}</p>
                         {expenseToDelete && showMember(expenseToDelete.member)}
                       </div>
@@ -348,10 +344,10 @@ export default function Expenses() {
 
             {/* show shared */}
             <button
-              className={'w-fit px-4 py-2 rounded-full flex border-[3px] outline outline-[3px] ' + (query.show_shared ? 'outline-theme-light-blue border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'outline-gray-200  border-white bg-white text-gray-300 hover:bg-gray-100')}
+              className={'w-fit px-4 py-2 rounded-full flex border-[3px] outline outline-[3px] ' + (!query.show_shared ? 'outline-theme-light-blue border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'outline-gray-200  border-white bg-white text-gray-300 hover:bg-gray-100')}
               onClick={handleShowShared}
             >
-              Show shared expense
+              Show shared expense only
             </button>
 
             {/* clear for lg screen */}
@@ -367,7 +363,7 @@ export default function Expenses() {
           <div className='expense-list my-5 flex flex-col gap-2 overflow-hidden lg:overflow-auto'>
 
             {/* Each expense record */}
-            {expenses?.length === 0 ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
+            {expenses?.length === 0 && !serverError ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
               expenses?.map((expense, index) => (
                 <div
                   key={expense._id}
@@ -412,6 +408,14 @@ export default function Expenses() {
           {isLoading && (
             <div className='flex justify-center'>
               <img src={loadingsvg} alt='loading' className='h-[100px] lg:h-[150px]' />
+            </div>
+          )}
+
+          {serverError && (
+            <div className='flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
+              <img src={serverErrorSvg} alt='server error' className='w-[250px]'/>
+              <h6 className='font-bold'>Internal Server Error</h6>
+              <p>Sorry! Something went wrong.</p>
             </div>
           )}
 

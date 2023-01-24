@@ -8,6 +8,8 @@ import { HiUserGroup } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
 import useFetch from '../hooks/fetch.hook';
+import loadingsvg from '../assets/loading.svg';
+import logo from '../assets/logo.svg';
 
 import styles from '../styles/Home.module.css';
 export default function Home() {
@@ -41,16 +43,16 @@ export default function Home() {
 
     if (isLoading) {
         return (
-            <div>
-                Loading...
+            <div className='h-[100vh] flex justify-center items-center'>
+                <Toaster position='top-center' reverseOrder='false'></Toaster>
+                <img src={loadingsvg} alt='loading' className='h-[100px] lg:h-[150px]' />
             </div>
         );
     }
 
     if (serverError) {
         localStorage.removeItem('token');
-        console.log(serverError);
-        toast.error("Please login your account again!");
+        toast.error("Please login your account!");
         navigate('/');
     }
 
@@ -63,10 +65,10 @@ export default function Home() {
 
                     <div className='topbar relative'>
 
-                        <div className='w-full '>
-                            <h4 className='logo heading text-lg font-bold text-center lg:text-xl'>
-                                <span className='logo text-2xl lg:text-3xl'>%</span>
-                                <span>&nbsp; </span>
+                        <div className='w-full'>
+                            <h4 className='logo heading flex justify-center items-center gap-2 text-lg font-bold text-center lg:text-xl'>
+                            <img className="w-[20px]" src={logo} alt="icon"/>
+                                {/* <span className='logo text-2xl lg:text-3xl'>%</span> */}
                                 <nobr className="logo">Expenses Sharing</nobr>
                             </h4>
                         </div>

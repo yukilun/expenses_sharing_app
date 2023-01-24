@@ -3,18 +3,17 @@ import styles from '../styles/Username.module.css';
 import { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import pageNotFoundSvg from '../assets/page_not_found.svg';
+import Animation from '../middleware/Animation';
 
 export default function PageNotFound() {
   return (
-    <div className="container mx-auto">
+    <Animation className="container mx-auto">
       <Toaster position='top-center' reverseOrder='false'></Toaster>
-      <div className="flex justify-center items-center min-h-screen">
-        <div className={styles.glass}>
-          <img src={pageNotFoundSvg} alt="404 Page Not Found" className='block mx-auto max-w-[300px] w-[90%]' />
-          <h1 className='text-xl text-center py-10'>Page Not Found!</h1>
-          <div className='text-center'><Link to='/'><button className={styles.btn} >Home</button></Link></div>
-        </div>
+      <div className='h-[100vh] flex flex-col justify-center items-center gap-8 text-center text-xl text-theme-plum'>
+        <img src={pageNotFoundSvg} alt="404 Page Not Found" className='w-[250px]' />
+        <h6 className='font-bold'>Page Not Found!</h6>
+        <Link className='w-full' to='/'><button className={styles.btn} >Home</button></Link>
       </div>
-    </div>
+    </Animation>
   )
 }
