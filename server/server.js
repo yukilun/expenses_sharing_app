@@ -22,6 +22,10 @@ app.get('/', (req, res)=> {
 /** api routes */
 app.use('/api', router);
 
+app.get('/test', (req, res)=> {
+    res.send(req.query);
+})
+
 /** start server only when we have valid connection*/
 connect().then(()=> {
     try {

@@ -13,7 +13,7 @@ import styles from '../styles/Home.module.css';
 export default function Home() {
 
     const navigate = useNavigate();
-    const [{ isLoading, apiData, serverError }] = useFetch();
+    const [{ isLoading, apiData, serverError }] = useFetch('getuser');
     const [isOpenNav, setOpenNav] = useState(false);
 
     const navLinks = [
@@ -82,12 +82,12 @@ export default function Home() {
 
                     </div>
 
-                    <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 ' 
-                                    + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
+                    <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 '
+                        + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
 
-                        <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' + 
-                                        ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
-                            
+                        <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' +
+                            ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
+
                             <li className='text-4xl text-theme-blue p-4 my-2 lg:hidden'>
                                 <a className='flex justify-end'>
                                     <IoClose onClick={() => setOpenNav(false)}
@@ -97,7 +97,7 @@ export default function Home() {
 
                             {navLinks.map((link, index) =>
                                 <li key={index} className="even:text-theme-plum odd:text-theme-blue">
-                                    <NavLink to={link.path} end onClick={()=> setOpenNav(false)}
+                                    <NavLink to={link.path} end onClick={() => setOpenNav(false)}
                                         className={({ isActive }) => 'flex gap-5 items-center p-3 my-3 mx-2 lg:bg-white lg:rounded-lg ' + (isActive ? 'border-r-8 border-r-slate-400 lg:border-0 lg:shadow-md' : 'opacity-60')}>
                                         {link.icon} <span>{link.title}</span>
                                     </NavLink>
@@ -105,13 +105,13 @@ export default function Home() {
                             )}
 
                             <li className="text-gray-500">
-                                <a  onClick={()=> {
-                                        localStorage.removeItem('token');
-                                        toast.success("Logged out successfully!");
-                                        navigate('/');
-                                     }}
-                                    className= 'flex gap-5 items-center p-4 my-5 mx-2'>
-                                    <BiLogOut/> <span>Logout</span>
+                                <a onClick={() => {
+                                    localStorage.removeItem('token');
+                                    toast.success("Logged out successfully!");
+                                    navigate('/');
+                                }}
+                                    className='flex gap-5 items-center p-4 my-5 mx-2 cursor-pointer'>
+                                    <BiLogOut /> <span>Logout</span>
                                 </a>
                             </li>
 
@@ -119,7 +119,7 @@ export default function Home() {
                     </nav>
 
                 </div>
-                <Outlet context={[apiData]}/>
+                <Outlet context={[apiData]} />
             </div>
         </Animation>
     )

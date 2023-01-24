@@ -78,6 +78,18 @@ export async function updateExpense(values) {
     }
 }
 
+/** share expense function */
+export async function shareExpenses(values) {
+    try {
+        const token = localStorage.getItem('token');
+        if(!token) return Promise.reject({error: "You must first login to share expenses!"});
+        const {data} = await axios.put('api/sharedExpenses',values, {headers: {"Authorization": `Bearer ${token}`}});
+        return Promise.resolve(data);
+    }
+    catch(error) {
+        return Promise.reject({error: "Unable to share expenses! Try again!"});
+    }
+}
 
 
 /** convert iso date string to DD-MMM-YYYY */
@@ -89,6 +101,15 @@ export function dateStringFormat(dateStr) {
     const day = dateArr[2];
 
     return `${day}-${month}-${year}`;
+}
+
+/** convert iso date string to MMM-YYYY */
+export function monthStringFormat(dateStr) {
+    const dateArr = dateStr.split('T')[0].split('-');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = dateArr[0];
+    const month = months[dateArr[1]-1];
+    return `${month}-${year}`;
 }
 
 /** coverter for currency */

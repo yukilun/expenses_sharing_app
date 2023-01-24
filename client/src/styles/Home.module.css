@@ -3,7 +3,7 @@
 
 .container {
     background-color: white;
-    @apply flex min-h-screen w-screen flex-col relative lg:mx-auto lg:flex-row;
+    @apply flex min-h-screen w-full flex-col relative overflow-auto lg:mx-auto lg:flex-row;
 }
 
 .nav {
@@ -13,7 +13,7 @@
 
 .glass {
     background: linear-gradient(102.87deg, rgba(86, 158, 194, 0.11) 28.76%, rgba(163, 196, 213, 0.11) 44.56%, rgba(230, 230, 230, 0.11) 54.38%, rgba(198, 176, 191, 0.11) 64.19%, rgba(159, 109, 144, 0.11) 81.09%), #FFFFFF;
-    @apply border-gray-50 w-full min-h-screen p-5 pt-[96px] relative z-0 lg:pt-5 lg:ml-[290px] lg:border-0 lg:mb-0;
+    @apply border-gray-50 w-full min-h-screen p-5 pt-[96px] relative z-0 lg:pt-5 lg:pl-[290px] lg:border-0 lg:mb-0;
 }
 
 /* .navitem {

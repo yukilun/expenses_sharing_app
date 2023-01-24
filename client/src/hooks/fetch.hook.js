@@ -15,7 +15,7 @@ export default function useFetch(query){
                 
                 const token = localStorage.getItem('token');
 
-                const {data, status} = !query ? await axios.get(`/api/getuser`, {headers: {"Authorization": `Bearer ${token}`}}): await axios.get(`/api/${query}`);
+                const {data, status} = token ? await axios.get(`/api/${query}`, {headers: {"Authorization": `Bearer ${token}`}}): await axios.get(`/api/${query}`);
 
                 // const { username } =  !query ? await getUsername(): '';
                 // const {data, status} = !query ? await axios.get(`/api/user/${username}`): await axios.get(`/api/${query}`);

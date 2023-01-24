@@ -157,7 +157,7 @@ export default function UpdateExpense() {
             {/*Description*/}
             <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
               <label htmlFor='description' className='text-gray-600 text-base lg:text-lg'>Description: </label>
-              <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='12' className={styles.textbox} />
+              <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='30' className={styles.textbox} />
             </div>
 
             {/*member*/}
@@ -169,7 +169,7 @@ export default function UpdateExpense() {
                 onClick={() => setShowMemberDropdown(prev => !prev)}
               >
                 <div className='flex gap-5 items-center'>
-                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} className="h-[50px] w-[50px] rounded-full" />
+                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} className="h-[50px] w-[50px] rounded-full object-cover " />
                   {memberIndex >= 0 && apiData?.members[memberIndex]?.membername || ''}
                    
 
@@ -183,7 +183,7 @@ export default function UpdateExpense() {
                       className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
                       onClick={() => setMemberIndex(index)}
                     >
-                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full" />{member.membername}
+                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
                     </li>
                   ))}
                 </ul>

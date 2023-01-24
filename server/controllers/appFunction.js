@@ -194,12 +194,7 @@ export async function getUserDetail(req, res) {
 
             UserModel.aggregate([
                 { $match: { _id: castedUserId } },
-                {
-                    $unwind: {
-                        "path": "$members",
-                        "preserveNullAndEmptyArrays": true
-                    }
-                },
+                { $unwind: { path: "$members", preserveNullAndEmptyArrays: true } },
                 { $sort: { "members.membername": 1 } },
                 { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' }, expenses: { $first: '$expenses' } } }
             ])
@@ -308,54 +303,39 @@ export async function getExpenses(req, res) {
     }
 }
 
-export async function getShareExpenseInfo(req, res) {
+export async function getShareExpensesInfo(req, res) {
     try {
         const { userId } = req.user;
 
         if (userId) {
+
             // To return a user with sorted array of member, we can use aggregate here
             // Expenses need to be retrieved from another function
             const castedUserId = mongoose.Types.ObjectId(userId);
 
-            const memberTotalPaid = UserModel.aggregate([
-                { $match: { username: 'abc123' } },
-                { $unwind: "$expenses" },
+            const memberTotalPaid = await UserModel.aggregate([
+                { $match: { _id: castedUserId } },
+                { $unwind: { path: "$expenses", preserveNullAndEmptyArrays: true } },
+                { $match: { "expenses.isShared": { $not: { $eq: true } } } },
                 { $group: { _id: '$expenses.member', totalPaid: { $sum: '$expenses.amount' } } },
             ]);
 
-            UserModel.aggregate([
+            console.log(memberTotalPaid);
+
+            //No user(account)
+            if (memberTotalPaid.length === 0) return res.status(501).send({ error: "Cannot Find the user" });
+
+            //No expenses
+            if (memberTotalPaid[0]._id === null) return res.status(201).send({ memberTotalPaid: [], totalExpenses: 0 });
+
+            const [{ totalExpenses }] = await UserModel.aggregate([
                 { $match: { _id: castedUserId } },
-                { $unwind: "$members" },
-                { $sort: { "members.membername": 1 } },
-                { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' }, expenses: { $first: '$expenses' } } }
-            ])
-                .then(doc => {
-                    if (doc.length < 1) {
-                        res.status(501).send({ error: "Cannot Find the user" });
-                    }
-                    else {
-                        // only 1 object would be returned in the array i.e. doc[0]
-                        // remove password from user
-                        const { password, ...rest } = doc[0];
-                        res.status(201).send(rest);
-                    }
-                })
-                .catch(error => {
-                    res.status(501).send({ error: error.message });
-                });
+                { $unwind: { path: "$expenses", preserveNullAndEmptyArrays: true } },
+                { $match: { "expenses.isShared": { $not: { $eq: true } } } },
+                { $group: { _id: null, totalExpenses: { $sum: '$expenses.amount' } } },
+            ]);
 
-            // Simple version
-            // UserModel.findOne({ _id: userId }, (error, user) => {
-            //     if (error) return res.status(501).send({ error: error.message });
-            //     if (!user) return res.status(501).send({ error: "Cannot Find the user" });
-
-            //     // remove password from user
-            //     // mongoose return unnessary data with object so we need convert it into json
-            //     const { password, ...rest } = Object.assign({}, user.toJSON());
-
-            //     return res.status(201).send(rest);
-            // });
-
+            return res.status(201).send({ memberTotalPaid, totalExpenses });
         }
         else {
             return res.status(401).send({ error: 'User not found!' });
@@ -363,5 +343,52 @@ export async function getShareExpenseInfo(req, res) {
     }
     catch (error) {
         return res.status(404).send({ error: "Cannot Find User Data" });
+    }
+}
+
+/** boundaries array should be send as query in format: ['2023-01-01', '2023-02-01', ...] */
+export async function getChartData(req, res) {
+    try {
+        const { userId } = req.user;
+
+        if (userId) {
+
+            let {boundaries} = req.query;
+            if(!boundaries) return res.status(501).send("Please provide date boundaries info!")
+            boundaries = boundaries.map((date) => new Date(date));
+
+            // To return a user with sorted array of member, we can use aggregate here
+            // Expenses need to be retrieved from another function
+            const castedUserId = mongoose.Types.ObjectId(userId);
+
+            let chartData = await UserModel.aggregate([
+                { $match: { _id: castedUserId } },
+                { $unwind: "$expenses" },
+                { $project: { category: "$expenses.category", amount: "$expenses.amount", date: "$expenses.date" } },
+                {
+                    $bucket: {
+                        groupBy: "$date",
+                        boundaries: boundaries,
+                        default: "Other",
+                        output: { expenses: { $push: { category: "$category", amount: "$amount" } } }
+                    }
+                },
+                { $match: { _id: { $not: { $eq: "Other" } } } },
+                { $unwind: "$expenses" },
+                { $group: { _id: { date: "$_id", category: "$expenses.category" }, totalAmount: { $sum: "$expenses.amount" } } },
+                { $group: { _id: "$_id.date", data: { $push: { k: "$_id.category", v: "$totalAmount" } } } },
+                { $project: {_id: 0, date: "$_id", data: {$arrayToObject: ["$data"] }}},
+                { $project: {Month: "$date" , Grocery: "$data.Grocery", Food: "$data.Food", Housing: "$data.Housing", Utilities: "$data.Utilities", Entertainment: "$data.Entertainment", Transportation: "$data.Transportation", Insurance: "$data.Insurance", Others: "$data.Others" }},
+                { $sort: {month: 1}},
+            ]);
+
+            res.status(201).send(chartData);
+        }
+        else {
+            return res.status(401).send({ error: 'User not found!' });
+        }
+    }
+    catch (error) {
+        return res.status(404).send({ error: error.message });
     }
 }

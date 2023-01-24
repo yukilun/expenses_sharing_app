@@ -142,19 +142,14 @@ export default function Expenses() {
 
 
   function handleTouchStart(e) {
-    console.log("onTouchStart" + e.targetTouches[0].clientX);
     setTouchStart(e.targetTouches[0].clientX);
   }
 
   function handleTouchMove(e) {
-    console.log("onTouchMove" + e.targetTouches[0].clientX);
     setTouchEnd(e.targetTouches[0].clientX);
   }
 
   function handleTouchEnd(e, index) {
-
-    console.log("onTouchEnd" + (touchStart - touchEnd));
-
     if (touchStart - touchEnd > 150) {
       setSwipedExpenseIndex(index);
     }
@@ -198,7 +193,7 @@ export default function Expenses() {
     const member = apiData?.members.find(member => member._id === memberId);
     return (
       <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
-        <img src={member.membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md sm:w-[50px] sm:h-[50px]" />
+        <img src={member.membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
         {member.membername}
       </div>
     );
@@ -218,6 +213,28 @@ export default function Expenses() {
         </div>
 
         <div className='py-2'>
+          {/* Popup Window for No Member Case */}
+          {apiData?.members.length === 0 &&
+            <div className='add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
+              <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center py-10 gap-10 '
+                + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
+              >
+                <h6 className='heading font-bold text-lg'>Welcome!</h6>
+                <p className='text-base text-gray-600 max-w-[200px] text-center ' >
+                  To get started, add members to this group account.
+                </p>
+                <p className='text-base text-gray-600 max-w-[200px] text-center ' >
+                  Then, add expenses so that we can help you all sharing expenses!
+                </p>
+                <button
+                  className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue"
+                  onClick={() => navigate('../members')}
+                >
+                  Navigate to Members Page
+                </button>
+              </div>
+            </div>
+          }
 
           {/* Popup Window for Add or Update or Delete */}
           <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
@@ -230,18 +247,18 @@ export default function Expenses() {
               <p className='text-sm text-gray-600 w-3/4 text-center ' >
                 Are you sure you want to delete the following user?
               </p>
-              <form onSubmit={handleSubmit}>
+              <form className="w-full" onSubmit={handleSubmit}>
                 <div className="expense flex justify-center py-4">
                   <div className={"w-full flex justify-between gap-4 p-3 rounded-lg bg-opacity-50"}>
 
-                    <div className='flex items-center gap-3 text-gray-600 flex-grow'>
+                    <div className='w-full flex items-center gap-3 text-gray-600 flex-grow'>
 
                       {/* category */}
                       {categories.find((cat) => cat.name === expenseToDelete?.category)?.icon}
 
                       {/* expense info */}
-                      <div className='w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                        <h6 className='text-sm font-bold'>{expenseToDelete?.description}</h6>
+                      <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
+                      <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
                         <p className='text-xs text-gray-400'>{expenseToDelete && dateStringFormat(expenseToDelete.date)}</p>
                         {expenseToDelete && showMember(expenseToDelete.member)}
                       </div>
@@ -347,7 +364,7 @@ export default function Expenses() {
           </div>
 
           {/* Expenses List */}
-          <div className='expense-list my-5 flex flex-col gap-2 overflow-hidden'>
+          <div className='expense-list my-5 flex flex-col gap-2 overflow-hidden lg:overflow-auto'>
 
             {/* Each expense record */}
             {expenses?.length === 0 ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
@@ -360,14 +377,14 @@ export default function Expenses() {
                   onTouchEnd={(e) => handleTouchEnd(e, index)}
                 >
 
-                  <div className='w-full flex items-center gap-3 text-gray-600'>
+                  <div className='w-full flex justify-between items-center gap-3 text-gray-600'>
 
                     {/* category */}
                     {categories.find((cat) => cat.name === expense.category).icon}
 
                     {/* expense info */}
-                    <div className='w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                      <h6 className='text-sm font-bold sm:text-base'>{expense.description}</h6>
+                    <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
+                      <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expense.description}</h6>
                       <p className='text-xs text-gray-400 sm:text-sm'>{dateStringFormat(expense.date)}</p>
                       {showMember(expense.member)}
                     </div>

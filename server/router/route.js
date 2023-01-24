@@ -21,6 +21,8 @@ router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); // 
 router.route('/createResetSession').get(controller.createResetSession); // reset all the variables
 router.route('/getuser').get(auth, mainFunction.getUserDetail); 
 router.route('/getExpenses').get(auth, mainFunction.getExpenses); 
+router.route('/getShareExpensesInfo').get(auth, mainFunction.getShareExpensesInfo);
+router.route('/getChartData').get(auth, mainFunction.getChartData)
 
 /** PUT Methods */
 router.route('/updateuser').put(auth, controller.updateUser); // is use to update the user profile

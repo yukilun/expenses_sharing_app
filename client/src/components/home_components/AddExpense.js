@@ -83,7 +83,7 @@ export default function AddExpense() {
         success: <b>Added Expense Successfully!</b>,
         error: <b>Unable to add expense! Please try again later.</b>
       });
-      addPromise.then(() => navigate('/'));
+      addPromise.then(() => navigate(0));
     }
   })
 
@@ -95,15 +95,18 @@ export default function AddExpense() {
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Add Expense</h4>
         </div>
 
-        {/* Popup Window for Add or Update or Delete */}
+        {/* Popup Window for No Member Case */}
         {apiData?.members.length === 0 &&
           <div className='add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
             <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center py-10 gap-10 '
               + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
             >
-              <h6 className='heading font-bold text-lg'>Warning!</h6>
+              <h6 className='heading font-bold text-lg'>Welcome!</h6>
               <p className='text-base text-gray-600 max-w-[200px] text-center ' >
-                You must add group members before adding expense.
+                To get started, add members to this group account.
+              </p>
+              <p className='text-base text-gray-600 max-w-[200px] text-center ' >
+                Then, add expenses so that we can help you all sharing expenses!
               </p>
               <button 
                 className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue"
@@ -161,7 +164,7 @@ export default function AddExpense() {
             {/*Description*/}
             <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
               <label htmlFor='description' className='text-gray-600 text-base lg:text-lg'>Description: </label>
-              <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='12' className={styles.textbox} />
+              <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='30' className={styles.textbox} />
             </div>
 
             {/*member*/}
@@ -173,7 +176,7 @@ export default function AddExpense() {
                 onClick={() => setShowMemberDropdown(prev => !prev)}
               >
                 <div className='flex gap-5 items-center'>
-                  <img src={memberIndex > -1 ? apiData?.members[memberIndex].membericon || icon : icon} className="h-[50px] w-[50px] rounded-full" />
+                  <img src={memberIndex > -1 ? apiData?.members[memberIndex].membericon || icon : icon} className="h-[50px] w-[50px] rounded-full object-cover " />
                   {memberIndex >= 0 && apiData?.members[memberIndex].membername || ''}
 
 
@@ -187,7 +190,7 @@ export default function AddExpense() {
                       className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
                       onClick={() => setMemberIndex(index)}
                     >
-                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full" />{member.membername}
+                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
                     </li>
                   ))}
                 </ul>

@@ -14,7 +14,7 @@ export default function Profile() {
 
     const navigate = useNavigate();
     const [file, setFile] = useState();
-    const [{ isLoading, apiData, serverError }] = useFetch();
+    const [{ isLoading, apiData, serverError }] = useFetch('getuser');
 
     const formik = useFormik({
         initialValues: {
