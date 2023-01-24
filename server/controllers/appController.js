@@ -85,7 +85,6 @@ export async function register(req, res) {
 
     }
     catch(error) {
-        console.log("here3");
         res.status(500).send(error);
     }
 }
