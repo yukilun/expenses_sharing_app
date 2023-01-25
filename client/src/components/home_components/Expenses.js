@@ -194,6 +194,7 @@ export default function Expenses() {
 
   function showMember(memberId) {
     const member = apiData?.members.find(member => member._id === memberId);
+    if(!member) return;
     return (
       <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
         <img src={member.membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
