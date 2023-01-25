@@ -5,6 +5,8 @@ import { monthStringFormat } from '../../../helper/homeHelper';
 import loadingsvg from '../../../assets/loading.svg';
 import serverErrorSvg from '../../../assets/server_error.svg';
 
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+
 export default function ExpensesAnalysis() {
 
     const thisMonth = { month: new Date().getMonth(), year: new Date().getFullYear() };

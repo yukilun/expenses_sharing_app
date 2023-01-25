@@ -17,6 +17,8 @@ import styles from '../../styles/Home.module.css';
 import useFetch from '../../hooks/fetch.hook';
 import { toast } from 'react-hot-toast';
 
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+
 export default function Expenses() {
 
   const navigate = useNavigate();

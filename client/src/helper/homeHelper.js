@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+
 /** add expense function */
 export async function addExpense(values) {
     try {
