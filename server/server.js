@@ -5,13 +5,24 @@ import connect from './database/connect.js';
 import router from './router/route.js';
 import { config } from 'dotenv';
 
-
 const app = express();
 config();
 
+var whitelist = ['http://localhost:3000', 'http://expense-sharing.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  exposedHeaders: ['x-total', 'x-totalpage']
+}
+
 /** middleware */
 app.use(express.json({ limit: '10mb' }));
-app.use(cors({exposedHeaders: ['x-total', 'x-totalpage']}));
+app.use(cors(corsOptions));
 app.use(morgan('tiny'));
 app.disable('x-powered-by'); // avolid hackers
 

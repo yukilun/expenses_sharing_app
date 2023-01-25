@@ -35,7 +35,7 @@ export const registerMail = async (req, res) => {
                 </p>
             </div>
              <div style="width: 85%; margin: 10px auto; font-family: 'Lato', sans-serif; font-size: 1.15rem; color: #797979;">
-                <h4 style="font-size: 1.5rem; text-align: center; color: #9F6D90; letter-spacing: 0.1rem;">Welcome to <nobr>Expenses Sharing!</nobr></h4>
+                <h4 style="font-size: 1.5rem; text-align: center; color: #9F6D90; letter-spacing: 0.1rem;">Welcome to Expenses Sharing!</h4>
                 <p style="font-weight: bold; color: #3D84A8;">Hi ${username},</p>
                 <p>Thank you for signing up. We have already created the account for your group.</p> 
                 <p>To get started, log in and add members and expenses to your account. Our app will then help you to settle debts.</p>
@@ -50,8 +50,8 @@ export const registerMail = async (req, res) => {
         to: userEmail,
         subject: "Welcome to Expenses Sharing!",
         attachments: [{
-            filename: 'logo_name.svg',
-            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/862986c14fe93e1b7697b16c34920e4f928a33af/client/src/assets/logo_name.png',
+            filename: 'logo_name.png',
+            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/master/client/src/assets/logo_name.png',
             cid: 'logo' 
         }],
         html: emailBody
@@ -103,8 +103,8 @@ export const OTPMail = async (req, res) => {
         to: userEmail,
         subject: "OTP for Account Recovery",
         attachments: [{
-            filename: 'logo_name.svg',
-            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/862986c14fe93e1b7697b16c34920e4f928a33af/client/src/assets/logo_name.png',
+            filename: 'logo_name.png',
+            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/master/client/src/assets/logo_name.png',
             cid: 'logo' 
         }],
         html: emailBody,
