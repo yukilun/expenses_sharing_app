@@ -57,8 +57,9 @@ export default function Username() {
                                 <button className={styles.btn} type="submit">Next</button>
                             </div>
 
-                            <div className="text-center py-4">
-                                <span className='text-base text-gray-500 lg:text-lg'>Don't have an account? &nbsp;<Link className='user-link' to='/register'>Register Now</Link></span>
+                            <div className="text-base py-4 flex flex-wrap justify-center items-center gap-2">
+                                <span className='text-gray-500 lg:text-lg'>Don't have an account?</span>
+                                <Link className='user-link' to='/register'>Register Now</Link>
                             </div>
                         </form>
                     </div>

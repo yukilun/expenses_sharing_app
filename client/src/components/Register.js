@@ -73,9 +73,10 @@ export default function Register() {
                                 <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email *' />
                                 <button className={styles.btn} type="submit">Register</button>
                             </div>
-
-                            <div className="text-center py-4">
-                                <span className='text-base text-gray-500 lg:text-lg'>Already have an account? &nbsp;<Link className='user-link' to='/'>Login</Link></span>
+                            
+                            <div className="text-base py-4 flex flex-wrap justify-center items-center gap-2">
+                                <span className='text-gray-500 lg:text-lg'>Already have an account?</span>
+                                <Link className='user-link' to='/'>Login</Link>
                             </div>
                         </form>
 

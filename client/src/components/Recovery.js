@@ -95,7 +95,7 @@ export default function Recovery() {
                         <form className='py-10' onSubmit={onSubmit}>
                             <div className="textbox flex flex-col items-center gap-4">
                                 <div className="input text-center">
-                                    <p className='text-sm text-gray-500 text-left py-4 lg:text-m'>
+                                    <p className='text-sm text-gray-500 text-center py-4 lg:text-m'>
                                         Enter 6 digital OTP sent to your <nobr>email address</nobr>
                                     </p>
                                     <input onChange={(e) => setOTP(e.target.value)} className={styles.textbox} type="text" maxLength="6" placeholder='OTP' />
@@ -103,13 +103,11 @@ export default function Recovery() {
                                 <button className={styles.btn} type="submit">Verify</button>
                             </div>
 
-                            <div className="text-center py-4">
-                                <span className='text-base text-gray-500 lg:text-lg'>
-                                    Didn't receieve OTP? &nbsp;
-                                    {remainSecond > 0 ? 
-                                        <span className="text-gray-400">Resend OTP in {remainSecond}s</span> 
-                                        : <button className={resetDisabled ? 'text-gray-400' : 'user-link'} onClick={resendOTP} disabled={resetDisabled} type="button">Resend OTP</button>}
-                                    </span>
+                            <div className="text-base py-4 flex flex-wrap justify-center items-center gap-2">
+                                <span className='text-base text-gray-500 lg:text-lg'>Didn't receieve OTP?</span>
+                                {remainSecond > 0 ? 
+                                    <span className="text-gray-400">Resend OTP in {remainSecond}s</span> 
+                                    : <button className={resetDisabled ? 'text-gray-400' : 'user-link'} onClick={resendOTP} disabled={resetDisabled} type="button">Resend OTP</button>}
                             </div>
                         </form>
 
