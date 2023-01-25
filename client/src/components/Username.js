@@ -47,13 +47,13 @@ export default function Username() {
 
                         <form className='py-1' onSubmit={formik.handleSubmit}>
                             <div className="profile flex justify-center pb-4">
-                                <img className="w-[150px]" src={logo} alt="icon"/>
+                                <img className="w-[100px] p-4" src={logo} alt="icon"/>
                                 {/* <div className='icon_img logo heading font-extrabold text-7xl'>%</div> */}
 
                             </div>
 
                             <div className="textbox flex flex-col items-center gap-4">
-                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Username' />
+                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Account Name' />
                                 <button className={styles.btn} type="submit">Next</button>
                             </div>
 

@@ -69,7 +69,7 @@ export async function register(req, res) {
                                     res.status(201).send({msg: 'User Registered Successfully!'});
                                 })
                                 .catch(error => {
-                                    res.status(500).send({error});
+                                    res.status(500).send({error: error.message});
                                 })
                         })
                         .catch(error => {
@@ -85,7 +85,7 @@ export async function register(req, res) {
 
     }
     catch(error) {
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
     }
 }
 

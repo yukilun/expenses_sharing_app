@@ -4,13 +4,14 @@ const router = Router();
 /** import all controllers */
 import * as controller from '../controllers/appController.js';
 import * as mainFunction from '../controllers/appFunction.js';
-import { registerMail } from '../controllers/mailer.js';
+import { OTPMail, registerMail } from '../controllers/mailer.js';
 import auth, { localVariable } from '../middleware/auth.js';
 
 
 /** POST Methods */
 router.route('/register').post(controller.register); //register user
-router.route('/registerMail').post(registerMail); // send the email
+router.route('/registerMail').post(registerMail); // send the register email
+router.route('/OTPMail').post(OTPMail); // send the OTP email
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); // autheticate user
 router.route('/login').post(controller.verifyUser, controller.login); // login app
 

@@ -20,7 +20,7 @@
 }
 
 .btn {
-    @apply bg-theme-light-blue text-white border py-2.5 rounded-lg w-3/4 max-w-[300px] shadow-md text-lg text-center lg:text-lg lg:py-3;
+    @apply bg-theme-light-blue text-white border py-2.5 rounded-lg w-full max-w-[300px] shadow-md text-lg text-center lg:text-lg lg:py-3;
 }
 
 .btn:hover {

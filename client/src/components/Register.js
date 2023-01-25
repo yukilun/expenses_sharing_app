@@ -30,8 +30,8 @@ export default function Register() {
             let registerPromise = registerUser(values);
             toast.promise(registerPromise, {
                 loading: 'Creating...',
-                success: <b>Registered Successfully!</b>,
-                error: <b>Couldn't register! Please try again later.</b>
+                success: ({msg}) => <b>Registered Successfully! {msg}</b>,
+                error: <b>Couldn't register! Please try with another user name.</b>
             });
             registerPromise.then(() => navigate('/'));
         }
@@ -55,7 +55,7 @@ export default function Register() {
                         <div className="title flex flex-col items-center">
                             <h4 className='heading text-2xl font-bold text-center lg:text-3xl'>Create Account</h4>
                             <span className='py-4 text-base w-2/3 text-center text-gray-500 lg:text-lg'>
-                                Register an account for your group to share expenses!
+                                Register an account to be shared with your <nobr>group members.</nobr>
                             </span>
                         </div>
 
@@ -68,7 +68,7 @@ export default function Register() {
                             </div>
 
                             <div className="textbox flex flex-col items-center gap-4">
-                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Username *' />
+                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Account Name *' />
                                 <input {...formik.getFieldProps('password')} className={styles.textbox} type="password" placeholder='Password *' />
                                 <input {...formik.getFieldProps('email')} className={styles.textbox} type="text" placeholder='Email *' />
                                 <button className={styles.btn} type="submit">Register</button>

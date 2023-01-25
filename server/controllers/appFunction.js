@@ -320,8 +320,6 @@ export async function getShareExpensesInfo(req, res) {
                 { $group: { _id: '$expenses.member', totalPaid: { $sum: '$expenses.amount' } } },
             ]);
 
-            console.log(memberTotalPaid);
-
             //No user(account)
             if (memberTotalPaid.length === 0) return res.status(501).send({ error: "Cannot Find the user" });
 

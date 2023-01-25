@@ -9,7 +9,7 @@ import { IoClose } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
 import useFetch from '../hooks/fetch.hook';
 import loadingsvg from '../assets/loading.svg';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo_name.svg';
 
 import styles from '../styles/Home.module.css';
 export default function Home() {
@@ -65,12 +65,13 @@ export default function Home() {
 
                     <div className='topbar relative'>
 
-                        <div className='w-full'>
-                            <h4 className='logo heading flex justify-center items-center gap-2 text-lg font-bold text-center lg:text-xl'>
-                            <img className="w-[20px]" src={logo} alt="icon"/>
-                                {/* <span className='logo text-2xl lg:text-3xl'>%</span> */}
+                        <div className='w-full flex justify-center items-center'>
+                            {/* <h4 className='logo heading flex justify-center items-center gap-2 text-lg font-bold text-center lg:text-xl'>
+                                <img className="w-[20px]" src={logo} alt="icon"/>
+                                <span className='logo text-2xl lg:text-3xl'>%</span>
                                 <nobr className="logo">Expenses Sharing</nobr>
-                            </h4>
+                            </h4> */}
+                            <img className='w-[220px]' src={logo} alt="logo"/> 
                         </div>
 
                         <div className='icon absolute top-1/2 right-0 translate-y-[-50%] lg:translate-y-0 lg:relative lg:flex lg:flex-col lg:justify-center lg:items-center lg:my-5'>
