@@ -26,7 +26,7 @@ app.use(cors(corsOptions));
 app.use(morgan('tiny'));
 app.disable('x-powered-by'); // avolid hackers
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 /** HTTP GET Request */
 app.get('/', (req, res)=> {
@@ -44,7 +44,7 @@ app.get('/test', (req, res)=> {
 connect().then(()=> {
     try {
         app.listen(port, () => {
-            console.log(`Server connected to http://localhost:${port}`);
+            console.log(`Server connected port ${port}`);
         });
     }
     catch (error) {
