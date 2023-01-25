@@ -25,18 +25,16 @@ export const registerMail = async (req, res) => {
 
     let emailBody =
         `<div style="width: 100%; box-sizing: border-box; padding: 20px; background-color: #c9dfeb; background: linear-gradient(102.87deg, rgba(86, 158, 194, 0.2) 28.76%, rgba(163, 196, 213, 0.2) 44.56%, rgba(198, 176, 191, 0.2) 64.19%, rgba(159, 109, 144, 0.2) 81.09%), #FFFFFF;">
-        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lato&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lato&display=swap"rel="stylesheet">
         <div style="width: 95%; max-width: 700px; box-sizing: border-box; margin: 0 auto; border-radius: 10px; background-color: rgba(255,255,255,0.7);  padding: 40px;">
-            <div style="width: 85%; margin: 20px auto; font-family: 'Comfortaa', cursive; font-size: 1.4rem;">
+            <div style="width: 100%; margin: 0 auto; font-family: 'Comfortaa', cursive; font-size: 1.4rem;">
                 <p style="text-align: center;">
                     <a href="${process.env.CLIENT_URL}" style="color: #7CB3CF; text-decoration: none;">
-                        <img src="https://raw.githubusercontent.com/yukilun/expenses_sharing_app/6ae09fc796379bb4d85a1b6e16667eb28dc9c321/client/src/assets/logo.svg?token=AYQ7TT5ORB23O7GN73LKWFLD2DRGG"
-                            style="width: 50px; padding: 10px;" />
-                        Expenses Sharing
+                        <img src="cid:logo" style="width: 100%; max-width: 300px; padding: 10px;" />
                     </a>
                 </p>
             </div>
-            <div style="width: 85%; margin: 20px auto; font-family: 'Lato', sans-serif; font-size: 1.15rem; color: #797979; padding-top: 10px;">
+             <div style="width: 85%; margin: 10px auto; font-family: 'Lato', sans-serif; font-size: 1.15rem; color: #797979;">
                 <h4 style="font-size: 1.5rem; text-align: center; color: #9F6D90; letter-spacing: 0.1rem;">Welcome to <nobr>Expenses Sharing!</nobr></h4>
                 <p style="font-weight: bold; color: #3D84A8;">Hi ${username},</p>
                 <p>Thank you for signing up. We have already created the account for your group.</p> 
@@ -51,6 +49,11 @@ export const registerMail = async (req, res) => {
         from: `Expenses Sharing <${process.env.EMAIL}>`,
         to: userEmail,
         subject: "Welcome to Expenses Sharing!",
+        attachments: [{
+            filename: 'logo_name.svg',
+            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/862986c14fe93e1b7697b16c34920e4f928a33af/client/src/assets/logo_name.png',
+            cid: 'logo' 
+        }],
         html: emailBody
     }
 
@@ -76,18 +79,16 @@ export const OTPMail = async (req, res) => {
 
     let emailBody =
         `<div style="width: 100%; box-sizing: border-box; padding: 20px; background-color: #c9dfeb; background: linear-gradient(102.87deg, rgba(86, 158, 194, 0.2) 28.76%, rgba(163, 196, 213, 0.2) 44.56%, rgba(198, 176, 191, 0.2) 64.19%, rgba(159, 109, 144, 0.2) 81.09%), #FFFFFF;">
-            <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lato&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Lato&display=swap"rel="stylesheet">
             <div style="width: 95%; max-width: 700px; box-sizing: border-box; margin: 0 auto; border-radius: 10px; background-color: rgba(255,255,255,0.7);  padding: 40px;">
-                <div style="width: 85%; margin: 20px auto; font-family: 'Comfortaa', cursive; font-size: 1.4rem;">
+                <div style="width: 100%; margin: 0 auto; font-family: 'Comfortaa', cursive; font-size: 1.4rem;">
                     <p style="text-align: center;">
                         <a href="${process.env.CLIENT_URL}" style="color: #7CB3CF; text-decoration: none;">
-                            <img src="https://raw.githubusercontent.com/yukilun/expenses_sharing_app/6ae09fc796379bb4d85a1b6e16667eb28dc9c321/client/src/assets/logo.svg?token=AYQ7TT5ORB23O7GN73LKWFLD2DRGG"
-                                style="width: 50px; padding: 10px;" />
-                            Expenses Sharing
+                            <img src="cid:logo" style="width: 100%; max-width: 300px; padding: 10px;" />
                         </a>
                     </p>
                 </div>
-                <div style="width: 85%; margin: 20px auto; font-family: 'Lato', sans-serif; font-size: 1.15rem; color: #797979; padding-top: 10px;">
+                 <div style="width: 85%; margin: 10px auto; font-family: 'Lato', sans-serif; font-size: 1.15rem; color: #797979;">
                     <h4 style="font-size: 1.5rem; text-align: center; color: #9F6D90; letter-spacing: 0.1rem;">Account Recovery</h4>
                     <p style="font-weight: bold; color: #3D84A8;">Hi ${username},</p> 
                     <p>Please use the Account Recovery OTP below on Expense Sharing website:</p>
@@ -101,7 +102,12 @@ export const OTPMail = async (req, res) => {
         from: `Expenses Sharing <${process.env.EMAIL}>`,
         to: userEmail,
         subject: "OTP for Account Recovery",
-        html: emailBody
+        attachments: [{
+            filename: 'logo_name.svg',
+            path: 'https://raw.githubusercontent.com/yukilun/expenses_sharing_app/862986c14fe93e1b7697b16c34920e4f928a33af/client/src/assets/logo_name.png',
+            cid: 'logo' 
+        }],
+        html: emailBody,
     }
 
     // send email
