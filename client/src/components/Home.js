@@ -71,7 +71,7 @@ export default function Home() {
                                 <span className='logo text-2xl lg:text-3xl'>%</span>
                                 <nobr className="logo">Expenses Sharing</nobr>
                             </h4> */}
-                            <img className='w-[220px]' src={logo} alt="logo"/> 
+                            <img className='w-[200px]' src={logo} alt="logo"/> 
                         </div>
 
                         <div className='icon absolute top-1/2 right-0 translate-y-[-50%] lg:translate-y-0 lg:relative lg:flex lg:flex-col lg:justify-center lg:items-center lg:my-5'>
@@ -92,10 +92,10 @@ export default function Home() {
                             ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
 
                             <li className='text-4xl text-theme-blue p-4 my-2 lg:hidden'>
-                                <a className='flex justify-end'>
+                                <button className='flex justify-end'>
                                     <IoClose onClick={() => setOpenNav(false)}
                                         className='transition-transform hover:rotate-180' />
-                                </a>
+                                </button>
                             </li>
 
                             {navLinks.map((link, index) =>
@@ -108,14 +108,14 @@ export default function Home() {
                             )}
 
                             <li className="text-gray-500">
-                                <a onClick={() => {
+                                <button onClick={() => {
                                     localStorage.removeItem('token');
                                     toast.success("Logged out successfully!");
                                     navigate('/');
                                 }}
                                     className='flex gap-5 items-center p-4 my-5 mx-2 cursor-pointer'>
                                     <BiLogOut /> <span>Logout</span>
-                                </a>
+                                </button>
                             </li>
 
                         </ul>
