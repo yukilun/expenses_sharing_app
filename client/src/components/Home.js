@@ -71,7 +71,7 @@ export default function Home() {
                                 <span className='logo text-2xl lg:text-3xl'>%</span>
                                 <nobr className="logo">Expenses Sharing</nobr>
                             </h4> */}
-                            <img className='w-[200px]' src={logo} alt="logo"/> 
+                            <img className='w-[200px]' src={logo} alt="logo" />
                         </div>
 
                         <div className='icon absolute top-1/2 right-0 translate-y-[-50%] lg:translate-y-0 lg:relative lg:flex lg:flex-col lg:justify-center lg:items-center lg:my-5'>

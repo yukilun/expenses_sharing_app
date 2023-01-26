@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {createBrowserRouter, RouterProvider,} from 'react-router-dom';
 
 /** import all components */
@@ -97,6 +97,17 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+
+    useEffect(() => {
+        const onScroll = (e) => {
+            e.preventDefault();
+            console.log('scroll!');
+            window.scrollTo(0, 0);
+        };
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
   return (
     <main className='overflow-x-hidden'>
         <RouterProvider router={router} />
