@@ -9,7 +9,7 @@ export default function Summary() {
   const [apiData] = useOutletContext();
 
   return (
-    <div className={styles.glass + ' px-0 h-full touch-none'}>
+    <div className={styles.glass + ' px-0 h-full'}>
 
       {/* Popup Window for No Member Case */}
       {apiData?.members.length === 0 &&
