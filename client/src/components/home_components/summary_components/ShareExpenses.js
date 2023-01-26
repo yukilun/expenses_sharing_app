@@ -105,7 +105,7 @@ export default function ShareExpenses() {
         </div>
       }
 
-      <div className='h-full overflow-auto touch-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
+      <div className='h-full overflow-auto touch-pan-y px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
 
         {/* settle debts */}
         {shareExpensesInfo?.totalExpenses !== 0 && (
