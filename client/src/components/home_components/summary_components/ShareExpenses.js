@@ -63,7 +63,7 @@ export default function ShareExpenses() {
   if (isLoading) {
     return (
       <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] flex justify-center items-center'>
-            <img src={loadingsvg} alt='loading' className='w-[200px]' />
+        <img src={loadingsvg} alt='loading' className='w-[200px]' />
       </div>
     )
   };
@@ -79,9 +79,8 @@ export default function ShareExpenses() {
   }
 
   return (
-    <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:w-[calc(95%_-_310px)] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)]'>
-
-      {/* Popup Window for No Member Case */}
+    <>
+      {/* Popup Window for settle debts */}
       {isOpenPopup &&
         <div className='bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
           <div className={'bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
@@ -104,99 +103,99 @@ export default function ShareExpenses() {
           </div>
         </div>
       }
+      <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:w-[calc(95%_-_310px)] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)]'>
+        <div className='h-full overflow-y-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
 
-      <div className='h-full overflow-y-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
+          {/* settle debts */}
+          {shareExpensesInfo?.totalExpenses !== 0 && (
+            <div className='lg:w-1/2'>
 
-        {/* settle debts */}
-        {shareExpensesInfo?.totalExpenses !== 0 && (
+              <div className='w-full text-base flex lg:text-lg lg:flex-grow'>
+                <button className='flex-grow py-2 flex items-center outline-none lg:cursor-default lg:justify-center' onClick={() => setOpenSettleDebts(prev => !prev)}>
+                  {isOpenSettleDebts ? <BiChevronDown className='text-3xl text-theme-blue lg:hidden' /> : <BiChevronRight className='text-3xl text-theme-blue lg:hidden' />}  Settle Debts
+                </button>
+              </div>
+
+              <div className={(isOpenSettleDebts ? 'block' : 'hidden lg:block')}>
+                {apiData && settleDebtsArr.map((row, i) => row.map((cell, j) => (
+                  cell > 0 && (
+                    <div key={`${i}_${j}`} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
+
+                      <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
+                        <img src={apiData?.members[i].membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
+                        <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[i].membername}</p>
+                      </div>
+                      <HiArrowNarrowRight className='text-theme-blue' />
+                      <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
+                        <img src={apiData?.members[j].membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
+                        <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[j].membername}</p>
+                      </div>
+
+                      <div className='heading font-bold'>
+                        {currencyFormatter.format(cell)}
+                      </div>
+
+                    </div>
+                  )
+                )))}
+
+                <div className='my-2 text-center'>
+                  <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] my-4
+                         border py-3 rounded-lg shadow-md lg:text-lg hover:bg-theme-blue' onClick={() => setOpenPopup(true)}>Settled Debts!</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* overview */}
           <div className='lg:w-1/2'>
 
-            <div className='w-full text-base flex lg:text-lg lg:flex-grow'>
-              <button className='flex-grow py-2 flex items-center outline-none lg:cursor-default lg:justify-center' onClick={() => setOpenSettleDebts(prev => !prev)}>
-                {isOpenSettleDebts ? <BiChevronDown className='text-3xl text-theme-blue lg:hidden' /> : <BiChevronRight className='text-3xl text-theme-blue lg:hidden' />}  Settle Debts
+            <div className='w-full text-base flex lg:text-lg'>
+              <button className='flex-grow py-2 flex items-center outline-none lg:cursor-default lg:justify-center' onClick={() => setOpenOverview(prev => !prev)}>
+                {isOpenOverview ? <BiChevronDown className='text-3xl text-theme-blue lg:hidden' /> : <BiChevronRight className='text-3xl text-theme-blue lg:hidden' />}Expenses Overview
               </button>
             </div>
 
-            <div className={(isOpenSettleDebts ? 'block' : 'hidden lg:block')}>
-              {apiData && settleDebtsArr.map((row, i) => row.map((cell, j) => (
-                cell > 0 && (
-                  <div key={`${i}_${j}`} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
+            <div className={(isOpenOverview ? 'block' : 'hidden lg:block')}>
+              {apiData?.members.map((member) => (
+                <div key={member._id} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
 
-                    <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                      <img src={apiData?.members[i].membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
-                      <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[i].membername}</p>
-                    </div>
-                    <HiArrowNarrowRight className='text-theme-blue' />
-                    <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                      <img src={apiData?.members[j].membericon || icon} alt="icon"  className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
-                      <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[j].membername}</p>
-                    </div>
-
-                    <div className='heading font-bold'>
-                      {currencyFormatter.format(cell)}
-                    </div>
-
+                  <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
+                    <img src={member?.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover" />
+                    <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</p>
                   </div>
-                )
-              )))}
 
-              <div className='my-2 text-center'>
-                <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] my-4
-                               border py-3 rounded-lg shadow-md lg:text-lg hover:bg-theme-blue' onClick={() => setOpenPopup(true)}>Settled Debts!</button>
-              </div>
+                  <div className='flex items-center gap-2 heading font-bold'>
+                    <div>Paid:</div>
+                    <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo?.memberTotalPaid.find((doc) => doc._id === member._id)?.totalPaid || 0)}</div>
+                  </div>
+
+                </div>
+              ))}
+
+              {shareExpensesInfo && (
+                <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
+                  <div className='flex items-center gap-2 heading'>
+                    <div>Total Expenses:</div>
+                    <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo.totalExpenses)}</div>
+                  </div>
+                </div>
+              )}
+
+              {expensePerPerson !== '' && (
+                <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
+                  <div className='flex items-center gap-2 heading'>
+                    <div>Per Member:</div>
+                    <div className='min-w-[85px]'>{currencyFormatter.format(expensePerPerson)}</div>
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
-        )}
-
-        {/* overview */}
-        <div className='lg:w-1/2'>
-
-          <div className='w-full text-base flex lg:text-lg'>
-            <button className='flex-grow py-2 flex items-center outline-none lg:cursor-default lg:justify-center' onClick={() => setOpenOverview(prev => !prev)}>
-              {isOpenOverview ? <BiChevronDown className='text-3xl text-theme-blue lg:hidden' /> : <BiChevronRight className='text-3xl text-theme-blue lg:hidden' />}Expenses Overview
-            </button>
-          </div>
-
-          <div className={(isOpenOverview ? 'block' : 'hidden lg:block')}>
-            {apiData?.members.map((member) => (
-              <div key={member._id} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
-
-                <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                  <img src={member?.membericon || icon}  alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover" />
-                  <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</p>
-                </div>
-
-                <div className='flex items-center gap-2 heading font-bold'>
-                  <div>Paid:</div>
-                  <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo?.memberTotalPaid.find((doc) => doc._id === member._id)?.totalPaid || 0)}</div>
-                </div>
-
-              </div>
-            ))}
-
-            {shareExpensesInfo && (
-              <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
-                <div className='flex items-center gap-2 heading'>
-                  <div>Total Expenses:</div>
-                  <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo.totalExpenses)}</div>
-                </div>
-              </div>
-            )}
-
-            {expensePerPerson !== '' && (
-              <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
-                <div className='flex items-center gap-2 heading'>
-                  <div>Per Member:</div>
-                  <div className='min-w-[85px]'>{currencyFormatter.format(expensePerPerson)}</div>
-                </div>
-              </div>
-            )}
-
-          </div>
-
+          
         </div>
-
       </div>
-    </div>
+    </>
   )
 }
