@@ -66,7 +66,7 @@ export default function Expenses() {
 
     fetchData();
 
-  }, [query, currentPage]);
+  }, [query]);
 
   const categoryCommonClass = 'text-[60px] p-4 rounded-lg text-white text-opacity-90 shadow-md m-2 flex-shrink-0 ';
 
@@ -192,7 +192,7 @@ export default function Expenses() {
 
   function showMember(memberId) {
     const member = apiData?.members.find(member => member._id === memberId);
-    if(!member) return;
+    if (!member) return;
     return (
       <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
         <img src={member.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
@@ -202,166 +202,171 @@ export default function Expenses() {
   }
 
   return (
-    <div className={styles.glass}>
-      <div className='w-[95%] max-w-[1000px] mx-auto'>
+    <div className={styles.glass + ' px-0 h-full'}>
 
+      {/* Popup Window for No Member Case */}
+      {apiData?.members.length === 0 &&
+        <div className='add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
+          <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center py-10 gap-10 '
+            + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
+          >
+            <h6 className='heading font-bold text-lg'>Welcome!</h6>
+            <p className='text-base text-gray-600 max-w-[200px] text-center ' >
+              To get started, add members to this group account.
+            </p>
+            <p className='text-base text-gray-600 max-w-[200px] text-center ' >
+              Then, add expenses so that we can help you all sharing expenses!
+            </p>
+            <button
+              className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue"
+              onClick={() => navigate('../members')}
+            >
+              Navigate to Members Page
+            </button>
+          </div>
+        </div>
+      }
+
+      {/* Popup Window for Add or Update or Delete */}
+      <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
+        <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
+          + 'sm:w-[600px] absolute top-1/2 left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)] transition-all duration-500 '
+          + (isOpenPopup ? 'translate-y-[-50%] opacity-100' : 'translate-y-[-100%] opacity-0')}
+        >
+          <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
+          <h6 className='heading font-bold text-lg'>Delete Expense</h6>
+          <p className='text-sm text-gray-600 w-3/4 text-center ' >
+            Are you sure you want to delete the following user?
+          </p>
+          <form className="w-full" onSubmit={handleSubmit}>
+            <div className="expense flex justify-center py-4">
+              <div className={"w-full flex justify-between gap-4 p-3 rounded-lg bg-opacity-50"}>
+
+                <div className='w-full flex items-center gap-3 text-gray-600 flex-grow'>
+
+                  {/* category */}
+                  {categories.find((cat) => cat.name === expenseToDelete?.category)?.icon}
+
+                  {/* expense info */}
+                  <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
+                    <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
+                    <p className='text-xs text-gray-400'>{expenseToDelete && dateStringFormat(expenseToDelete.date)}</p>
+                    {expenseToDelete && showMember(expenseToDelete.member)}
+                  </div>
+
+                  {/* expense amount */}
+                  <div className='heading text-base font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
+                    {currencyFormatter.format(expenseToDelete?.amount)}
+                    {expenseToDelete?.isShared && (<p className='text-sm'>(shared)</p>)}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div className="textbox flex flex-col items-center gap-6">
+              <button className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] 
+                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <div className='fixed z-20 w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:w-[calc(95%_-_310px)] lg:translate-x-[calc(-50%_+_145px)]'>
         <div className="title">
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Expense Records</h4>
         </div>
 
-        <div className='py-2'>
-          {/* Popup Window for No Member Case */}
-          {apiData?.members.length === 0 &&
-            <div className='add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
-              <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center py-10 gap-10 '
-                + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
-              >
-                <h6 className='heading font-bold text-lg'>Welcome!</h6>
-                <p className='text-base text-gray-600 max-w-[200px] text-center ' >
-                  To get started, add members to this group account.
-                </p>
-                <p className='text-base text-gray-600 max-w-[200px] text-center ' >
-                  Then, add expenses so that we can help you all sharing expenses!
-                </p>
-                <button
-                  className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue"
-                  onClick={() => navigate('../members')}
-                >
-                  Navigate to Members Page
-                </button>
-              </div>
-            </div>
-          }
+        {/* Seach Bar and From To Date */}
+        <div className='text-sm max-w-[450px] mx-auto flex flex-col my-5 gap-3 text-gray-600 justify-center items-center lg:max-w-full lg:flex-row lg:gap-8'>
 
-          {/* Popup Window for Add or Update or Delete */}
-          <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
-            <div className={'add-edit-member-popup bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
-              + 'sm:w-[600px] absolute top-1/2 left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)] transition-all duration-500 '
-              + (isOpenPopup ? 'translate-y-[-50%] opacity-100' : 'translate-y-[-100%] opacity-0')}
-            >
-              <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
-              <h6 className='heading font-bold text-lg'>Delete Expense</h6>
-              <p className='text-sm text-gray-600 w-3/4 text-center ' >
-                Are you sure you want to delete the following user?
-              </p>
-              <form className="w-full" onSubmit={handleSubmit}>
-                <div className="expense flex justify-center py-4">
-                  <div className={"w-full flex justify-between gap-4 p-3 rounded-lg bg-opacity-50"}>
+          {/* search bar */}
+          <form className="search-bar w-full flex flex-row gap-2 p-3 rounded-xl shadow-md text-gray-600 bg-white" onSubmit={handleSearch}>
+            <input ref={searchInput} type='text' placeholder='Search' className='focus:outline-none w-full' name='keyword' id='keyword' />
+            <button><MdSearch className='text-2xl' /></button>
+          </form>
 
-                    <div className='w-full flex items-center gap-3 text-gray-600 flex-grow'>
-
-                      {/* category */}
-                      {categories.find((cat) => cat.name === expenseToDelete?.category)?.icon}
-
-                      {/* expense info */}
-                      <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                        <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
-                        <p className='text-xs text-gray-400'>{expenseToDelete && dateStringFormat(expenseToDelete.date)}</p>
-                        {expenseToDelete && showMember(expenseToDelete.member)}
-                      </div>
-
-                      {/* expense amount */}
-                      <div className='heading text-base font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
-                        {currencyFormatter.format(expenseToDelete?.amount)}
-                        {expenseToDelete?.isShared && (<p className='text-sm'>(shared)</p>)}
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className="textbox flex flex-col items-center gap-6">
-                  <button className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] 
-                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">Delete</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          {/* Seach Bar and From To Date */}
-          <div className='max-w-[450px] mx-auto flex flex-col my-5 gap-3 text-gray-600 justify-center items-center lg:max-w-full lg:flex-row lg:gap-8'>
-
-            {/* search bar */}
-            <form className="search-bar w-full flex flex-row gap-2 p-3 rounded-xl shadow-md text-gray-600 bg-white" onSubmit={handleSearch}>
-              <input ref={searchInput} type='text' placeholder='Search' className='focus:outline-none w-full' name='keyword' id='keyword' />
-              <button><MdSearch className='text-2xl' /></button>
-            </form>
-
-            {/* open option */}
-            <div className='w-full flex lg:hidden'>
-              <button className='flex-grow p-2 flex items-center lg:hidden' onClick={() => setOpenOptions(prev => !prev)}>
-                {isOpenOptions ? <BiChevronDown className='text-2xl text-theme-blue' /> : <BiChevronRight className='text-2xl text-theme-blue' />}  Options
-              </button>
-              <button className='text-theme-plum p-2 hover:underline' onClick={clearFilters}>
-                Clear Filters
-              </button>
-            </div>
-
-
-            {/* From to date */}
-            <div className={'from-to-date w-min flex-wrap justify-end gap-2 md:flex-nowrap ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
-              <nobr>From: &nbsp;
-                <input type='date' placeholder='From' className="rounded-xl shadow-md p-3 outline-none" value={query.from_date} onChange={handleFromDate} />
-              </nobr>
-              <nobr>To: &nbsp;
-                <input type='date' placeholder='From' className="rounded-xl shadow-md p-3 outline-none" value={query.to_date} onChange={handleToDate} />
-              </nobr>
-            </div>
-          </div>
-
-          {/* sort & show Shared */}
-          <div className={'flex flex-col my-5 gap-4 text-gray-500 justify-center items-center lg:max-w-full lg:flex-row lg:gap-8 ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
-
-            {/* sort */}
-            <div className='flex gap-2 justify-center items-center'>
-              <label htmlFor='sortOrder'>
-                {query.sort_ascending ? <TbSortAscending className='text-white text-4xl p-2 bg-theme-light-blue rounded-full shadow-lg cursor-pointer hover:bg-theme-blue' />
-                  : <TbSortDescending className='text-white text-4xl p-2 bg-theme-light-blue rounded-full shadow-md cursor-pointer hover:bg-theme-blue' />}
-              </label>
-              <input type='checkbox' id='sortOrder' className='hidden'
-                checked={query.sort_ascending}
-                onChange={handleSortOrder}
-              />
-
-              Sort: &nbsp;
-              <div className='border-4 rounded-xl bg-theme-extralight-blue border-theme-extralight-blue'>
-                <button
-                  className={'p-2 rounded-xl ' + (query.sort === 'paid_date' ? 'text-theme-blue bg-white' : 'text-white')}
-                  disabled={query.sort === 'paid_date'}
-                  onClick={() => handleSort('paid_date')}
-                >
-                  Paid Date
-                </button>
-                <button
-                  className={'p-2 rounded-xl ' + (query.sort === 'added_date' ? 'text-theme-blue bg-white' : 'text-white')}
-                  disabled={query.sort === 'added_date'}
-                  onClick={() => handleSort('added_date')}
-                >
-                  Added Date
-                </button>
-              </div>
-
-            </div>
-
-            {/* show shared */}
-            <button
-              className={'w-fit px-4 py-2 rounded-full flex border-[3px] outline outline-[3px] ' + (!query.show_shared ? 'outline-theme-light-blue border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'outline-gray-200  border-white bg-white text-gray-300 hover:bg-gray-100')}
-              onClick={handleShowShared}
-            >
-              Show shared expense only
+          {/* open option */}
+          <div className='w-full flex lg:hidden'>
+            <button className='flex-grow p-2 flex items-center lg:hidden' onClick={() => setOpenOptions(prev => !prev)}>
+              {isOpenOptions ? <BiChevronDown className='text-2xl text-theme-blue' /> : <BiChevronRight className='text-2xl text-theme-blue' />}  Options
             </button>
-
-            {/* clear for lg screen */}
-            <button
-              className='hidden lg:flex w-fit px-5 py-3 rounded-full outline-none text-white bg-theme-light-plum hover:bg-theme-plum'
-              onClick={clearFilters}
-            >
+            <button className='text-theme-plum p-2 hover:underline' onClick={clearFilters}>
               Clear Filters
             </button>
           </div>
 
+
+          {/* From to date */}
+          <div className={'from-to-date w-min flex-wrap justify-end gap-2 md:flex-nowrap ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
+            <nobr>From: &nbsp;
+              <input type='date' placeholder='From' className="rounded-xl shadow-md p-3 outline-none" value={query.from_date} onChange={handleFromDate} />
+            </nobr>
+            <nobr>To: &nbsp;
+              <input type='date' placeholder='From' className="rounded-xl shadow-md p-3 outline-none" value={query.to_date} onChange={handleToDate} />
+            </nobr>
+          </div>
+        </div>
+
+        {/* sort & show Shared */}
+        <div className={'text-sm flex flex-col my-5 gap-4 text-gray-500 justify-center items-center lg:max-w-full lg:flex-row lg:gap-8 ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
+
+          {/* sort */}
+          <div className='text-sm flex gap-2 justify-center items-center'>
+            <label htmlFor='sortOrder'>
+              {query.sort_ascending ? <TbSortAscending className='text-white text-4xl p-2 bg-theme-light-blue rounded-full shadow-lg cursor-pointer hover:bg-theme-blue' />
+                : <TbSortDescending className='text-white text-4xl p-2 bg-theme-light-blue rounded-full shadow-md cursor-pointer hover:bg-theme-blue' />}
+            </label>
+            <input type='checkbox' id='sortOrder' className='hidden'
+              checked={query.sort_ascending}
+              onChange={handleSortOrder}
+            />
+
+            Sort: &nbsp;
+            <div className='text-sm border-4 rounded-xl bg-theme-extralight-blue border-theme-extralight-blue'>
+              <button
+                className={'p-2 rounded-xl ' + (query.sort === 'paid_date' ? 'text-theme-blue bg-white' : 'text-white')}
+                disabled={query.sort === 'paid_date'}
+                onClick={() => handleSort('paid_date')}
+              >
+                Paid Date
+              </button>
+              <button
+                className={'p-2 rounded-xl ' + (query.sort === 'added_date' ? 'text-theme-blue bg-white' : 'text-white')}
+                disabled={query.sort === 'added_date'}
+                onClick={() => handleSort('added_date')}
+              >
+                Added Date
+              </button>
+            </div>
+
+          </div>
+
+          {/* show shared */}
+          <button
+            className={'text-sm w-fit px-4 py-2 rounded-full flex border-[3px] outline outline-[3px] ' + (!query.show_shared ? 'outline-theme-light-blue border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'outline-gray-200  border-white bg-white text-gray-300 hover:bg-gray-100')}
+            onClick={handleShowShared}
+          >
+            Unshared Expense Only
+          </button>
+
+          {/* clear for lg screen */}
+          <button
+            className='text-sm hidden lg:flex w-fit px-5 py-3 rounded-full outline-none text-white bg-theme-light-plum hover:bg-theme-plum'
+            onClick={clearFilters}
+          >
+            Clear Filters
+          </button>
+        </div>
+      </div>
+
+
+      <div className={'fixed z-10 w-full max-w-[1000px] h-[calc(100%_-_96px)] left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[176px] lg:w-[calc(95%_-_310px)] lg:pt-[212px] lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] ' + (isOpenOptions && 'pt-[410px] lg:pt-[212px]')}>
+
+        <div className='h-full overflow-x-hidden overflow-y-auto px-4 text-gray-600 lg:w-full'>
           {/* Expenses List */}
-          <div className='expense-list my-5 flex flex-col gap-2 overflow-hidden lg:overflow-auto'>
+          <div className='expense-list my-5 flex flex-col gap-2'>
 
             {/* Each expense record */}
             {expenses?.length === 0 && !serverError ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
@@ -414,7 +419,7 @@ export default function Expenses() {
 
           {serverError && (
             <div className='flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
-              <img src={serverErrorSvg} alt='server error' className='w-[250px]'/>
+              <img src={serverErrorSvg} alt='server error' className='w-[250px]' />
               <h6 className='font-bold'>Internal Server Error</h6>
               <p>Sorry! Something went wrong.</p>
             </div>
@@ -426,9 +431,7 @@ export default function Expenses() {
               <button className='user-link text-lg disabled:text-gray-400' onClick={loadMore} disabled={isLastPage}>{isLastPage ? '- End of Expense Records -' : 'Load more...'}</button>
             </div>
           }
-
         </div>
-
       </div>
     </div>
   )
