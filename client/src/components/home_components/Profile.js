@@ -42,7 +42,7 @@ export default function Profile() {
     }
 
     return (
-        <div className={styles.glass}>
+        <div className={styles.glass + " fixed h-[calc(100vh_-_116px)] left-1/2 translate-x-[-50%] overflow-x-hidden overflow-y-auto lg:h-[calc(100vh_-_40px)]"}>
             <div className='w-[95%] max-w-[1000px] mx-auto'>
 
                 <div className="title">
