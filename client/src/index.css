@@ -124,3 +124,7 @@ body {
     }
 }
 
+.mobile-h-safe {
+    height: calc(100% - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
