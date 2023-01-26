@@ -66,7 +66,7 @@ export default function Expenses() {
 
     fetchData();
 
-  }, [query]);
+  }, [query, currentPage]);
 
   const categoryCommonClass = 'text-[60px] p-4 rounded-lg text-white text-opacity-90 shadow-md m-2 flex-shrink-0 ';
 
@@ -202,7 +202,7 @@ export default function Expenses() {
   }
 
   return (
-    <div className={styles.glass + " fixed h-[calc(100vh_-_116px)] left-1/2 translate-x-[-50%] overflow-x-hidden overflow-y-auto lg:h-[calc(100vh_-_40px)]"}>
+    <div className={styles.glass}>
       <div className='w-[95%] max-w-[1000px] mx-auto'>
 
         <div className="title">

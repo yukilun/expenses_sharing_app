@@ -98,7 +98,7 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <main>
+    <main className='overflow-x-hidden'>
         <RouterProvider router={router} />
     </main>
   )
