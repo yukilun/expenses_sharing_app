@@ -9,7 +9,7 @@ export default function Summary() {
   const [apiData] = useOutletContext();
 
   return (
-    <div className={styles.glass + ' px-0 h-full'}>
+    <div className={styles.glass + ' px-0 h-[calc(100vh_-_76px)]'}>
 
       {/* Popup Window for No Member Case */}
       {apiData?.members.length === 0 &&
@@ -34,7 +34,7 @@ export default function Summary() {
         </div>
       }
 
-      <div className='fixed z-20 w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)]'>
+      <div className='fixed w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)]'>
 
         <div className="title">
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Summary</h4>
