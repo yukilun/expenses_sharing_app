@@ -123,12 +123,12 @@ export default function ShareExpenses() {
                   <div key={`${i}_${j}`} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
 
                     <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                      <img src={apiData?.members[i].membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
+                      <img src={apiData?.members[i].membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
                       <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[i].membername}</p>
                     </div>
                     <HiArrowNarrowRight className='text-theme-blue' />
                     <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                      <img src={apiData?.members[j].membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
+                      <img src={apiData?.members[j].membericon || icon} alt="icon"  className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover " />
                       <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{apiData?.members[j].membername}</p>
                     </div>
 
@@ -162,7 +162,7 @@ export default function ShareExpenses() {
               <div key={member._id} className="w-full my-1 flex items-center justify-between py-2 px-3 bg-white rounded-lg bg-opacity-50 shadow-sm text-sm">
 
                 <div className='flex items-center gap-2 text-gray-600 min-w-[35px]'>
-                  <img src={member?.membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover" />
+                  <img src={member?.membericon || icon}  alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover" />
                   <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</p>
                 </div>
 

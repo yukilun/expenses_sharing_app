@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { useFormik } from 'formik';
 import { FaShoppingBasket, FaHamburger, FaHome, FaFaucet, FaIcons, FaBus, FaShieldAlt, FaQuestion } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdNavigateBefore } from 'react-icons/md';
@@ -26,7 +26,7 @@ export default function UpdateExpense() {
 
   useEffect(()=> {
     if(apiData && expense) {
-      setMemberIndex(apiData.members.findIndex(member=> member._id == expense?.member));
+      setMemberIndex(apiData.members.findIndex(member=> member._id === expense?.member));
     }
   }, [apiData, expense]);
 
@@ -169,8 +169,8 @@ export default function UpdateExpense() {
                 onClick={() => setShowMemberDropdown(prev => !prev)}
               >
                 <div className='flex gap-5 items-center'>
-                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} className="h-[50px] w-[50px] rounded-full object-cover " />
-                  {memberIndex >= 0 && apiData?.members[memberIndex]?.membername || ''}
+                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />
+                  {memberIndex >= 0 && (apiData?.members[memberIndex]?.membername || '')}
                    
 
                 </div>
@@ -183,7 +183,7 @@ export default function UpdateExpense() {
                       className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
                       onClick={() => setMemberIndex(index)}
                     >
-                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
+                      <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
                     </li>
                   ))}
                 </ul>

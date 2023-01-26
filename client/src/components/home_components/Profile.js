@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
-import { Link, useNavigate, useOutletContext } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import icon from '../../assets/group.png';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { profileValidate } from '../../helper/validate';
 import convertToBase64 from '../../helper/convert';
-import useFetch from '../../hooks/fetch.hook';
 import { updateUser } from '../../helper/helper';
 
 import styles from '../../styles/Home.module.css';
 
 export default function Profile() {
 
-    const navigate = useNavigate();
     const [file, setFile] = useState();
     const [apiData] = useOutletContext();
 
@@ -41,11 +39,6 @@ export default function Profile() {
     const onUpload = async e => {
         const base64 = await convertToBase64(e.target.files[0]);
         setFile(base64);
-    }
-
-    const userLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
     }
 
     return (

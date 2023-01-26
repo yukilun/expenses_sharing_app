@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { resetPasswordValidate } from '../helper/validate';
 import { resetPassword } from '../helper/helper';
 import { useAuthStore } from '../store/authStore';
-import { useNavigate, Link, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook';
 import forgetPasswordSvg from '../assets/forgot_password.svg';
 import loadingSvg from '../assets/loading.svg';

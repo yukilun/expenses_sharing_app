@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaShoppingBasket, FaHamburger, FaHome, FaFaucet, FaIcons, FaBus, FaShieldAlt, FaQuestion } from 'react-icons/fa';
 import { MdEdit, MdDelete, MdSearch } from 'react-icons/md';
-import { FaPlus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import axios from 'axios';
 import { dateStringFormat, currencyFormatter, deleteExpense } from '../../helper/homeHelper';
@@ -14,7 +13,6 @@ import { useExpenseUpdateStore } from '../../store/expenseUpdateStore';
 import serverErrorSvg from '../../assets/server_error.svg';
 
 import styles from '../../styles/Home.module.css';
-import useFetch from '../../hooks/fetch.hook';
 import { toast } from 'react-hot-toast';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
@@ -50,7 +48,7 @@ export default function Expenses() {
         if (!token) throw new Error('UnAuthorized Access!');
         const { data, headers } = await axios.get(`/api/getExpenses`, { headers: { "Authorization": `Bearer ${token}` }, params: query });
 
-        if (currentPage != query.page) {
+        if (currentPage !== query.page) {
           setExpenses(prev => [...prev, ...data]);
         }
         else {
@@ -68,7 +66,7 @@ export default function Expenses() {
 
     fetchData();
 
-  }, [query]);
+  }, [query, currentPage]);
 
   const categoryCommonClass = 'text-[60px] p-4 rounded-lg text-white text-opacity-90 shadow-md m-2 flex-shrink-0 ';
 
@@ -197,7 +195,7 @@ export default function Expenses() {
     if(!member) return;
     return (
       <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
-        <img src={member.membericon || icon} className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
+        <img src={member.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
         {member.membername}
       </div>
     );
@@ -397,7 +395,7 @@ export default function Expenses() {
                   </div>
 
                   <div className={'flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
-                    + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index == swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
+                    + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
                     <MdEdit className='w-1/2 h-full p-8 text-theme-light-blue cursor-pointer md:h-[50px] md:p-2 hover:text-theme-blue' onClick={() => handleEdit(index)} />
                     <MdDelete className='w-1/2 h-full p-8 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[50px] md:p-2 hover:text-theme-plum' onClick={() => handleDelete(index)} />
                   </div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import React, { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { useFormik } from 'formik';
 import { FaShoppingBasket, FaHamburger, FaHome, FaFaucet, FaIcons, FaBus, FaShieldAlt, FaQuestion } from 'react-icons/fa';
 import { MdKeyboardArrowDown } from 'react-icons/md';
@@ -8,7 +8,6 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import icon from '../../assets/personal.png';
 import { addExpenseValidate } from '../../helper/homeValidate';
 import { addExpense } from '../../helper/homeHelper';
-import { IoClose } from 'react-icons/io5';
 
 import 'swiper/css';
 import styles from '../../styles/Home.module.css';
@@ -176,8 +175,8 @@ export default function AddExpense() {
                 onClick={() => setShowMemberDropdown(prev => !prev)}
               >
                 <div className='flex gap-5 items-center'>
-                  <img src={memberIndex > -1 ? apiData?.members[memberIndex].membericon || icon : icon} className="h-[50px] w-[50px] rounded-full object-cover " />
-                  {memberIndex >= 0 && apiData?.members[memberIndex].membername || ''}
+                  <img src={memberIndex > -1 ? apiData?.members[memberIndex].membericon || icon : icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />
+                  {memberIndex >= 0 && (apiData?.members[memberIndex].membername || '')}
 
 
                 </div>
@@ -190,7 +189,7 @@ export default function AddExpense() {
                       className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
                       onClick={() => setMemberIndex(index)}
                     >
-                      <img src={member.membericon || icon} className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
+                      <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
                     </li>
                   ))}
                 </ul>
