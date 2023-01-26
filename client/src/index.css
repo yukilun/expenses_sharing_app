@@ -11,6 +11,7 @@
 
 html {
     overflow: hidden;
+    overscroll-behavior: none;
 }
 
 body {
@@ -19,6 +20,7 @@ body {
     height: 100vh;
     overflow-x: hidden;
     overflow-y: hidden;
+    overscroll-behavior: none;
     touch-action: none;
     background: linear-gradient(102.87deg, rgba(86, 158, 194, 0.2) 28.76%, rgba(163, 196, 213, 0.2) 44.56%, rgba(230, 230, 230, 0.2) 54.38%, rgba(198, 176, 191, 0.2) 64.19%, rgba(159, 109, 144, 0.2) 81.09%), #FFFFFF;
 }
