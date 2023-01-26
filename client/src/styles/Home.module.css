@@ -15,7 +15,7 @@
 
 .container {
     background-color: white;
-    @apply flex min-h-screen w-full flex-col relative overflow-auto lg:mx-auto lg:flex-row touch-none;
+    @apply flex min-h-screen w-full flex-col relative overflow-auto lg:mx-auto lg:flex-row;
 }
 
 .nav {
