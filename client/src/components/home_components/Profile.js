@@ -42,14 +42,17 @@ export default function Profile() {
     }
 
     return (
-        <div className={styles.glass}>
-            <div className='w-[95%] max-w-[1000px] mx-auto'>
+        <div className={styles.glass + ' px-0 h-full'}>
 
+            <div className='fixed z-20 w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:w-[calc(95%_-_310px)] lg:translate-x-[calc(-50%_+_145px)]'>
                 <div className="title">
                     <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Account Details</h4>
                 </div>
+            </div>
 
-                <div className='py-2'>
+            <div className='fixed z-10 w-full max-w-[1000px] h-[calc(100%_-_96px)] left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[50px] lg:w-[calc(95%_-_310px)] lg:pt-[60px] lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] '>
+                <div className='h-full overflow-x-hidden overflow-y-auto px-6 text-gray-600 lg:w-full'>
+
                     <form className='py-1' onSubmit={formik.handleSubmit}>
                         <div className="profile flex justify-center py-4">
                             <label htmlFor="icon">
@@ -72,12 +75,8 @@ export default function Profile() {
                             <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
                                  border py-3 rounded-lg shadow-md mt-5 mb-5 mx-auto lg:text-lg hover:bg-theme-blue' type="submit">Update</button>
                         </div>
-
-
-
-
-
                     </form>
+
                 </div>
             </div>
         </div>

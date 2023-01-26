@@ -68,6 +68,7 @@ export default function Members() {
 
     function handleTouchStart(e) {
         setTouchStart(e.targetTouches[0].clientX);
+        setTouchEnd(e.targetTouches[0].clientX);
     }
 
     function handleTouchMove(e) {
@@ -128,57 +129,59 @@ export default function Members() {
 
 
     return (
-        <div className={styles.glass}>
-            <div className='w-[95%] max-w-[1000px] mx-auto'>
+        <div className={styles.glass + ' px-0 h-full'}>
 
+            {/* Popup Window for Add or Update or Delete */}
+            <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
+                <div className={'add-edit-member-popup bg-white min-h-[270px] min-w-[270px] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
+                    + 'lg:min-w-[500px] absolute top-1/2 left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)] transition-all duration-500 '
+                    + (isOpenPopup ? 'translate-y-[-50%] opacity-100' : 'translate-y-[-100%] opacity-0')}
+                >
+                    <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
+                    <h6 className='heading font-bold text-lg'>{isDelete ? "Delete Member" : memberid ? 'Update Member' : 'Add Member'}</h6>
+                    <p className='text-sm text-gray-600 w-3/4 text-center lg:w-full' >
+                        {isDelete ? 'Are you sure you want to delete the following user?' : memberid ? 'Edit the following member information:' : 'Fill in the following member information:'}
+                    </p>
+                    <form onSubmit={handleSubmit}>
+                        <div className="profile flex justify-center py-4">
+                            <label htmlFor="icon">
+                                <img className={styles.icon_img_edit} src={membericon || icon} alt="icon" />
+                            </label>
+                            <input onChange={onUpload} type="file" id="icon" name="icon" disabled={isDelete} />
+                        </div>
+
+                        <div className="textbox flex flex-col items-center gap-6">
+                            <input className={styles.textbox} type="text" placeholder='Member name' name="membername" value={membername} disabled={isDelete} onChange={(e) => setMembername(e.target.value)} />
+                            {isDelete && <p className='text-sm  text-theme-plum w-3/4 text-center lg:w-full'>The expense records for this user will also be deleted!</p>}
+                            <button className="bg-theme-light-blue text-white text-base text-center w-full max-w-[300px] 
+                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">{isDelete ? "Delete" : memberid ? 'Update' : 'Add'}</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div className='fixed z-20 w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:w-[calc(95%_-_310px)] lg:translate-x-[calc(-50%_+_145px)]'>
                 <div className="title">
                     <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl lg:mt-5'>Members</h4>
                 </div>
 
-                <div className='py-2'>
-
-                    {/* Popup Window for Add or Update or Delete */}
-                    <div className={'add-edit-member-bg bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0 ' + (isOpenPopup ? 'visible' : 'invisible')}>
-                        <div className={'add-edit-member-popup bg-white min-h-[270px] min-w-[270px] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
-                            + 'lg:min-w-[500px] absolute top-1/2 left-1/2 translate-x-[-50%] lg:translate-x-[calc(-50%_+_145px)] transition-all duration-500 '
-                            + (isOpenPopup ? 'translate-y-[-50%] opacity-100' : 'translate-y-[-100%] opacity-0')}
-                        >
-                            <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
-                            <h6 className='heading font-bold text-lg'>{isDelete ? "Delete Member" : memberid ? 'Update Member' : 'Add Member'}</h6>
-                            <p className='text-sm text-gray-600 w-3/4 text-center lg:w-full' >
-                                {isDelete ? 'Are you sure you want to delete the following user?' : memberid ? 'Edit the following member information:' : 'Fill in the following member information:'}
-                            </p>
-                            <form onSubmit={handleSubmit}>
-                                <div className="profile flex justify-center py-4">
-                                    <label htmlFor="icon">
-                                        <img className={styles.icon_img_edit} src={membericon || icon} alt="icon" />
-                                    </label>
-                                    <input onChange={onUpload} type="file" id="icon" name="icon" disabled={isDelete} />
-                                </div>
-
-                                <div className="textbox flex flex-col items-center gap-6">
-                                    <input className={styles.textbox} type="text" placeholder='Member name' name="membername" value={membername} disabled={isDelete} onChange={(e) => setMembername(e.target.value)} />
-                                    {isDelete && <p className='text-sm  text-theme-plum w-3/4 text-center lg:w-full'>The expense records for this user will also be deleted!</p>}
-                                    <button className="bg-theme-light-blue text-white text-base text-center w-full max-w-[300px] 
-                                                border py-3 rounded-lg shadow-md mx-auto mb-3 lg:text-lg hover:bg-theme-blue" type="submit">{isDelete ? "Delete" : memberid ? 'Update' : 'Add'}</button>
-                                </div>
-                            </form>
-
-                        </div>
+                {/* Seach Bar and Add Button */}
+                <div className='w-fit mx-auto flex justify-center items-center gap-3'>
+                    <div className="search-bar flex-grow flex flex-row gap-2 p-3 rounded-xl mx-auto my-5 max-w-[250px] shadow-md text-gray-600 bg-white lg:text-lg lg:max-w-[500px]">
+                        <MdSearch className='text-gray-500 text-2xl' />
+                        <input type='text' placeholder='Search' className='focus:outline-none w-full' onChange={handleSearch} />
                     </div>
-
-                    {/* Seach Bar and Add Button */}
-                    <div className='w-fit mx-auto flex justify-center items-center gap-3'>
-                        <div className="search-bar flex-grow flex flex-row gap-2 p-3 rounded-xl mx-auto my-5 max-w-[250px] shadow-md text-gray-600 bg-white lg:text-lg lg:max-w-[500px]">
-                            <MdSearch className='text-gray-500 text-2xl' />
-                            <input type='text' placeholder='Search' className='focus:outline-none w-full' onChange={handleSearch} />
-                        </div>
-                        <div>
-                            <button className="text-white p-[16px] rounded-lg shadow-md bg-theme-light-blue hover:bg-theme-blue" onClick={() => handleAdd()}>
-                                <FaPlus />
-                            </button>
-                        </div>
+                    <div>
+                        <button className="text-white p-[16px] rounded-lg shadow-md bg-theme-light-blue hover:bg-theme-blue" onClick={() => handleAdd()}>
+                            <FaPlus />
+                        </button>
                     </div>
+                </div>
+            </div>
+
+            <div className='fixed z-10 w-full max-w-[1000px] h-[calc(100%_-_96px)] left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[124px] lg:w-[calc(95%_-_310px)] lg:pt-[152px] lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] '>
+                <div className='h-full overflow-x-hidden overflow-y-auto px-6 text-gray-600 lg:w-full'>
 
                     {/* Member List */}
                     <div className='member-list grid grid-template-col-250 gap-2 my-5 overflow-hidden'>

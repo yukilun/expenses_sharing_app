@@ -195,7 +195,7 @@ export default function Expenses() {
     if (!member) return;
     return (
       <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
-        <img src={member.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 border-white shadow-md object-cover sm:w-[50px] sm:h-[50px]" />
+        <img src={member.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 my-2 border-white shadow-md object-cover sm:w-[40px] sm:h-[40px]" />
         {member.membername}
       </div>
     );
@@ -345,7 +345,7 @@ export default function Expenses() {
 
           {/* show shared */}
           <button
-            className={'text-sm w-fit px-4 py-2 rounded-full flex border-[3px] outline outline-[3px] ' + (!query.show_shared ? 'outline-theme-light-blue border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'outline-gray-200  border-white bg-white text-gray-300 hover:bg-gray-100')}
+            className={'text-sm w-fit px-4 py-3 rounded-full flex border-[4px] ' + (!query.show_shared ? 'border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'border-white bg-white text-gray-300 hover:bg-gray-100')}
             onClick={handleShowShared}
           >
             Unshared Expense Only
@@ -401,8 +401,8 @@ export default function Expenses() {
 
                   <div className={'flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
                     + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
-                    <MdEdit className='w-1/2 h-full p-8 text-theme-light-blue cursor-pointer md:h-[50px] md:p-2 hover:text-theme-blue' onClick={() => handleEdit(index)} />
-                    <MdDelete className='w-1/2 h-full p-8 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[50px] md:p-2 hover:text-theme-plum' onClick={() => handleDelete(index)} />
+                    <MdEdit className='w-1/2 h-full p-8 text-theme-light-blue cursor-pointer md:h-[30px] md:p-0 hover:text-theme-blue' onClick={() => handleEdit(index)} />
+                    <MdDelete className='w-1/2 h-full p-8 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[30px] md:p-0 hover:text-theme-plum' onClick={() => handleDelete(index)} />
                   </div>
 
                 </div>
