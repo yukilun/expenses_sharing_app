@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiChevronDown, BiChevronRight } from 'react-icons/bi'
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import useFetch from '../../../hooks/fetch.hook';
@@ -10,7 +10,6 @@ import { HiArrowNarrowRight } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import { shareExpenses } from '../../../helper/homeHelper';
 import { toast } from 'react-hot-toast';
-import { disableBodyScroll } from 'body-scroll-lock';
 
 export default function ShareExpenses() {
 
@@ -22,7 +21,6 @@ export default function ShareExpenses() {
   const [expensePerPerson, setExpensePerPerson] = useState('');
   const [settleDebtsArr, setSettleDebtsArr] = useState([]);
   const [isOpenPopup, setOpenPopup] = useState(false);
-  const scrollableDiv = useRef(null);
 
   useEffect(() => {
     if (apiData && shareExpensesInfo && apiData.members.length > 0) {
@@ -51,10 +49,6 @@ export default function ShareExpenses() {
       setSettleDebtsArr(settleDebts);
     }
   }, [apiData, shareExpensesInfo]);
-
-  useEffect(()=> {
-    disableBodyScroll(scrollableDiv);
-  }, []);
 
   async function handleShareExpense() {
     let sharePromise = shareExpenses();
@@ -111,7 +105,7 @@ export default function ShareExpenses() {
         </div>
       }
 
-      <div className='h-full overflow-y-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8' ref={scrollableDiv}>
+      <div className='h-full overflow-y-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
 
         {/* settle debts */}
         {shareExpensesInfo?.totalExpenses !== 0 && (
