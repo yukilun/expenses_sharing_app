@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { FaShoppingBasket, FaHamburger, FaHome, FaFaucet, FaIcons, FaBus, FaShieldAlt, FaQuestion } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdNavigateBefore } from 'react-icons/md';
 import SlideController from './SlideController';
-import { useOutletContext , useNavigate} from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import icon from '../../assets/personal.png';
 import { addExpenseValidate } from '../../helper/homeValidate';
 import { updateExpense } from '../../helper/homeHelper';
@@ -20,13 +20,13 @@ export default function UpdateExpense() {
   const navigate = useNavigate();
   const [apiData] = useOutletContext();
   const expense = useExpenseUpdateStore(state => state.expense);
-  const [category, setCategory] = useState(expense?.category||'');
+  const [category, setCategory] = useState(expense?.category || '');
   const [memberIndex, setMemberIndex] = useState('');
   const [showMemberDropdown, setShowMemberDropdown] = useState(false);
 
-  useEffect(()=> {
-    if(apiData && expense) {
-      setMemberIndex(apiData.members.findIndex(member=> member._id === expense?.member));
+  useEffect(() => {
+    if (apiData && expense) {
+      setMemberIndex(apiData.members.findIndex(member => member._id === expense?.member));
     }
   }, [apiData, expense]);
 
@@ -77,142 +77,147 @@ export default function UpdateExpense() {
     enableReinitialize: true,
     validate: async values => {
       const errors = addExpenseValidate(values);
-      if(memberIndex < 0) errors.member = toast.error('Member required!');
-      if(category === '') errors.category = toast.error('Category required!');
+      if (memberIndex < 0) errors.member = toast.error('Member required!');
+      if (category === '') errors.category = toast.error('Category required!');
       return errors;
     },
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async values => {
-      values = Object.assign(values, { category, member: apiData.members[memberIndex]._id, expenseid: expense._id});
+      values = Object.assign(values, { category, member: apiData.members[memberIndex]._id, expenseid: expense._id });
       console.log(values);
       let updatePromise = updateExpense(values);
       toast.promise(updatePromise, {
-          loading: 'Updating Expense...',
-          success: <b>Updated Expense Successfully!</b>,
-          error: <b>Unable to update expense! Please try again later.</b>
+        loading: 'Updating Expense...',
+        success: <b>Updated Expense Successfully!</b>,
+        error: <b>Unable to update expense! Please try again later.</b>
       });
       updatePromise.then(() => navigate('../expenses'));
     }
   })
 
-  if(expense.category === '') {
+  if (expense.category === '') {
     return navigate('../expenses');
   }
 
   return (
-    <div className={styles.glass}>
-      <div className='w-[95%] max-w-[1000px] min-h-full mx-auto overflow-hidden lg:flex lg:flex-col'>
+    <div className={styles.glass + ' px-0 h-full'}>
 
+      <div className='fixed z-20 w-[95%] max-w-[1000px] left-1/2 translate-x-[-50%] lg:w-[calc(95%_-_310px)] lg:translate-x-[calc(-50%_+_145px)]'>
         <div className="title relative lg:mt-5">
           <h4 className='heading py-1 text-xl font-bold text-center lg:text-2xl'>Edit Expense</h4>
-          <button onClick={()=> navigate(-1)} className='flex items-center text-theme-plum absolute p-1 top-1/2 translate-y-[-50%] transition-transform hover:scale-125'>
-            <MdNavigateBefore className='text-3xl'/>
+          <button onClick={() => navigate(-1)} className='flex items-center text-theme-plum absolute p-1 top-1/2 translate-y-[-50%] transition-transform hover:scale-125'>
+            <MdNavigateBefore className='text-3xl' />
           </button>
         </div>
+      </div>
 
-        <form onSubmit={formik.handleSubmit}>
+      <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[50px] lg:w-[calc(95%_-_310px)] lg:pt-[60px] lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] '>
 
-          {/*category*/}
-          <div className='w-[calc(100%_+_30px)] my-3 lg:w-full'>
-            <h6 className='text-gray-600 text-base my-4 lg:text-lg'>Category: &nbsp;
-              {category === '' ? <span className='text-theme-plum'>No Category Selected</span> : <span className='text-theme-blue text-bold'>{category}</span>}
-            </h6>
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={20}
-              grabCursor={true}
-              touchEventsTarget='container'
-              slidesOffsetBefore={10}
-              slidesOffsetAfter={40}
-              breakpoints={{
-                320: { slidesPerView: 4 },
-                625: { slidesPerView: 5 },
-                768: { slidesPerView: 6 },
-                1024: { slidesPerView: 6, slidesOffsetBefore: 0, slidesOffsetAfter: 0 },
-                1300: { slidesPerView: 7, slidesOffsetBefore: 0, slidesOffsetAfter: 0 },
-              }}
-              className="w-full"
-            >
-              {
-                categories.map((cat, index) => {
-                  return (
-                    <SwiperSlide key={index}>
-                      <input type="radio" name="category" id={cat.name} value={cat.name} className='hidden peer' checked={cat.name === category}
-                        onChange={(e) => setCategory(e.target.value)}
-                      />
-                      <label htmlFor={cat.name} className='flex flex-col gap-1 text-gray-600 items-center opacity-50 cursor-pointer hover:opacity-100 peer-checked:opacity-100'>
-                        {cat.icon} <span className='text-[10px] lg:text-sm'>{cat.name}</span>
-                      </label>
-                    </SwiperSlide>
-                  );
-                })
-              }
-              <SlideController />
-            </Swiper>
-          </div>
+        <div className='h-full overflow-x-hidden overflow-y-auto px-6 text-gray-600 lg:w-full'>
+          <form onSubmit={formik.handleSubmit}>
 
-          <div className='flex flex-col gap-5 md:grid md:grid-cols-2'>
-
-            {/*Description*/}
-            <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
-              <label htmlFor='description' className='text-gray-600 text-base lg:text-lg'>Description: </label>
-              <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='30' className={styles.textbox} />
-            </div>
-
-            {/*member*/}
-            <div className='flex flex-col gap-3 relative z-10 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
-              <label htmlFor='member' className='text-gray-600 text-base lg:text-lg'>Paid By: </label>
-
-              <div
-                className={styles.inputbox}
-                onClick={() => setShowMemberDropdown(prev => !prev)}
+            {/*category*/}
+            <div className='w-[calc(100%_+_30px)] my-3 lg:w-full'>
+              <h6 className='text-gray-600 text-base my-4 lg:text-lg'>Category: &nbsp;
+                {category === '' ? <span className='text-theme-plum'>No Category Selected</span> : <span className='text-theme-blue text-bold'>{category}</span>}
+              </h6>
+              <Swiper
+                slidesPerView={3}
+                spaceBetween={20}
+                grabCursor={true}
+                touchEventsTarget='container'
+                slidesOffsetBefore={10}
+                slidesOffsetAfter={40}
+                breakpoints={{
+                  320: { slidesPerView: 4 },
+                  625: { slidesPerView: 5 },
+                  768: { slidesPerView: 6 },
+                  1024: { slidesPerView: 6, slidesOffsetBefore: 0, slidesOffsetAfter: 0 },
+                  1300: { slidesPerView: 7, slidesOffsetBefore: 0, slidesOffsetAfter: 0 },
+                }}
+                className="w-full"
               >
-                <div className='flex gap-5 items-center'>
-                  <img src={ memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon: icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />
-                  {memberIndex >= 0 && (apiData?.members[memberIndex]?.membername || '')}
-                   
+                {
+                  categories.map((cat, index) => {
+                    return (
+                      <SwiperSlide key={index}>
+                        <input type="radio" name="category" id={cat.name} value={cat.name} className='hidden peer' checked={cat.name === category}
+                          onChange={(e) => setCategory(e.target.value)}
+                        />
+                        <label htmlFor={cat.name} className='flex flex-col gap-1 text-gray-600 items-center opacity-50 cursor-pointer hover:opacity-100 peer-checked:opacity-100'>
+                          {cat.icon} <span className='text-[10px] lg:text-sm'>{cat.name}</span>
+                        </label>
+                      </SwiperSlide>
+                    );
+                  })
+                }
+                <SlideController />
+              </Swiper>
+            </div>
 
-                </div>
-                <MdKeyboardArrowDown className='absolute z-20 top-1/2 translate-y-[-50%] right-[12px] text-[30px]' />
+            <div className='flex flex-col gap-5 md:grid md:grid-cols-2'>
 
-                <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-auto shadow-lg cursor-pointer'}>
-                  {apiData?.members && apiData.members.map((member, index) => (
-                    <li
-                      key={index}
-                      className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
-                      onClick={() => setMemberIndex(index)}
-                    >
-                      <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
-                    </li>
-                  ))}
-                </ul>
-
+              {/*Description*/}
+              <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
+                <label htmlFor='description' className='text-gray-600 text-base lg:text-lg'>Description: </label>
+                <input {...formik.getFieldProps('description')} type="text" id="description" placeholder='Description' maxLength='30' className={styles.textbox} />
               </div>
-            </div>
-            
-            {/*amount*/}
-            <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
-              <label htmlFor='amount' className='text-gray-600 text-base lg:text-lg'>Amount: </label>
-                <div className={styles.inputbox + ' flex gap-2'}>
-                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none'  />
+
+              {/*member*/}
+              <div className='flex flex-col gap-3 relative z-10 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
+                <label htmlFor='member' className='text-gray-600 text-base lg:text-lg'>Paid By: </label>
+
+                <div
+                  className={styles.inputbox}
+                  onClick={() => setShowMemberDropdown(prev => !prev)}
+                >
+                  <div className='flex gap-5 items-center'>
+                    <img src={memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon : icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />
+                    {memberIndex >= 0 && (apiData?.members[memberIndex]?.membername || '')}
+
+
+                  </div>
+                  <MdKeyboardArrowDown className='absolute z-20 top-1/2 translate-y-[-50%] right-[12px] text-[30px]' />
+
+                  <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-auto shadow-lg cursor-pointer'}>
+                    {apiData?.members && apiData.members.map((member, index) => (
+                      <li
+                        key={index}
+                        className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
+                        onClick={() => setMemberIndex(index)}
+                      >
+                        <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
+                      </li>
+                    ))}
+                  </ul>
+
                 </div>
+              </div>
+
+              {/*amount*/}
+              <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
+                <label htmlFor='amount' className='text-gray-600 text-base lg:text-lg'>Amount: </label>
+                <div className={styles.inputbox + ' flex gap-2'}>
+                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none' />
+                </div>
+              </div>
+
+              {/*Date*/}
+              <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
+                <label htmlFor='date' className='text-gray-600 text-base lg:text-lg'>Date: </label>
+                <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox} />
+              </div>
+
             </div>
 
-            {/*Date*/}
-            <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
-              <label htmlFor='date' className='text-gray-600 text-base lg:text-lg'>Date: </label>
-              <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox}  />
+            <div className='w-full text-center relative z-0'>
+              <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
+                       border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10' type='submit'>Update</button>
             </div>
 
-          </div>
-
-          <div className='w-full text-center relative z-0'>
-            <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] 
-                                 border py-3 rounded-lg shadow-md mt-14 mb-5 mx-auto lg:text-lg hover:bg-theme-blue lg:mt-10' type='submit'>Update</button>
-          </div>
-
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   )

@@ -62,7 +62,7 @@ export default function ShareExpenses() {
 
   if (isLoading) {
     return (
-      <div className='fixed z-10 w-full max-w-[1000px] h-[calc(100%_-_96px)] left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] flex justify-center items-center'>
+      <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] flex justify-center items-center'>
             <img src={loadingsvg} alt='loading' className='w-[200px]' />
       </div>
     )
@@ -70,7 +70,7 @@ export default function ShareExpenses() {
 
   if (serverError) {
     return (
-      <div className='fixed z-10 w-full max-w-[1000px] h-[calc(100%_-_96px)] left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
+      <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] flex flex-col justify-center items-center gap-4 text-center text-xl text-theme-plum'>
         <img src={serverErrorSvg} alt='server error' className='w-[250px]' />
         <h6 className='font-bold'>Internal Server Error</h6>
         <p>Sorry! Something went wrong.</p>
