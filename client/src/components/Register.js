@@ -64,7 +64,7 @@ export default function Register() {
                                 <label htmlFor="icon">
                                     <img className={styles.icon_img} src={file || icon} alt="icon" />
                                 </label>
-                                <input onChange={onUpload} type="file" id="icon" name="icon" />
+                                <input onChange={onUpload} type="file" accept="image/*" id="icon" name="icon" />
                             </div>
 
                             <div className="textbox flex flex-col items-center gap-4">

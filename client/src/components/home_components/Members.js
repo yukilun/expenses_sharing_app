@@ -147,7 +147,7 @@ export default function Members() {
                             <label htmlFor="icon">
                                 <img className={styles.icon_img_edit} src={membericon || icon} alt="icon" />
                             </label>
-                            <input onChange={onUpload} type="file" id="icon" name="icon" disabled={isDelete} />
+                            <input onChange={onUpload} type="file" accept="image/*" id="icon" name="icon" disabled={isDelete} />
                         </div>
 
                         <div className="textbox flex flex-col items-center gap-6">
