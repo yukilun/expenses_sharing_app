@@ -128,3 +128,6 @@ body {
     height: calc(100% - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 }
 
+.nav-pt-safe {
+    padding-top: env(safe-area-inset-top);
+}

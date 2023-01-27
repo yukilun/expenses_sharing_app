@@ -66,11 +66,6 @@ export default function Home() {
                     <div className='topbar relative'>
 
                         <div className='w-full flex justify-center items-center'>
-                            {/* <h4 className='logo heading flex justify-center items-center gap-2 text-lg font-bold text-center lg:text-xl'>
-                                <img className="w-[20px]" src={logo} alt="icon"/>
-                                <span className='logo text-2xl lg:text-3xl'>%</span>
-                                <nobr className="logo">Expenses Sharing</nobr>
-                            </h4> */}
                             <img className='w-[200px]' src={logo} alt="logo" />
                         </div>
 
@@ -88,7 +83,7 @@ export default function Home() {
                     <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 '
                         + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
 
-                        <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' +
+                        <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full nav-pt-safe shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' +
                             ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
 
                             <li className='text-4xl text-theme-blue p-4 my-2 lg:hidden'>
