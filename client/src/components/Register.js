@@ -46,8 +46,8 @@ export default function Register() {
     return (
         <Animation className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="flex justify-center items-center min-h-screen max-w-screen">
-                <div className='w-full flex flex-row lg:mx-5'>
+            <div className="fixed w-full h-full p-8 overflow-y-auto">
+                <div className='w-full min-h-full flex flex-row justify-center items-center'>
                     <div className='w-1/2 hidden justify-center items-center lg:flex'>
                         <img src={joinSvg} alt='Payment illustration' className='w-[80%] max-h-[500px]' />
                     </div>

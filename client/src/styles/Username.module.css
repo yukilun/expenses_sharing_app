@@ -6,7 +6,7 @@
     box-shadow: 0 4px 30px #4747470b;
     backdrop-filter: blur(7.1px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    @apply border-4 border-gray-50 shrink-0 w-[90%] max-w-[700px] rounded-3xl py-12 px-7 my-5 mx-auto lg:my-8 lg:w-1/2
+    @apply border-4 border-gray-50 shrink-0 w-[90%] max-w-[700px] rounded-3xl py-12 px-7 mx-auto lg:w-1/2
 }
 
 .icon_img {
