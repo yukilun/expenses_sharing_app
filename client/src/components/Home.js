@@ -81,7 +81,7 @@ export default function Home() {
                     </div>
 
                     <nav className={'fixed top-0 left-0 z-10 h-screen w-full bg-black bg-opacity-30 '
-                        + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')}>
+                        + 'lg:relative lg:h-fit lg:w-full lg:bg-transparent lg:pt-1 ' + (isOpenNav ? 'visible' : 'invisible lg:visible')} onClick={(e) => e.currentTarget === e.target && setOpenNav(false)}>
 
                         <ul className={'absolute top-0 left-0 w-[70%] min-w-fit h-full nav-pt-safe shadow-lg bg-white bg-opacity-90 rounded-r-xl text-lg transition-all duration-500' +
                             ' lg:relative lg:bg-transparent lg:shadow-none lg:w-full ' + (isOpenNav ? 'translate-x-0' : 'translate-x-[-100%] lg:translate-x-0')}>
