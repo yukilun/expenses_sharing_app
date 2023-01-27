@@ -1,5 +1,5 @@
 import axios from 'axios';
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
@@ -92,8 +92,6 @@ export async function generateOTP(username){
         // send email with OTP
         if(status === 201) {
             let {email} = await getUser({username});
-            let text = `Your Account Recovery OTP is ${code}. Verify and recover your password.`;
-            const subject = `Your Account Recovery OTP`;
             await axios.post('api/OTPMail', {username, userEmail: email, code});
         }
 
