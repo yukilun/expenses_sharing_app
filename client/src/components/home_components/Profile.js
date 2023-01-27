@@ -66,7 +66,7 @@ export default function Profile() {
                         <div className="textbox mx-auto w-max flex flex-col gap-6">
                             <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
                                 <label className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Account Name: </label>
-                                <div {...formik.getFieldProps('groupname')} className={styles.textbox}>{apiData?.username}</div>
+                                <div {...formik.getFieldProps('groupname')} className={styles.textbox_disable}>{apiData?.username}</div>
                             </div>
                             <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
                                 <label htmlFor='groupname' className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Group Name: </label>

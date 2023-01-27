@@ -33,6 +33,11 @@
     @apply focus:outline-none;
 }
 
+.textbox_disable {
+    @apply relative border-0 p-3 rounded-xl w-full max-w-[300px] shadow-md text-sm text-gray-500 bg-gray-200 lg:text-base lg:px-4 lg:py-3 lg:max-w-[200px];
+    @apply focus:outline-none;
+}
+
 .inputbox {
     @apply relative border-0 p-3 rounded-xl w-full max-w-[300px] shadow-md text-sm text-gray-600 bg-white lg:text-base lg:px-4 lg:py-3 lg:max-w-[200px];
     @apply focus:outline-none;
