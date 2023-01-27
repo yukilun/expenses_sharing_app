@@ -200,9 +200,9 @@ export default function Expenses() {
     const member = apiData?.members.find(member => member._id === memberId);
     if (!member) return;
     return (
-      <div className='flex items-center gap-2 text-gray-600 text-xs sm:text-sm'>
+      <div className='flex items-center gap-2 text-gray-600 text-xs overflow-hidden sm:text-sm'>
         <img src={member.membericon || icon} alt="icon" className="w-[35px] h-[35px] rounded-full border-2 my-2 border-white shadow-md object-cover sm:w-[40px] sm:h-[40px]" />
-        {member.membername}
+        <span className='whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</span>
       </div>
     );
   }
@@ -255,13 +255,13 @@ export default function Expenses() {
 
                   {/* expense info */}
                   <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                    <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expenseToDelete?.description}</h6>
+                    <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis'>{expenseToDelete?.description}</h6>
                     <p className='text-xs text-gray-400'>{expenseToDelete && dateStringFormat(expenseToDelete.date)}</p>
                     {expenseToDelete && showMember(expenseToDelete.member)}
                   </div>
 
                   {/* expense amount */}
-                  <div className='heading text-base font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
+                  <div className='heading text-sm font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
                     {currencyFormatter.format(expenseToDelete?.amount)}
                     {expenseToDelete?.isShared && (<p className='text-sm'>(shared)</p>)}
                   </div>
@@ -392,20 +392,20 @@ export default function Expenses() {
 
                     {/* expense info */}
                     <div className='flex-grow overflow-hidden sm:w-full sm:grid sm:items-center sm:gap-2 grid-template-col-expense'>
-                      <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-base'>{expense.description}</h6>
+                      <h6 className='text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis'>{expense.description}</h6>
                       <p className='text-xs text-gray-400 sm:text-sm'>{dateStringFormat(expense.date)}</p>
                       {showMember(expense.member)}
                     </div>
 
                     {/* expense amount */}
-                    <div className='heading text-lg font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
+                    <div className='heading text-base font-bold w-[90px] flex-shrink-0 mr-3 text-right'>
                       {currencyFormatter.format(expense.amount)}
                       {expense.isShared && (<p className='text-sm'>(shared)</p>)}
                     </div>
 
                   </div>
 
-                  <div className={'flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
+                  <div className={'shrink-0 flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
                     + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
                     <MdEdit className='w-1/2 h-full p-8 text-theme-light-blue cursor-pointer md:h-[30px] md:p-0 hover:text-theme-blue' onClick={() => handleEdit(index)} />
                     <MdDelete className='w-1/2 h-full p-8 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[30px] md:p-0 hover:text-theme-plum' onClick={() => handleDelete(index)} />
