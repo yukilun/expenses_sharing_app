@@ -7,20 +7,20 @@ import serverErrorSvg from '../../../assets/server_error.svg';
 import icon from '../../../assets/personal.png';
 import { currencyFormatter } from '../../../helper/homeHelper';
 import { HiArrowNarrowRight } from 'react-icons/hi';
-import { IoClose } from 'react-icons/io5';
-import { shareExpenses } from '../../../helper/homeHelper';
-import { toast } from 'react-hot-toast';
+// import { IoClose } from 'react-icons/io5';
+// import { shareExpenses } from '../../../helper/homeHelper';
+// import { toast } from 'react-hot-toast';
 
 export default function ShareExpenses() {
 
   const navigate = useNavigate();
-  const [apiData] = useOutletContext();
+  const [apiData, setOpenSettleDebtsPopup] = useOutletContext();
   const [{ isLoading, apiData: shareExpensesInfo, serverError }] = useFetch('getShareExpensesInfo');
   const [isOpenOverview, setOpenOverview] = useState(true);
   const [isOpenSettleDebts, setOpenSettleDebts] = useState(true);
   const [expensePerPerson, setExpensePerPerson] = useState('');
   const [settleDebtsArr, setSettleDebtsArr] = useState([]);
-  const [isOpenPopup, setOpenPopup] = useState(false);
+  // const [isOpenPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
     if (apiData && shareExpensesInfo && apiData.members.length > 0) {
@@ -50,15 +50,6 @@ export default function ShareExpenses() {
     }
   }, [apiData, shareExpensesInfo]);
 
-  async function handleShareExpense() {
-    let sharePromise = shareExpenses();
-    toast.promise(sharePromise, {
-      loading: 'Settling Debts...',
-      success: <b>All the expenses have been marked as shared!</b>,
-      error: <b>Unable to settle debts! Please try again later.</b>
-    });
-    sharePromise.then(() => navigate(0));
-  }
 
   if (isLoading) {
     return (
@@ -80,29 +71,6 @@ export default function ShareExpenses() {
 
   return (
     <>
-      {/* Popup Window for settle debts */}
-      {isOpenPopup &&
-        <div className='bg-black bg-opacity-30 w-screen h-screen fixed z-30 top-0 left-0'>
-          <div className={'bg-white w-[90%] rounded-xl shadow-lg flex flex-col items-center p-4 gap-2 '
-            + 'sm:w-[400px] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lg:translate-x-[calc(-50%_+_145px)]'}
-          >
-            <IoClose className='text-2xl text-theme-blue self-end' onClick={() => setOpenPopup(false)} />
-            <h6 className='heading font-bold text-lg'>Settled Debts</h6>
-            <p className='text-base text-gray-600 max-w-[270px] text-center my-3' >
-              Please make sure everyone on the list has paid the correct amounts to the corresponding member(s).
-            </p>
-            <p className='text-base text-gray-600 max-w-[270px] text-center my-3' >
-              After clicking the confirm button, all the current expenses will be marked as 'shared', which is <span className='text-theme-plum'>non-reversible</span>.
-            </p>
-            <button
-              className="bg-theme-light-blue text-white text-base text-center w-full max-w-[250px] border py-3 rounded-lg shadow-md mx-auto mb-4 lg:text-lg hover:bg-theme-blue"
-              onClick={handleShareExpense}
-            >
-              Confirm
-            </button>
-          </div>
-        </div>
-      }
       <div className='fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[106px] lg:w-[calc(95%_-_310px)] lg:pt-[144px] lg:pb-0 lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)]'>
         <div className='h-full overflow-y-auto px-4 text-gray-600 lg:w-full lg:flex lg:gap-8'>
 
@@ -141,7 +109,7 @@ export default function ShareExpenses() {
 
                 <div className='my-2 text-center'>
                   <button className='bg-theme-light-blue text-white text-base text-center w-3/4 max-w-[200px] my-4
-                         border py-3 rounded-lg shadow-md lg:text-lg hover:bg-theme-blue' onClick={() => setOpenPopup(true)}>Settled Debts!</button>
+                         border py-3 rounded-lg shadow-md lg:text-lg hover:bg-theme-blue' onClick={() => setOpenSettleDebtsPopup(true)}>Settled Debts!</button>
                 </div>
               </div>
             </div>
@@ -193,7 +161,7 @@ export default function ShareExpenses() {
 
             </div>
           </div>
-          
+
         </div>
       </div>
     </>
