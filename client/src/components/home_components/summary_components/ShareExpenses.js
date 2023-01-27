@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BiChevronDown, BiChevronRight } from 'react-icons/bi'
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import useFetch from '../../../hooks/fetch.hook';
 import loadingsvg from '../../../assets/loading.svg';
 import serverErrorSvg from '../../../assets/server_error.svg';
@@ -13,7 +13,6 @@ import { HiArrowNarrowRight } from 'react-icons/hi';
 
 export default function ShareExpenses() {
 
-  const navigate = useNavigate();
   const [apiData, setOpenSettleDebtsPopup] = useOutletContext();
   const [{ isLoading, apiData: shareExpensesInfo, serverError }] = useFetch('getShareExpensesInfo');
   const [isOpenOverview, setOpenOverview] = useState(true);

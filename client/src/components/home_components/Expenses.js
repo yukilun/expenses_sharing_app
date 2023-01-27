@@ -24,10 +24,10 @@ export default function Expenses() {
   const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [serverError, setServerError] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLastPage, setIsLastPage] = useState(false);
   const [query, setQuery] = useState({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: true, from_date: '', to_date: '', per_page: 5, page: 1 });
   const searchInput = useRef();
+  const scrollableDiv = useRef();
   const [isOpenOptions, setOpenOptions] = useState(false);
 
   const [expenseToDelete, setExpenseToDelete] = useState(null);
@@ -48,14 +48,12 @@ export default function Expenses() {
         if (!token) throw new Error('UnAuthorized Access!');
         const { data, headers } = await axios.get(`/api/getExpenses`, { headers: { "Authorization": `Bearer ${token}` }, params: query });
 
-        if (currentPage !== query.page) {
+        if (query.page!== 1) {
           setExpenses(prev => [...prev, ...data]);
         }
         else {
           setExpenses(data);
         }
-
-        setCurrentPage(query.page);
         setIsLastPage(query.page >= headers['x-totalpage']);
         setIsLoading(false);
       }
@@ -105,40 +103,48 @@ export default function Expenses() {
     }
   ];
 
+  function scrollToTop() {
+    scrollableDiv.current.scroll({
+      top: 0,
+      behavior: "auto"
+    });
+  }
+
   function handleSearch(e) {
     e.preventDefault();
-    setQuery(prev => ({ ...prev, keyword: e.target[0].value }));
+    setQuery(prev => ({ ...prev, keyword: e.target[0].value, page: 1 }));
+    scrollToTop();
   }
 
   function handleFromDate(e) {
     setQuery(prev => ({ ...prev, from_date: e.target.value, page: 1 }));
-    setCurrentPage(1);
+    scrollToTop();
   }
 
   function handleToDate(e) {
     setQuery(prev => ({ ...prev, to_date: e.target.value, page: 1 }));
-    setCurrentPage(1);
+    scrollToTop();
   }
 
   function handleSortOrder(e) {
     setQuery(prev => ({ ...prev, sort_ascending: !prev.sort_ascending, page: 1 }));
-    setCurrentPage(1);
+    scrollToTop();
   }
 
   function handleSort(sort) {
     setQuery(prev => ({ ...prev, sort, page: 1 }));
-    setCurrentPage(1);
+    scrollToTop();
   }
 
   function handleShowShared() {
     setQuery(prev => ({ ...prev, show_shared: !prev.show_shared, page: 1 }));
-    setCurrentPage(1);
+    scrollToTop();
   }
 
   function clearFilters() {
     searchInput.current.value = '';
     setQuery({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: true, from_date: '', to_date: '', per_page: 5, page: 1 });
-    setCurrentPage(1);
+    scrollToTop();
   }
 
 
@@ -187,7 +193,7 @@ export default function Expenses() {
   }
 
   function loadMore() {
-    setQuery(prev => ({ ...prev, page: currentPage + 1 }));
+    setQuery(prev => ({ ...prev, page: prev.page + 1 }));
   }
 
   function showMember(memberId) {
@@ -364,7 +370,7 @@ export default function Expenses() {
 
       <div className={'fixed z-10 w-full max-w-[1000px] mobile-h-safe left-1/2 translate-x-[-50%] overflow-hidden pb-[20px] pt-[176px] lg:w-[calc(95%_-_310px)] lg:pt-[212px] lg:h-[calc(100%_-_40px)] lg:translate-x-[calc(-50%_+_145px)] ' + (isOpenOptions && 'pt-[410px] lg:pt-[212px]')}>
 
-        <div className='h-full overflow-x-hidden overflow-y-auto px-4 text-gray-600 lg:w-full'>
+        <div className='h-full overflow-x-hidden overflow-y-auto px-4 text-gray-600 lg:w-full' ref={scrollableDiv}>
           {/* Expenses List */}
           <div className='expense-list my-5 flex flex-col gap-2'>
 

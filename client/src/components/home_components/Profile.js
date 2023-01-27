@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useNavigate } from 'react-router-dom'
 import icon from '../../assets/group.png';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -11,6 +11,7 @@ import styles from '../../styles/Home.module.css';
 
 export default function Profile() {
 
+    const navigate = useNavigate();
     const [file, setFile] = useState();
     const [apiData] = useOutletContext();
 
@@ -32,6 +33,7 @@ export default function Profile() {
                 success: <b>Account Details updated!</b>,
                 error: <b>Unable to update the account details. Please try again!</b>
             });
+            updatePromise.then(() => navigate(0));
         }
     })
 
@@ -62,6 +64,10 @@ export default function Profile() {
                         </div>
 
                         <div className="textbox mx-auto w-max flex flex-col gap-6">
+                            <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
+                                <label className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Account Name: </label>
+                                <div {...formik.getFieldProps('groupname')} className={styles.textbox}>{apiData?.username}</div>
+                            </div>
                             <div className='flex flex-col gap-3 relative z-0 sm:flex-row sm:my-1 sm:items-center sm:justify-between sm:max-w-[380px]'>
                                 <label htmlFor='groupname' className='text-gray-600 text-base whitespace-nowrap lg:text-lg'>Group Name: </label>
                                 <input {...formik.getFieldProps('groupname')} className={styles.textbox} type="text" placeholder='Group Name' id='groupname' />
