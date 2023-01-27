@@ -196,7 +196,7 @@ export async function getUserDetail(req, res) {
                 { $match: { _id: castedUserId } },
                 { $unwind: { path: "$members", preserveNullAndEmptyArrays: true } },
                 { $sort: { "members.membername": 1 } },
-                { $group: { _id: '$_id', members: { $push: '$members' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' } } }
+                { $group: { _id: '$_id',  members: { $push: '$members' }, username: { $first: '$username' }, email: { $first: '$email' }, icon: { $first: '$icon' }, groupname: { $first: '$groupname' } } }
             ])
                 .then(doc => {
                     if (doc.length < 1) {
