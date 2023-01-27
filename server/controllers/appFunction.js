@@ -316,8 +316,8 @@ export async function getShareExpensesInfo(req, res) {
             const memberTotalPaid = await UserModel.aggregate([
                 { $match: { _id: castedUserId } },
                 { $unwind: { path: "$expenses", preserveNullAndEmptyArrays: true } },
-                { $match: { "expenses.isShared": { $not: { $eq: true } } } },
-                { $group: { _id: '$expenses.member', totalPaid: { $sum: '$expenses.amount' } } },
+                { $project: {_id: "$expenses.member", unsharedAmount: {$cond: { if: { $eq: [ "$expenses.isShared", false ] }, then: "$expenses.amount", else: 0 }}}},
+                { $group: { _id: "$_id", totalPaid: { $sum: '$unsharedAmount' } } },
             ]);
 
             //No user(account)
@@ -326,12 +326,14 @@ export async function getShareExpensesInfo(req, res) {
             //No expenses
             if (memberTotalPaid[0]._id === null) return res.status(201).send({ memberTotalPaid: [], totalExpenses: 0 });
 
-            const [{ totalExpenses }] = await UserModel.aggregate([
-                { $match: { _id: castedUserId } },
-                { $unwind: { path: "$expenses", preserveNullAndEmptyArrays: true } },
-                { $match: { "expenses.isShared": { $not: { $eq: true } } } },
-                { $group: { _id: null, totalExpenses: { $sum: '$expenses.amount' } } },
-            ]);
+            // const [{ totalExpenses }] = await UserModel.aggregate([
+            //     { $match: { _id: castedUserId } },
+            //     { $unwind: { path: "$expenses", preserveNullAndEmptyArrays: true } },
+            //     { $project: {_id: "$expenses.member", unsharedAmount: {$cond: { if: { $eq: [ "$expenses.isShared", false ] }, then: "$expenses.amount", else: 0 }}}},
+            //     { $group: { _id: null, totalExpenses: { $sum: '$unsharedAmount' } } },
+            // ]);
+
+            const totalExpenses = memberTotalPaid.reduce((prev, current) => prev += current.totalPaid, 0);
 
             return res.status(201).send({ memberTotalPaid, totalExpenses });
         }
