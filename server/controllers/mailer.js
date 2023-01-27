@@ -92,7 +92,7 @@ export const OTPMail = async (req, res) => {
                     <h4 style="font-size: 1.5rem; text-align: center; color: #9F6D90; letter-spacing: 0.1rem;">Account Recovery</h4>
                     <p style="font-weight: bold; color: #3D84A8;">Hi ${username},</p> 
                     <p>Please use the Account Recovery OTP below on Expense Sharing website:</p>
-                    <p style="width: fit-content; margin:0 auto 30px; text-align: center; padding: 10px; background-color: #dfdfdf; color: #504f4f; font-size: 1.4rem; letter-spacing: 1rem; text-indent: 1rem; border-radius: 5px;">${code}</p>
+                    <p style="width: fit-content; margin:0 auto 30px; text-align: center; padding: 10px; background-color: #dfdfdf; color: #504f4f; font-size: 1.3rem; letter-spacing: 0.5rem; text-indent: 0.5rem; border-radius: 5px;">${code}</p>
                     <p>If you have any questions, you can reply this email.</p>
                 </div>
             </div>
