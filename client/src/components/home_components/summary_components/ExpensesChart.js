@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { currencyFormatter } from '../../../helper/homeHelper';
 
 export default function ExpensesChart({data}) {
 
@@ -19,7 +20,7 @@ export default function ExpensesChart({data}) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="Month" /> 
                 <YAxis tickFormatter={(value)=> "$"+value} />
-                <Tooltip formatter={(value, name, props) => "$" + value}/>
+                <Tooltip formatter={(value, name, props) => currencyFormatter.format(value)}/>
                 <Legend />
                 <Bar dataKey="Grocery" stackId="a" fill="#7bdff2" />
                 <Bar dataKey="Food" stackId="a" fill="#f1c0e8" />
