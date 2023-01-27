@@ -93,6 +93,11 @@ export async function shareExpenses(values) {
     }
 }
 
+/** get today date String e.g. 2023-01-26 */
+export function todayDateString() {
+    const date = new Date();
+    return date.getFullYear() + '-' + (date.getMonth()+1).toString().padStart(2, 0) + '-' + date.getDate();
+}
 
 /** convert iso date string to DD-MMM-YYYY */
 export function dateStringFormat(dateStr) {

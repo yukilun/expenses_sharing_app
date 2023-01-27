@@ -7,7 +7,7 @@ import SlideController from './SlideController';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import icon from '../../assets/personal.png';
 import { addExpenseValidate } from '../../helper/homeValidate';
-import { addExpense } from '../../helper/homeHelper';
+import { addExpense, todayDateString } from '../../helper/homeHelper';
 
 import 'swiper/css';
 import styles from '../../styles/Home.module.css';
@@ -62,7 +62,7 @@ export default function AddExpense() {
   const formik = useFormik({
     initialValues: {
       amount: '',
-      date: new Date().toISOString().split('T')[0],
+      date: todayDateString(),
       description: ''
     },
     validate: async values => {
