@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { profileValidate } from '../../helper/validate';
 import convertToBase64 from '../../helper/convert';
 import { updateUser } from '../../helper/helper';
+import { useAuthStore } from '../../store/authStore';
 
 import styles from '../../styles/Home.module.css';
 
@@ -14,6 +15,7 @@ export default function Profile() {
     const navigate = useNavigate();
     const [file, setFile] = useState();
     const [apiData] = useOutletContext();
+    const setUsername = useAuthStore(state => state.setUsername);
 
     const formik = useFormik({
         initialValues: {
@@ -41,6 +43,11 @@ export default function Profile() {
     const onUpload = async e => {
         const base64 = await convertToBase64(e.target.files[0]);
         setFile(base64);
+    }
+
+    const resetPassword = async () => {
+        setUsername(apiData?.username);
+        navigate('/recovery');
     }
 
     return (
@@ -82,7 +89,9 @@ export default function Profile() {
                                  border py-3 rounded-lg shadow-md mt-5 mb-5 mx-auto lg:text-lg hover:bg-theme-blue' type="submit">Update</button>
                         </div>
                     </form>
-
+                    <div className='text-center'>
+                        <button className='user-link' onClick={resetPassword}>Reset Password</button>
+                    </div>
                 </div>
             </div>
         </div>
