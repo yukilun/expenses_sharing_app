@@ -39,13 +39,17 @@ body {
 
 .heading {
     background: -webkit-linear-gradient(135.27deg, #569EC2 5.8%, #9F6D90 99.72%);
+    background-clip: text;
     -webkit-background-clip: text;
+    color: transparent;
     -webkit-text-fill-color: transparent;
 }
 
 .user-link {
     background: -webkit-linear-gradient(135.27deg, #569EC2CC 5.8%, #9F6D90CC 99.72%);
+    background-clip: text;
     -webkit-background-clip: text;
+    color: transparent;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     position: relative;
@@ -53,7 +57,9 @@ body {
 
 .user-link:hover {
     background: -webkit-linear-gradient(135.27deg, #569EC2 5.8%, #9F6D90 99.72%);
+    background-clip: text;
     -webkit-background-clip: text;
+    color: transparent;
     -webkit-text-fill-color: transparent;
 }
 
@@ -76,7 +82,9 @@ body {
 
 .user-link:disabled, .user-link:disabled:hover {
     background: none;
+    background-clip: unset;
     -webkit-background-clip: unset;
+    color: gray;
     -webkit-text-fill-color: unset;
     font-weight: 500;
 }
