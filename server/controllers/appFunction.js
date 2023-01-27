@@ -266,7 +266,7 @@ export async function getExpenses(req, res) {
 
             //Sorting : ascending 1, decending -1 (decending by default)
             const sortOrder = sort_ascending == 'true' ? 1 : -1;
-            pipeLine = (sort === 'added_date') ? [...pipeLine, { $sort: { _id: sortOrder } }] : [...pipeLine, { $sort: { date: sortOrder } }];
+            pipeLine = (sort === 'added_date') ? [...pipeLine, { $sort: { _id: sortOrder } }] : [...pipeLine, { $sort: { date: sortOrder, _id: sortOrder } }];
 
             const doc = await UserModel.aggregate([...pipeLine, { $count: 'count' }]);
 
