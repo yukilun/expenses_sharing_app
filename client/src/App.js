@@ -98,14 +98,14 @@ const router = createBrowserRouter([
 
 export default function App() {
 
-    useEffect(() => {
-        const onScroll = (e) => {
-            e.preventDefault();
-            window.scrollTo(0, 0);
-        };
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+    // useEffect(() => {
+    //     const onScroll = (e) => {
+    //         e.preventDefault();
+    //         window.scrollTo(0, 0);
+    //     };
+    //     window.addEventListener("scroll", onScroll);
+    //     return () => window.removeEventListener("scroll", onScroll);
+    // }, []);
 
   return (
     <main className='overflow-x-hidden'>
