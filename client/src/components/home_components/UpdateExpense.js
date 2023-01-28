@@ -174,13 +174,13 @@ export default function UpdateExpense() {
                 >
                   <div className='flex gap-5 items-center'>
                     <img src={memberIndex > -1 ? apiData?.members[memberIndex]?.membericon || icon : icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />
-                    {memberIndex >= 0 && (apiData?.members[memberIndex]?.membername || '')}
+                    <span className='whitespace-nowrap overflow-hidden text-ellipsis'>{memberIndex >= 0 && (apiData?.members[memberIndex]?.membername || '')}</span>
 
 
                   </div>
                   <MdKeyboardArrowDown className='absolute z-20 top-1/2 translate-y-[-50%] right-[12px] text-[30px]' />
 
-                  <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-auto shadow-lg cursor-pointer'}>
+                  <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-y-auto shadow-lg cursor-pointer'}>
                     {apiData?.members && apiData.members.map((member, index) => (
                       <li
                         key={index}
@@ -199,7 +199,7 @@ export default function UpdateExpense() {
               <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
                 <label htmlFor='amount' className='text-gray-600 text-base lg:text-lg'>Amount: </label>
                 <div className={styles.inputbox + ' flex gap-2'}>
-                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none' />
+                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" pattern="[0-9]*" inputMode="numeric" className='w-full outline-none' />
                 </div>
               </div>
 

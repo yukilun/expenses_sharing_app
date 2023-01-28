@@ -206,7 +206,7 @@ export default function AddExpense() {
               <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
                 <label htmlFor='amount' className='text-gray-600 text-base lg:text-lg'>Amount: </label>
                 <div className={styles.inputbox + ' flex gap-2'}>
-                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" className='w-full outline-none' />
+                  $ <input {...formik.getFieldProps('amount')} type="number" id="amount" placeholder='Amount' step="0.01" pattern="[0-9]*" inputMode="numeric" className='w-full outline-none' />
                 </div>
               </div>
 
