@@ -32,7 +32,7 @@ export default function Username() {
     return (
         <Animation className="container mx-auto">
             <Toaster position='top-center' reverseOrder='false'></Toaster>
-            <div className="fixed w-full h-full p-5 overflow-y-auto">
+            <div className="fixed w-full h-full p-5 overflow-y-auto overscroll-auto">
                 <div className='w-full min-h-full flex flex-row justify-center items-center'>
                     <div className='w-1/2 hidden justify-center items-center lg:flex'>
                         <img src={paymentsvg} alt='Payment illustration' className='w-[80%] max-h-[500px]' />
