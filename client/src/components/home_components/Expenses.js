@@ -351,7 +351,7 @@ export default function Expenses() {
 
           {/* show shared */}
           <button
-            className={'text-sm w-fit px-4 py-3 rounded-full flex border-[4px] ' + (!query.show_shared ? 'border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'border-white bg-white text-gray-300 hover:bg-gray-100')}
+            className={'text-sm px-4 py-3 rounded-full flex border-[4px] ' + (!query.show_shared ? 'border-white bg-theme-light-blue text-white hover:bg-theme-blue' : 'border-white bg-white text-gray-300 hover:bg-gray-100')}
             onClick={handleShowShared}
           >
             Unshared Expense Only
@@ -359,7 +359,7 @@ export default function Expenses() {
 
           {/* clear for lg screen */}
           <button
-            className='text-sm hidden lg:flex w-fit px-5 py-3 rounded-full outline-none text-white bg-theme-light-plum hover:bg-theme-plum'
+            className='text-sm hidden lg:flex px-5 py-3 rounded-full outline-none text-white bg-theme-light-plum hover:bg-theme-plum'
             onClick={clearFilters}
           >
             Clear Filters
@@ -406,7 +406,7 @@ export default function Expenses() {
                   </div>
 
                   <div className={'shrink-0 flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
-                    + 'md:mx-3 md:w-fit md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
+                    + 'md:mx-3 md:w-auto md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
                     <MdEdit className='w-1/2 h-full p-8 text-theme-light-blue cursor-pointer md:h-[30px] md:p-0 hover:text-theme-blue' onClick={() => handleEdit(index)} />
                     <MdDelete className='w-1/2 h-full p-8 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[30px] md:p-0 hover:text-theme-plum' onClick={() => handleDelete(index)} />
                   </div>
