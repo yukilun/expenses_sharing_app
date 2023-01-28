@@ -44,16 +44,14 @@ export default function Expenses() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+        if(query.page===1) setExpenses([]);
+
         const token = localStorage.getItem('token');
         if (!token) throw new Error('UnAuthorized Access!');
         const { data, headers } = await axios.get(`/api/getExpenses`, { headers: { "Authorization": `Bearer ${token}` }, params: query });
 
-        if (query.page!== 1) {
-          setExpenses(prev => [...prev, ...data]);
-        }
-        else {
-          setExpenses(data);
-        }
+        setExpenses(prev => [...prev, ...data]);
+
         setIsLastPage(query.page >= headers['x-totalpage']);
         setIsLoading(false);
       }
@@ -375,7 +373,7 @@ export default function Expenses() {
           <div className='expense-list my-5 flex flex-col gap-2'>
 
             {/* Each expense record */}
-            {expenses?.length === 0 && !serverError ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
+            {expenses?.length === 0 && !isLoading && !serverError ? <div className='text-lg text-gray-400 text-center'>No expense record!</div> :
               expenses?.map((expense, index) => (
                 <div
                   key={expense._id}
