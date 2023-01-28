@@ -303,12 +303,12 @@ export default function Expenses() {
 
 
           {/* From to date */}
-          <div className={'from-to-date w-min h-full flex-wrap justify-end gap-2 md:flex-nowrap ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
+          <div className={'from-to-date w-min flex-wrap justify-end gap-2 md:flex-nowrap ' + (isOpenOptions ? 'flex' : 'hidden lg:flex')}>
             <nobr>From: &nbsp;
-              <input type='date' placeholder='From' className="bg-white min-w-[150px] h-full rounded-xl shadow-md p-3 outline-none appearance-none" value={query.from_date} onChange={handleFromDate} />
+              <input type='date' placeholder='From' className="bg-white min-w-[150px] min-h-[48px] rounded-xl shadow-md p-3 outline-none appearance-none" value={query.from_date} onChange={handleFromDate} />
             </nobr>
             <nobr>To: &nbsp;
-              <input type='date' placeholder='From' className="bg-white min-w-[150px] h-full rounded-xl shadow-md p-3 outline-none appearance-none" value={query.to_date} onChange={handleToDate} />
+              <input type='date' placeholder='From' className="bg-white min-w-[150px] min-h-[48px] rounded-xl shadow-md p-3 outline-none appearance-none" value={query.to_date} onChange={handleToDate} />
             </nobr>
           </div>
         </div>
