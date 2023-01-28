@@ -214,7 +214,7 @@ export default function AddExpense() {
               {/*Date*/}
               <div className='flex flex-col gap-3 relative z-0 lg:flex-row lg:my-1 lg:items-center lg:justify-between lg:max-w-[380px]'>
                 <label htmlFor='date' className='text-gray-600 text-base lg:text-lg'>Date: </label>
-                <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox} />
+                <input {...formik.getFieldProps('date')} type="date" id="date" placeholder='Date' className={styles.inputbox + " appearance-none"} />
               </div>
 
             </div>
