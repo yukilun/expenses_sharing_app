@@ -51,6 +51,7 @@ body {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0px 0px transparent;
 }
 
 .user-link {
@@ -59,6 +60,7 @@ body {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0px 0px transparent;
     font-weight: 700;
     position: relative;
 }
@@ -68,6 +70,7 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    text-shadow: 0px 0px transparent;
     -webkit-text-fill-color: transparent;
 }
 
