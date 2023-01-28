@@ -186,14 +186,15 @@ export default function AddExpense() {
                   </div>
                   <MdKeyboardArrowDown className='absolute z-20 top-1/2 translate-y-[-50%] right-[12px] text-[30px]' />
 
-                  <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-auto shadow-lg cursor-pointer'}>
+                  <ul className={(showMemberDropdown ? 'block ' : 'hidden ') + ' absolute bottom-0 left-0 translate-y-[110%] bg-white w-full rounded-xl max-h-[200px] lg:max-h-[160px] overflow-y-auto shadow-lg cursor-pointer'}>
                     {apiData?.members && apiData.members.map((member, index) => (
                       <li
                         key={index}
                         className="flex gap-5 items-center p-2 hover:bg-gray-200  first-of-type:rounded-t-xl last-of-type:rounded-b-xl"
                         onClick={() => setMemberIndex(index)}
                       >
-                        <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover " />{member.membername}
+                        <img src={member.membericon || icon} alt="icon" className="h-[50px] w-[50px] rounded-full object-cover" />
+                        <span className='whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</span>
                       </li>
                     ))}
                   </ul>
