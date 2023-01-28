@@ -7,7 +7,7 @@ import Animation from '../middleware/Animation';
 
 export default function PageNotFound() {
   return (
-    <Animation className="container mx-auto">
+    <Animation>
       <Toaster position='top-center' reverseOrder='false'></Toaster>
       <div className='h-[100vh] flex flex-col justify-center items-center gap-8 text-center text-xl text-theme-plum'>
         <img src={pageNotFoundSvg} alt="404 Page Not Found" className='w-[250px]' />

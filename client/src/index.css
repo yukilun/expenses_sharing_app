@@ -29,6 +29,10 @@ body {
     background-attachment: fixed;
 }
 
+#root {
+    height: 100%;
+}
+
 .gradient-bg{
     background: linear-gradient(102.87deg, rgba(86, 158, 194, 0.4) 28.76%, rgba(163, 196, 213, 0.4) 44.56%, rgba(198, 176, 191, 0.4) 64.19%, rgba(159, 109, 144, 0.4) 81.09%), #FFFFFF;
 }

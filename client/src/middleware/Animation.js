@@ -16,6 +16,7 @@ export default function Animation({children}) {
       animate="animate"
       exit="exit"
       transition={{ duration: 1 }}
+      className="h-full"
     >
       {children}
     </motion.div>

@@ -58,7 +58,7 @@ export default function Home() {
 
 
     return (
-        <Animation className="container mx-auto">
+        <Animation>
             <Toaster position='top-center' reverseOrder='false'></Toaster>
             <div className={styles.container}>
                 <div className={styles.nav}>

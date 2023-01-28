@@ -54,7 +54,7 @@ export default function Reset() {
     );
 
     return (
-        <Animation className="container mx-auto">
+        <Animation>
             <Toaster position='top-center' reverseOrder='false'></Toaster>
             <div className="fixed w-full h-full p-5 overflow-y-auto">
                 <div className='w-full min-h-full flex flex-row justify-center items-center'>
