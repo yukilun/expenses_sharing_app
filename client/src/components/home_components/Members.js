@@ -199,7 +199,7 @@ export default function Members() {
                                             <span className='whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</span>
                                         </div>
 
-                                        <div className={'shrink-0 flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
+                                        <div className={'flex items-center text-2xl absolute w-full h-full top-0 left-0 justify-around bg-white bg-opacity-90 rounded-lg '
                                             + 'md:mx-3 md:w-auto md:bg-transparent md:gap-2 md:justify-center md:static md:visible transition-all ' + (index === swipedExpenseIndex ? 'visible' : 'invisible translate-x-[50%] md:translate-x-0')} >
                                             <MdEdit className='w-1/2 h-full p-4 text-theme-light-blue cursor-pointer md:h-[30px] md:p-0 hover:text-theme-blue' onClick={() => handleEdit(index)} />
                                             <MdDelete className='w-1/2 h-full p-4 text-theme-light-plum cursor-pointer border-l-2 border-gray-200 md:border-l-0 md:h-[30px] md:p-0 hover:text-theme-plum' onClick={() => handleDelete(index)} />

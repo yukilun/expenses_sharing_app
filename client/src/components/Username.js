@@ -53,7 +53,7 @@ export default function Username() {
                             </div>
 
                             <div className="textbox flex flex-col items-center gap-4">
-                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Account Name' />
+                                <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Account Name' autocapitalize="off"/>
                                 <button className={styles.btn} type="submit">Next</button>
                             </div>
 
