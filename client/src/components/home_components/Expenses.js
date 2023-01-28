@@ -288,7 +288,7 @@ export default function Expenses() {
           {/* search bar */}
           <form className="search-bar w-full flex flex-row gap-2 p-3 rounded-xl shadow-md text-gray-600 bg-white" onSubmit={handleSearch}>
             <input ref={searchInput} type='text' placeholder='Search' className='focus:outline-none w-full' name='keyword' id='keyword' />
-            <button><MdSearch className='text-2xl' /></button>
+            <button aria-label='search'><MdSearch className='text-2xl' /></button>
           </form>
 
           {/* open option */}
