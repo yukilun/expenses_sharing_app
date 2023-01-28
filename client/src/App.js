@@ -99,7 +99,7 @@ const router = createBrowserRouter([
 export default function App() {
 
   return (
-    <main className='overflow-x-hidden'>
+    <main className='h-full'>
         <RouterProvider router={router} />
     </main>
   )
