@@ -142,6 +142,7 @@ export default function Expenses() {
   function clearFilters() {
     searchInput.current.value = '';
     setQuery({ keyword: '', sort: 'paid_date', sort_ascending: false, show_shared: true, from_date: '', to_date: '', per_page: 5, page: 1 });
+    setOpenOptions(false);
     scrollToTop();
   }
 
