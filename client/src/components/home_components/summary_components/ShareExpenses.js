@@ -132,9 +132,9 @@ export default function ShareExpenses() {
                     <p className='text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{member.membername}</p>
                   </div>
 
-                  <div className='flex items-center gap-2 heading font-bold'>
-                    <div>Paid:</div>
-                    <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo?.memberTotalPaid.find((doc) => doc._id === member._id)?.totalPaid || 0)}</div>
+                  <div className='flex items-center gap-2 font-bold'>
+                    <p className='heading'>Paid:</p>
+                    <p className='min-w-[85px] heading'>{currencyFormatter.format(shareExpensesInfo?.memberTotalPaid.find((doc) => doc._id === member._id)?.totalPaid || 0)}</p>
                   </div>
 
                 </div>
@@ -142,18 +142,18 @@ export default function ShareExpenses() {
 
               {shareExpensesInfo && (
                 <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
-                  <div className='flex items-center gap-2 heading'>
-                    <div>Total Expenses:</div>
-                    <div className='min-w-[85px]'>{currencyFormatter.format(shareExpensesInfo.totalExpenses)}</div>
+                  <div className='flex items-center gap-2'>
+                    <p className='heading'>Total Expenses:</p>
+                    <p className='min-w-[85px] heading'>{currencyFormatter.format(shareExpensesInfo.totalExpenses)}</p>
                   </div>
                 </div>
               )}
 
               {expensePerPerson !== '' && (
                 <div className="w-full my-1 flex justify-end py-3 px-3 border border-slate-300 gradient-light-bg rounded-lg shadow-sm font-bold text-sm">
-                  <div className='flex items-center gap-2 heading'>
-                    <div>Per Member:</div>
-                    <div className='min-w-[85px]'>{currencyFormatter.format(expensePerPerson)}</div>
+                  <div className='flex items-center gap-2'>
+                    <p className='heading'>Per Member:</p>
+                    <p className='min-w-[85px] heading'>{currencyFormatter.format(expensePerPerson)}</p>
                   </div>
                 </div>
               )}
