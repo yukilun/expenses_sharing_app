@@ -433,7 +433,7 @@ export default function Expenses() {
           {/* Load more */}
           {!isLoading && expenses?.length > 0 &&
             <div className='text-center'>
-              <button className='user-link text-lg disabled:text-gray-400' onClick={loadMore} disabled={isLastPage}>{isLastPage ? '- End of Expense Records -' : 'Load more...'}</button>
+              <button className='text-lg' onClick={loadMore} disabled={isLastPage}>{isLastPage ? (<span className='text-gray-400'>- End of Expense Records -</span>) : (<span className='user-link'>Load more...</span>)}</button>
             </div>
           }
         </div>
