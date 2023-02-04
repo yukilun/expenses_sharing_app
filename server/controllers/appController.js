@@ -113,7 +113,7 @@ export async function login(req, res) {
                     jwt.sign({
                         userId: user._id,
                         username: user.username
-                    }, process.env.JWT_SECRET, {expiresIn: '24h'}, (error, token) => {
+                    }, process.env.JWT_SECRET, {expiresIn: '30d'}, (error, token) => {
                         if(error) {
                             return res.status(500).send({error: error.message});
                         }
