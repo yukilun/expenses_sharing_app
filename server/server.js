@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 const app = express();
 config();
 
-var whitelist = ['http://localhost:3000', 'https://expenses-sharing.onrender.com']
+var whitelist = ['http://localhost:3000', process.env.CLIENT_URL]
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
