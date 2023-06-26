@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 const app = express();
 config();
 
-var whitelist = ['http://localhost:3000', 'https://expenses-sharing.yukilun.com/']
+var whitelist = ['http://localhost:3000', 'https://expenses-sharing.yukilun.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
