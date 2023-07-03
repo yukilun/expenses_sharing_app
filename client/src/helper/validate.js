@@ -88,7 +88,7 @@ function passwordVerify(error={}, values) {
 /** verify email */
 function emailVerify(error={}, values) {
 
-    const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if(!values.email) {
         error.email = toast.error("Email Address Required!");
